@@ -65,10 +65,10 @@ class ClienteController extends AdminBaseController
           unset($request->telefono);
         if($request->direccion == '')
           unset($request->direccion);
-          
+
         $this->cliente->create($request->all());
 
-        return response()->json(['error' => false])
+        return response()->json(['error' => false]);
     }
 
     /**
