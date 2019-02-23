@@ -5,6 +5,7 @@ namespace Modules\Clientes\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Clientes\Entities\Cliente;
+use Modules\Clientes\Entities\DatosFacturacion;
 use Modules\Clientes\Http\Requests\CreateClienteRequest;
 use Modules\Clientes\Http\Requests\UpdateClienteRequest;
 use Modules\Clientes\Repositories\ClienteRepository;
@@ -31,9 +32,9 @@ class ClienteController extends AdminBaseController
      */
     public function index()
     {
-        //$clientes = $this->cliente->all();
+        $clientes = $this->cliente->all();
 
-        return view('clientes::admin.clientes.index', compact(''));
+        return view('clientes::admin.clientes.index', compact('clientes'));
     }
 
     /**
@@ -58,17 +59,6 @@ class ClienteController extends AdminBaseController
 
         return redirect()->route('admin.clientes.cliente.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('clientes::clientes.title.clientes')]));
-    }
-
-    public function store_ajax(Request $request){
-        if($request->telefono == '')
-          unset($request->telefono);
-        if($request->direccion == '')
-          unset($request->direccion);
-
-        $this->cliente->create($request->all());
-
-        return response()->json(['error' => false]);
     }
 
     /**
@@ -110,4 +100,6 @@ class ClienteController extends AdminBaseController
         return redirect()->route('admin.clientes.cliente.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('clientes::clientes.title.clientes')]));
     }
+
+
 }

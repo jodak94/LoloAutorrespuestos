@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        @include('pacientes::admin.pacientes.partials.create-fields')
+        @include('clientes::admin.clientes.partials.create-fields')
         <div style="display:none" class="alert alert-danger alert-dismissible" role="alert" id="error">
           <span id="error_message"></span>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,12 +29,14 @@
 @push('js-stack')
   <script>
     $( document ).ready(function() {
+      var url;
       $("#add_cliente_button").on('click', function(){
         $("#error").hide();
         var razon_social = $("#razon_social").val();
         var ruc = $("#ruc").val();
         var telefono = $("#telefono").val();
         var direccion = $("#direccion").val();
+        var datos_facturacion_id = $("#datos_id").val();
         if(razon_social == '' || ruc == ''){
           $("#error").show();
           $("#error_message").html('Razon social y ruc son campos obligatorios');
@@ -42,13 +44,14 @@
         }
         $("#spin").show();
         $.ajax({
-          url: "{{route('admin.pacientes.paciente.store_ajax')}}",
+          url: url,
           type: 'POST',
           data: {
             'razon_social': razon_social,
             'ruc': ruc,
             'telefono': telefono,
             'direccion': direccion,
+            'datos_facturacion_id' : datos_facturacion_id,
             "_token": "{{ csrf_token() }}",
           },
           success: function(data){
@@ -56,7 +59,13 @@
               $("#error").show();
               $("#error_message").html(data.message);
             }else{
-              //Agregar datos a la cabecera de la venta
+              $("#datos_razon_social").val(razon_social)
+              $("#datos_ruc").val(ruc)
+              $("#datos_telefono").val(telefono)
+              $("#datos_direccion").val(direccion)
+              $("#datosfacturacion").show()
+              $("#buscar-datos").val("")
+              $("#datos_id").val(data.datos.id)
               $("#addClienteModal").modal('hide');
             }
             $("#spin").hide();
@@ -67,11 +76,18 @@
           }
         })
       })
-      $('#addClienteModalte').on('hidden.bs.modal', function () {
+      $('#add-cliente-button').on('click', function () {
         $("#razon_social").val('')
         $("#ruc").val('')
         $("#telefono").val('')
         $("#direccion").val('')
+        $("#addClienteModal").modal('show');
+        url = "{{route('admin.clientes.datosfacturacion.store_ajax')}}"
+      })
+
+      $("#edit-cliente-button").on('click', function(){
+        $("#addClienteModal").modal('show');
+        url = "{{route('admin.clientes.datosfacturacion.update_ajax')}}"
       })
     });
   </script>

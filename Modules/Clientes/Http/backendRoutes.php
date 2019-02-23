@@ -22,11 +22,6 @@ $router->group(['prefix' =>'/clientes'], function (Router $router) {
         'uses' => 'ClienteController@store',
         'middleware' => 'can:clientes.clientes.create'
     ]);
-    $router->post('clientes', [
-        'as' => 'admin.clientes.cliente.store_ajax',
-        'uses' => 'ClienteController@store_ajax',
-        'middleware' => 'can:clientes.clientes.create'
-    ]);
     $router->get('clientes/{cliente}/edit', [
         'as' => 'admin.clientes.cliente.edit',
         'uses' => 'ClienteController@edit',
@@ -60,14 +55,28 @@ $router->group(['prefix' =>'/clientes'], function (Router $router) {
         'uses' => 'DatosFacturacionController@store',
         'middleware' => 'can:clientes.datosfacturacions.create'
     ]);
+    $router->post('datosfacturacions/store-ajax', [
+        'as' => 'admin.clientes.datosfacturacion.store_ajax',
+        'uses' => 'DatosFacturacionController@store_ajax',
+        'middle,ware' => 'can:clientes.datosfacturacions.create'
+    ]);
     $router->get('datosfacturacions/{datosfacturacion}/edit', [
         'as' => 'admin.clientes.datosfacturacion.edit',
         'uses' => 'DatosFacturacionController@edit',
         'middleware' => 'can:clientes.datosfacturacions.edit'
     ]);
+    $router->get('datosfacturacions/search-ajax', [
+      'as' => 'admin.clientes.datosfacturacion.search_ajax',
+      'uses' => 'DatosFacturacionController@search_ajax',
+    ]);
     $router->put('datosfacturacions/{datosfacturacion}', [
         'as' => 'admin.clientes.datosfacturacion.update',
         'uses' => 'DatosFacturacionController@update',
+        'middleware' => 'can:clientes.datosfacturacions.edit'
+    ]);
+    $router->post('datosfacturacions/update-ajax', [
+        'as' => 'admin.clientes.datosfacturacion.update_ajax',
+        'uses' => 'DatosFacturacionController@update_ajax',
         'middleware' => 'can:clientes.datosfacturacions.edit'
     ]);
     $router->delete('datosfacturacions/{datosfacturacion}', [

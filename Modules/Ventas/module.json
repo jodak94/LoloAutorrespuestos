@@ -1,0 +1,18 @@
+{
+    "name": "Ventas",
+    "alias": "ventas",
+    "description": "",
+    "keywords": [],
+    "version": "1.0.0",
+	"active": 1,
+    "order": 1,
+    "providers": [
+        "Modules\\Ventas\\Providers\\VentasServiceProvider",
+        "Modules\\Ventas\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        
+    ],
+    "requires": []
+}
