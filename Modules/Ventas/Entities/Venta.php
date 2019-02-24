@@ -12,4 +12,9 @@ class Venta extends Model
     protected $table = 'ventas__ventas';
     public $translatedAttributes = [];
     protected $fillable = [];
+
+    public static $tipos_factura = [
+      'contado' => 'Contado',
+      'credito' => 'Crédito'
+    ];
 }

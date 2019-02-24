@@ -43,7 +43,9 @@ class VentaController extends AdminBaseController
      */
     public function create()
     {
-        return view('ventas::admin.ventas.create');
+        $nro_factura = '001-034-001123';
+        $tipos_factura = Venta::$tipos_factura;
+        return view('ventas::admin.ventas.create', compact('nro_factura', 'tipos_factura'));
     }
 
     /**

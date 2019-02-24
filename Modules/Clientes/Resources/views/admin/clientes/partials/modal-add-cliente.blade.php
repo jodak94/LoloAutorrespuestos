@@ -86,6 +86,10 @@
       })
 
       $("#edit-cliente-button").on('click', function(){
+        $("#razon_social").val($("#datos_razon_social").val())
+        $("#ruc").val($("#datos_ruc").val())
+        $("#telefono").val($("#datos_telefono").val())
+        $("#direccion").val($("#datos_direccion").val())
         $("#addClienteModal").modal('show');
         url = "{{route('admin.clientes.datosfacturacion.update_ajax')}}"
       })

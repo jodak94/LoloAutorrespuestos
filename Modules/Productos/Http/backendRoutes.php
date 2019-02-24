@@ -37,6 +37,10 @@ $router->group(['prefix' =>'/productos'], function (Router $router) {
         'uses' => 'ProductoController@destroy',
         'middleware' => 'can:productos.productos.destroy'
     ]);
+    $router->get('productos/search-ajax', [
+        'as' => 'admin.productos.producto.search_ajax',
+        'uses' => 'ProductoController@search_ajax',
+    ]);
 // append
 
 });

@@ -99,4 +99,20 @@ class ProductoController extends AdminBaseController
         return redirect()->route('admin.productos.producto.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('productos::productos.title.productos')]));
     }
+
+    public function search_ajax(Request $re){
+      $re['term_explode'] = explode(' ',$re->term);
+      $query = Producto::
+        Where('nombre','like',  '%' . $re->term . '%');
+      $productos = $query->take(5)->get();
+      $results = [];
+      foreach ($productos as $producto){
+        $results[] =
+        [
+          'producto' => $producto,
+          'value' => $producto->nombre,
+        ];
+      }
+      return response()->json($results);
+    }
 }

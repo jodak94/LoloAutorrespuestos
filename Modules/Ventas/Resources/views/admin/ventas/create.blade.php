@@ -44,8 +44,8 @@
                     @endforeach
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.ventas.venta.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                      <button id="btnCrear" type="button" disabled class="btn btn-primary btn-flat" data-toggle="modal" data-target="#facturaModal">Crear Venta</button>
+                      <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.ventas.venta.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
@@ -54,6 +54,7 @@
     {!! Form::close() !!}
 @stop
 @include('clientes::admin.clientes.partials.modal-add-cliente')
+@include('ventas::admin.ventas.partials.modal-crear-venta')
 @section('footer')
     <a data-toggle="modal" data-target="#keyboardShortcutsModal"><i class="fa fa-keyboard-o"></i></a> &nbsp;
 @stop
