@@ -23,7 +23,7 @@ class CreateProductosProductosTable extends Migration
             $table->integer('stock_critico');
             $table->double('costo');
             $table->double('precio');
-            $table->string('foto');
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

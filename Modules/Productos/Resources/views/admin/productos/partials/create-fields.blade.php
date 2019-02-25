@@ -7,6 +7,11 @@
     {!! Form::normalInputOfType('number','stock_critico', 'Stock Critico', $errors) !!}
     {!! Form::normalInputOfType('number','costo', 'Costo', $errors) !!}
     {!! Form::normalInputOfType('number','precio', 'Precio', $errors) !!}
+    <div class="form-group">
+        {!! Form::label('image','Foto')!!}                                    
+        <img id="preview" src="#" width="150" height="150" style="margin:2%;display:none;object-fit:cover"/>   
+        {!! Form::file('image',['class' => 'form-control','id' => 'img-input']) !!}
+    </div>
     
     </p>
 </div>

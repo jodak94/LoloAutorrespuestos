@@ -12,7 +12,7 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.productos.producto.store'], 'method' => 'post']) !!}
+    {!! Form::open(['route' => ['admin.productos.producto.store'], 'method' => 'post', 'files' => true]) !!}
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
@@ -64,5 +64,26 @@
                 radioClass: 'iradio_flat-blue'
             });
         });
+    </script>
+    <script>
+        $( document ).ready(function() {
+            $("#img-input").change(function() {
+                readURL(this);
+            });
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                    $('#preview').css('display','block');
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
     </script>
 @endpush

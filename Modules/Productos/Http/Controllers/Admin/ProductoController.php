@@ -9,6 +9,8 @@ use Modules\Productos\Http\Requests\CreateProductoRequest;
 use Modules\Productos\Http\Requests\UpdateProductoRequest;
 use Modules\Productos\Repositories\ProductoRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProductoController extends AdminBaseController
 {
@@ -54,8 +56,16 @@ class ProductoController extends AdminBaseController
      */
     public function store(CreateProductoRequest $request)
     {
-        $this->producto->create($request->all());
+        $producto = $this->producto->create($request->all());
+        if ($request->hasFile('image')) {
+            $image      = $request->file('image');
+            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+            $pathToFile = "assets/media/fotos_productos/$fileName" ;
+            Storage::disk('local')->put('public'.'/'.$pathToFile, file_get_contents($image));
 
+            $producto->foto = $pathToFile;
+            $producto->save();
+        }
         return redirect()->route('admin.productos.producto.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('productos::productos.title.productos')]));
     }
@@ -80,8 +90,16 @@ class ProductoController extends AdminBaseController
      */
     public function update(Producto $producto, UpdateProductoRequest $request)
     {
-        $this->producto->update($producto, $request->all());
+         $producto = $this->producto->update($producto, $request->all());
+        if ($request->hasFile('image')) {
+            $image      = $request->file('image');
+            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+            $pathToFile = "assets/media/fotos_productos/$fileName" ;
+            Storage::disk('local')->put('public'.'/'.$pathToFile, file_get_contents($image));
 
+            $producto->foto = $pathToFile;
+            $producto->save();
+        }
         return redirect()->route('admin.productos.producto.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('productos::productos.title.productos')]));
     }
@@ -99,4 +117,5 @@ class ProductoController extends AdminBaseController
         return redirect()->route('admin.productos.producto.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('productos::productos.title.productos')]));
     }
+
 }
