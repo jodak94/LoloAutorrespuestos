@@ -18,7 +18,12 @@
                     <i class="fa fa-eye"></i> {{ trans('page::pages.view-page') }}
                 </a>
             </li>
-            <li><a href="{{ url('/') }}"><i class="fa fa-eye"></i> {{ trans('core::core.general.view website') }}</a></li>
+            {{-- <li>
+              <a href="{{ url('/') }}">
+                <i class="fa fa-eye"></i>
+                {{ trans('core::core.general.view website') }}
+              </a>
+            </li> --}}
             @if(count(LaravelLocalization::getSupportedLocales())>1)
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -40,7 +45,8 @@
             </li>
             @endif
             <!-- User Account: style can be found in dropdown.less -->
-            <li class="dropdown user user-menu">
+            @if(Auth::user()->hasRoleSlug('admin'))
+              <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="glyphicon glyphicon-user"></i>
                     <span>
@@ -78,7 +84,8 @@
                         </div>
                     </li>
                 </ul>
-            </li>
+              </li>
+            @endif
         </ul>
     </div>
 </nav>

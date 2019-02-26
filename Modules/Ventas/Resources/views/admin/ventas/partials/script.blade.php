@@ -81,8 +81,11 @@
     function calculate_all(){
       let total = 0;
       let totalIva10 = 0;
+      let val = 0;
       $('.subtotal').each(function(i){
-        total += parseFloat($(this).val());
+        val = parseFloat($(this).val());
+        if(!isNaN(val))
+          total += val;
       })
       $("#monto-total").val(total);
       $("#modal-monto-total").val(total);

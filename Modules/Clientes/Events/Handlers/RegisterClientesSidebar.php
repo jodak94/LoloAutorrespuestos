@@ -38,32 +38,14 @@ class RegisterClientesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
             $group->item(trans('clientes::clientes.title.clientes'), function (Item $item) {
-                $item->icon('fa fa-copy');
+                $item->icon('fa fa-users');
                 $item->weight(10);
+                $item->append('admin.clientes.datosfacturacion.create');
+                $item->route('admin.clientes.datosfacturacion.index');
                 $item->authorize(
-                     /* append */
+                    $this->auth->hasAccess('clientes.datosfacturacions.index')
                 );
-                $item->item(trans('clientes::clientes.title.clientes'), function (Item $item) {
-                    $item->icon('fa fa-copy');
-                    $item->weight(0);
-                    $item->append('admin.clientes.cliente.create');
-                    $item->route('admin.clientes.cliente.index');
-                    $item->authorize(
-                        $this->auth->hasAccess('clientes.clientes.index')
-                    );
-                });
-                $item->item(trans('clientes::datosfacturacions.title.datosfacturacions'), function (Item $item) {
-                    $item->icon('fa fa-copy');
-                    $item->weight(0);
-                    $item->append('admin.clientes.datosfacturacion.create');
-                    $item->route('admin.clientes.datosfacturacion.index');
-                    $item->authorize(
-                        $this->auth->hasAccess('clientes.datosfacturacions.index')
-                    );
-                });
 // append
-
-
             });
         });
 

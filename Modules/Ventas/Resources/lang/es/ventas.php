@@ -11,7 +11,7 @@ return [
         'edit venta' => 'Edit a venta',
     ],
     'button' => [
-        'create venta' => 'Create a venta',
+        'create venta' => 'Crear venta',
     ],
     'table' => [
     ],

@@ -18,7 +18,7 @@
            {!! Form::normalInput('pago_cliente', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['required'=>'','autofocus'] ) !!}
            {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>''] ) !!}
            <div id="plazo_credito-1" style="display:none">
-              {!! Form:: normalSelect('plazo_credito', 'Plazo del Credito:', $errors, [''=>'---','5'=>'5 días','10'=>'10 días','30'=>'30 días','60'=>'60 días','90'=>'90 días'],null,['id'=>'plazo_credito']) !!}
+              {!! Form:: normalSelect('plazo_credito', 'Plazo del Crédito:', $errors, [''=>'---','5'=>'5 días','10'=>'10 días','30'=>'30 días','60'=>'60 días','90'=>'90 días'],null,['id'=>'plazo_credito']) !!}
            </div>
            {!! Form::hidden('generar_factura', '0') !!}
            <input type="hidden" id="client_ip" name="client_ip">

@@ -11,13 +11,13 @@
     <div class="box-body">
       <div class="row">
         <div class="col-md-4">
-          {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, $nro_factura, ['readonly' => 'true']) !!}
+          {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura], ['readonly' => 'true']) !!}
         </div>
         <div class="col-md-4">
-          {!! Form::normalInput('timbrado', 'Timbrado', $errors, (object)['timbrado' => '001-034-001123'], ['readonly' => 'true']) !!}
+          {!! Form::normalInput('timbrado', 'Timbrado', $errors, (object)['timbrado' => '123456789'], ['readonly' => 'true']) !!}
         </div>
         <div class="col-md-4">
-          {!! Form::normalInputOfType('date','fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('Y-m-d')]) !!}
+          {!! Form::normalInputOfType('date','fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('Y-m-d')], ['readonly' => 'true']) !!}
         </div>
       </div>
       <div class="row" style="margin-bottom: 20px">

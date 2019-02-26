@@ -38,13 +38,13 @@ class RegisterVentasSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
             $group->item(trans('ventas::ventas.title.ventas'), function (Item $item) {
-                $item->icon('fa fa-copy');
-                $item->weight(10);
+                $item->icon('fa fa-plus-square');
+                $item->weight(1);
                 $item->authorize(
                      /* append */
                 );
                 $item->item(trans('ventas::ventas.title.ventas'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-cart-plus');
                     $item->weight(0);
                     $item->append('admin.ventas.venta.create');
                     $item->route('admin.ventas.venta.index');
@@ -52,18 +52,6 @@ class RegisterVentasSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('ventas.ventas.index')
                     );
                 });
-                $item->item(trans('ventas::ventadetalles.title.ventadetalles'), function (Item $item) {
-                    $item->icon('fa fa-copy');
-                    $item->weight(0);
-                    $item->append('admin.ventas.ventadetalle.create');
-                    $item->route('admin.ventas.ventadetalle.index');
-                    $item->authorize(
-                        $this->auth->hasAccess('ventas.ventadetalles.index')
-                    );
-                });
-// append
-
-
             });
         });
 
