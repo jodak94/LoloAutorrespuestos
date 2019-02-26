@@ -26,6 +26,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    .tr-error{
+      background-color: #dd4b39;
+    }
+    .tr-error:hover{
+      background-color: #c9302c!important;
+    }
   </style>
 @endpush
 @section('content')

@@ -46,19 +46,37 @@
     $(".table").on('keyup ', '.cantidad', function(event){
       let cantidad = parseInt($(this).val())
       if (!isNaN(cantidad)) {
-        $("#btnCrear").removeAttr('disabled');
         let subtotal = $(this).val() * $(this).closest('tr').find('.precio').val()
         $(this).closest('tr').find('.subtotal').val(subtotal)
         calculate_all()
-      }else{
-        $("#btnCrear").attr('disabled', true);
+        if(cantidad > $(this).closest('tr').find('.stock').val())
+          $(this).closest('tr').addClass('tr-error');
+        else
+          $(this).closest('tr').removeClass('tr-error');
       }
+      set_disabled_to_btn_crear()
     })
 
     $(".table").on('click', '.remove-field', function(){
       $(this).closest('tr').remove()
       calculate_all()
+      set_disabled_to_btn_crear()
     })
+
+    function set_disabled_to_btn_crear(){
+      let ready = true;
+      $('.cantidad').each(function(i){
+        let cantidad = parseInt($(this).val())
+        if (isNaN(cantidad)){
+          ready = false;
+          return;
+        }
+      })
+      if(ready)
+        $("#btnCrear").removeAttr('disabled')
+      else
+        $("#btnCrear").attr('disabled', true)
+    }
 
     function calculate_all(){
       let total = 0;
@@ -102,10 +120,10 @@
         +'  <input type="number" class="form-control cantidad" name="cantidad" required>'
         +'</td>'
         +'<td>'
-        +'  <input class="form-control iva" readonly>'
+        +'  <input class="form-control precio" name="precio[]" readonly>'
         +'</td>'
         +'<td>'
-        +'  <input class="form-control precio" name="precio[]" readonly>'
+        +'  <input class="form-control iva" readonly>'
         +'</td>'
         +'<td>'
         +'  <input class="form-control stock" readonly>'
@@ -131,5 +149,7 @@
         },
       });
     })
+
+
   })
 </script>
