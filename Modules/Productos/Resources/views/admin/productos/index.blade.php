@@ -18,6 +18,9 @@
                     <a href="{{ route('admin.productos.producto.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
                         <i class="fa fa-pencil"></i> {{ trans('productos::productos.button.create producto') }}
                     </a>
+                    <span id="update-stock-btn" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
+                        <i class="fa fa-pencil"></i> Actualizar Stock
+                    </span>
                 </div>
             </div>
             <div class="box box-primary">
@@ -83,6 +86,7 @@
         </div>
     </div>
     @include('core::partials.delete-modal')
+    @include('productos::admin.productos.partials.modal-update-stock')
 @stop
 
 @section('footer')
@@ -103,6 +107,10 @@
                     { key: 'c', route: "<?= route('admin.productos.producto.create') ?>" }
                 ]
             });
+            $("#update-stock-btn").click(function() {
+                console.log("click");
+                $("#updateStockModal").modal('show');
+            })
         });
     </script>
     <?php $locale = locale(); ?>

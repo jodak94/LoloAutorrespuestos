@@ -41,6 +41,15 @@ $router->group(['prefix' =>'/productos'], function (Router $router) {
         'as' => 'admin.productos.producto.search_ajax',
         'uses' => 'ProductoController@search_ajax',
     ]);
+
+    $router->post('productos/update-stock', [
+        'as' => 'admin.productos.producto.update_stock',
+        'uses' => 'ProductoController@update_stock',
+    ]);
+    $router->get('productos/entrada', [
+        'as' => 'admin.productos.producto.entrada',
+        'uses' => 'ProductoController@entrada',
+    ]);
 // append
 
 });

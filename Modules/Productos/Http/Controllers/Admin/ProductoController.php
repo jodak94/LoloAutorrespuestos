@@ -120,17 +120,34 @@ class ProductoController extends AdminBaseController
 
     public function search_ajax(Request $re){
       $re['term_explode'] = explode(' ',$re->term);
-      $query = Producto::
-        Where('nombre','like',  '%' . $re->term . '%');
+      $query = Producto::Where('nombre','like',  '%' . $re->term . '%');
+      $query->orWhere('codigo','like', '%'. $re->term .'%');
       $productos = $query->take(5)->get();
       $results = [];
       foreach ($productos as $producto){
         $results[] =
         [
           'producto' => $producto,
+          'label' => $producto->codigo. ' - ' .$producto->nombre,
           'value' => $producto->nombre,
         ];
       }
       return response()->json($results);
+    }
+    public function update_stock(Request $request) {
+        foreach($request->producto_id as $key => $producto_id) {
+            $producto = Producto::find($producto_id);
+            if(isset($producto)) {
+                $producto->stock += $request->cantidad[$key];
+                $producto->save();
+            }
+        }
+        return redirect()->route('admin.productos.producto.index')
+            ->withSuccess("Stock actualizado correctamente");
+    }
+
+    public function entrada()
+    {
+        return view('productos::admin.productos.entrada');
     }
 }

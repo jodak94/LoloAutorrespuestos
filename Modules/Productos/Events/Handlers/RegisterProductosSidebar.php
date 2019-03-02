@@ -52,7 +52,12 @@ class RegisterProductosSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('productos.productos.index')
                     );
                 });
-// append
+// append       
+                $item->item('Entrada de Productos', function (Item $item) {
+                    $item->icon('fa fa-tags');
+                    $item->weight(0);
+                    $item->route('admin.productos.producto.entrada');
+                });
 
             });
         });
