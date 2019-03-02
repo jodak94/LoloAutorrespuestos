@@ -35,7 +35,7 @@
   </style>
 @endpush
 @section('content')
-    {!! Form::open(['route' => ['admin.ventas.venta.store'], 'method' => 'post']) !!}
+    {!! Form::open(['route' => ['admin.ventas.venta.store'], 'method' => 'post', 'id' => 'venta-form']) !!}
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
@@ -57,10 +57,10 @@
             </div> {{-- end nav-tabs-custom --}}
         </div>
     </div>
+    @include('ventas::admin.ventas.partials.modal-crear-venta')
     {!! Form::close() !!}
 @stop
 @include('clientes::admin.clientes.partials.modal-add-cliente')
-@include('ventas::admin.ventas.partials.modal-crear-venta')
 @section('footer')
     <a data-toggle="modal" data-target="#keyboardShortcutsModal"><i class="fa fa-keyboard-o"></i></a> &nbsp;
 @stop

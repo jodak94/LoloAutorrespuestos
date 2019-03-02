@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class VentaDetalle extends Model
 {
-    use Translatable;
 
     protected $table = 'ventas__ventadetalles';
     public $translatedAttributes = [];
     protected $fillable = [];
+
+    public function venta(){
+      return $this->belongsTo('Modules\Ventas\Entities\Venta');
+    }
 }

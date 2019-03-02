@@ -7,14 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Venta extends Model
 {
-    use Translatable;
 
     protected $table = 'ventas__ventas';
     public $translatedAttributes = [];
-    protected $fillable = [];
+    protected $fillable = [
+      'nro_factura', 'monto_total', 'datos_id', 'tipo_factura', 'monto_pagado',
+      'total_iva', 'precio_total_letras', 'plazo_credito', 'razon_social',
+      'ruc', 'direccion', 'telefono'
+    ];
 
     public static $tipos_factura = [
       'contado' => 'Contado',
       'credito' => 'Crédito'
     ];
+
+    public function detalles(){
+      return $this->hasMany('Modules\Ventas\Entities\VentaDetalle');
+    }
 }

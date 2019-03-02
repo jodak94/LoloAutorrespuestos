@@ -24,9 +24,10 @@
       select: function( event, ui){
         $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
         $(this).closest('tr').find('.iva').val('10%')
-        $(this).closest('tr').find('.stock').val(ui.item.producto.  stock)
+        $(this).closest('tr').find('.stock').val(ui.item.producto.stock)
         $(this).closest('tr').find('.subtotal').val(0)
         $(this).closest('tr').find('.cantidad').removeAttr('readonly')
+        $(this).closest('tr').find('.producto_id').val(ui.item.producto.id)
       },
     });
 
@@ -120,10 +121,10 @@
         +'  <input type="hidden" class="producto_id" name="producto_id[]">'
         +'</td>'
         +'<td>'
-        +'  <input type="number" class="form-control cantidad" name="cantidad" required>'
+        +'  <input type="number" class="form-control cantidad" name="cantidad[]" required>'
         +'</td>'
         +'<td>'
-        +'  <input class="form-control precio" name="precio[]" readonly>'
+        +'  <input class="form-control precio" name="precio_unitario[]" readonly>'
         +'</td>'
         +'<td>'
         +'  <input class="form-control iva" readonly>'
@@ -152,7 +153,6 @@
         },
       });
     })
-
 
   })
 </script>

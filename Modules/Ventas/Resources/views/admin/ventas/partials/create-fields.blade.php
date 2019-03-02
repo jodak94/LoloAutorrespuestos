@@ -80,7 +80,7 @@
           <input type="hidden" class="producto_id" name="producto_id[]">
         </td>
         <td>
-          <input readonly type="number" class="form-control cantidad" name="cantidad" required>
+          <input readonly type="number" class="form-control cantidad" name="cantidad[]" required>
         </td>
         <td>
           <input class="form-control precio" name="precio_unitario[]" readonly>

@@ -14,7 +14,7 @@
                  {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura:', $errors, $tipos_factura) !!}
                </div>
            </div>
-           {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['total_a_pagar_factura' => 0], ['readonly'=>''] ) !!}
+           {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['total_a_pagar_factura' => 0], ['readonly'=>'', 'name' => 'monto_pagado'] ) !!}
            {!! Form::normalInput('pago_cliente', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['required'=>'','autofocus'] ) !!}
            {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>''] ) !!}
            <div id="plazo_credito-1" style="display:none">
