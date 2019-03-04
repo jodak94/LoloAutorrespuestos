@@ -9,7 +9,24 @@
         <li class="active">{{ trans('ventas::ventas.title.ventas') }}</li>
     </ol>
 @stop
-
+@push('css-stack')
+    <link rel="stylesheet" href="{{ asset('themes/adminlte/css/vendor/jQueryUI/jquery-ui-1.10.3.custom.min.css') }}">
+    {!! Theme::style('vendor/pickadate/css/classic.css') !!}
+    {!! Theme::style('vendor/pickadate/css/classic.date.css') !!}
+    {!! Theme::style('vendor/pickadate/css/classic.time.css') !!}
+    <style>
+      .input-error{
+        background-color: #d73925;
+        color: #fff;
+      }
+      .picker__select--year{
+        padding: 1px;
+      }
+      .picker__select--month{
+        padding: 1px;
+      }
+    </style>
+@endpush
 @section('content')
     <div class="row">
         <div class="col-xs-12">
@@ -22,42 +39,44 @@
             </div>
             <div class="box box-primary">
                 <div class="box-header">
+                    <div class="row">
+                      <div class="col-md-3">
+                        {!! Form::normalInput('fecha_desde', 'Fecha desde', $errors,(object)['fecha_desde'=>$today],['class'=>'form-control fecha','id'=>'fecha_desde']) !!}
+                      </div>
+                      <div class="col-md-3">
+                        {!! Form::normalInput('fecha_hasta', 'Fecha hasta', $errors,(object)['fecha_hasta'=>$today],['class'=>'form-control fecha','id'=>'fecha_hasta']) !!}
+                      </div>
+                      <div class="col-md-3">
+                        {!! Form::normalInput('nro_factura', 'N° Factura', $errors,null,['class'=>'form-control']) !!}
+                      </div>
+                      <div class="col-md-3">
+                        {!! Form::normalInput('razon_social', 'Razón Social', $errors,null,['placeholder' => 'Ingresar Ruc o Razón social', 'type'=>'text']) !!}
+                      </div>
+                  </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
                         <table class="data-table table table-bordered table-hover">
                             <thead>
-                            <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (isset($ventas)): ?>
-                            <?php foreach ($ventas as $venta): ?>
-                            <tr>
-                                <td>
-                                    <a href="{{ route('admin.ventas.venta.edit', [$venta->id]) }}">
-                                        {{ $venta->created_at }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.ventas.venta.edit', [$venta->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.ventas.venta.destroy', [$venta->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th>{{ trans('core::core.table.actions') }}</th>
-                            </tr>
-                            </tfoot>
+                              <tr>
+                                  <th>Fecha</th>
+                                  <th>N° Factura</th>
+                                  <th>Cliente</th>
+                                  <th>Monto Total</th>
+                                  <th data-sortable="false">Detalles</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                              <tfoot>
+                              <tr>
+                                  <th>Fecha</th>
+                                  <th>N° Factura</th>
+                                  <th>Cliente</th>
+                                  <th>Monto Total</th>
+                                  <th>Detalles</th>
+                              </tr>
                         </table>
                         <!-- /.box-body -->
                     </div>
@@ -80,6 +99,11 @@
 @stop
 
 @push('js-stack')
+  {!! Theme::script('vendor/pickadate/js/picker.js') !!}
+  {!! Theme::script('vendor/pickadate/js/picker.date.js') !!}
+  {!! Theme::script('vendor/pickadate/js/picker.time.js') !!}
+  <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
+  @include('ventas::admin.ventas.partials.script-index')
     <script type="text/javascript">
         $( document ).ready(function() {
             $(document).keypressAction({
@@ -90,20 +114,4 @@
         });
     </script>
     <?php $locale = locale(); ?>
-    <script type="text/javascript">
-        $(function () {
-            $('.data-table').dataTable({
-                "paginate": true,
-                "lengthChange": true,
-                "filter": true,
-                "sort": true,
-                "info": true,
-                "autoWidth": true,
-                "order": [[ 0, "desc" ]],
-                "language": {
-                    "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
-                }
-            });
-        });
-    </script>
 @endpush

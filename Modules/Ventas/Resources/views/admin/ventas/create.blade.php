@@ -74,6 +74,7 @@
 @push('js-stack')
     <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
     @include('ventas::admin.ventas.partials.script')
+    @include('clientes::admin.datosfacturacions.partials.buscar-datos', ['create' => true])
     <script type="text/javascript">
         $( document ).ready(function() {
             $(document).keypressAction({
