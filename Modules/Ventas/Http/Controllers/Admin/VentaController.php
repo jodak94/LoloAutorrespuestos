@@ -10,8 +10,10 @@ use Modules\Ventas\Http\Requests\CreateVentaRequest;
 use Modules\Ventas\Http\Requests\UpdateVentaRequest;
 use Modules\Ventas\Repositories\VentaRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 use DB;
-
+use Log;
 class VentaController extends AdminBaseController
 {
     /**
@@ -33,7 +35,44 @@ class VentaController extends AdminBaseController
      */
     public function index()
     {
-        return view('ventas::admin.ventas.index', compact(''));
+        $today = Carbon::now()->format('d/m/Y');
+        return view('ventas::admin.ventas.index', compact('today'));
+    }
+
+    public function index_ajax(Request $re)
+    {
+        $query = $this->query_index_ajax($re);
+        $object = Datatables::of($query)
+            ->addColumn('acciones', function( $venta ){
+              return $venta->id;
+            })
+            ->editColumn('created_at', function( $venta ){
+              return $venta->created_at->format('d/m/y');
+            })
+            ->make(true);
+        $data = $object->getData(true);
+        return response()->json( $data );
+    }
+
+    public function query_index_ajax($re){
+        $query = Venta::select();
+        if(isset($re->nro_factura) && trim($re->nro_factura) != '')
+          $query->where('nro_factura', 'LIKE', '%'.$re->nro_factura.'%');
+
+        if(isset($re->razon_social) && trim($re->razon_social) != '')
+          $query->where('razon_social', 'LIKE', '%'.$re->razon_social.'%');
+
+        if (isset($re->fecha_desde) && trim($re->fecha_desde) != '')
+          $query->whereDate('created_at', '>=', $this->fechaFormat($re->fecha_desde) );
+
+        if (isset($re->fecha_hasta) && trim($re->fecha_hasta) != '')
+          $query->whereDate('created_at', '<=', $this->fechaFormat($re->fecha_hasta) );
+
+        return $query;
+    }
+
+    private function fechaFormat($date){
+       return date("Y-m-d", strtotime( str_replace('/', '-', $date)));
     }
 
     /**
@@ -58,10 +97,10 @@ class VentaController extends AdminBaseController
     {
       try{
         DB::beginTransaction();
-        $request->razon_social = $request->datos_razon_social;
-        $request->ruc = $request->datos_ruc;
-        $request->direccion = $request->datos_direccion;
-        $request->telefono = $request->datos_telefono;
+        $request ['razon_social'] = $request->datos_razon_social;
+        $request['ruc'] = $request->datos_ruc;
+        $request['direccion'] = $request->datos_direccion;
+        $request['telefono'] = $request->datos_telefono;
         //$f = new NumberFormatter("es", NumberFormatter::SPELLOUT);
         //$request->precio_total_letras = $f->format($request->monto_total);
         //dd($request->precio_total_letras);
