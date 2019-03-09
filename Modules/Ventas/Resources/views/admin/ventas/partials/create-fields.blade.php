@@ -86,13 +86,13 @@
           <input readonly type="number" class="form-control cantidad" name="cantidad[]" required>
         </td>
         <td>
-          <input class="form-control precio" name="precio_unitario[]" readonly>
+          <input class="form-control precio precio_format" name="precio_unitario[]" readonly>
         </td>
         <td>
           <input class="form-control stock" readonly>
         </td>
         <td>
-          <input class="form-control subtotal" name="subtotal[]" readonly>
+          <input class="form-control subtotal precio_format" name="subtotal[]" readonly>
         </td>
         <td>
         </td>
@@ -129,14 +129,14 @@
       <div class="row">
         <div class="col-md-2">
           <strong>Monto total: </strong>
-          <input readonly type="number" name="monto_total" value="0" class="form-control" id="monto-total">
+          <input name="monto_total" class="precio_format form-control" id="monto-total">
         </div>
         {{-- <div class="col-md-7"> --}}
           {{-- {!! Form::normalInput('monto-total-letras', 'Monto total', $errors,null,['class'=>'form-control input-sm','readonly'=>'readonly']) !!} --}}
         {{-- </div> --}}
         <div class="col-md-2">
           <strong>Total Iva 10%: </strong>
-          <input readonly type="number" name="total_iva" value="0" class="form-control" id="total-iva-10">
+          <input name="total_iva" class="precio_float_format form-control" id="total-iva-10">
         </div>
       </div>
     </div>
