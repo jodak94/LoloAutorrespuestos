@@ -80,13 +80,13 @@
           <input type="hidden" class="producto_id" name="producto_id[]">
         </td>
         <td>
+          <img class="foto" src="'.url('images/default-product.jpg').'"  width="40px" height="auto" style="display:flex; margin:auto">
+        </td>
+        <td>
           <input readonly type="number" class="form-control cantidad" name="cantidad[]" required>
         </td>
         <td>
           <input class="form-control precio" name="precio_unitario[]" readonly>
-        </td>
-        <td>
-          <input class="form-control iva" readonly>
         </td>
         <td>
           <input class="form-control stock" readonly>
@@ -103,9 +103,9 @@
         <thead>
           <tr>
             <th>Producto</th>
+            <th>Foto</th>
             <th>Cantidad</th>
             <th>Precio</th>
-            <th>Iva</th>
             <th>Stock</th>
             <th>SubTotal</th>
             <th>Eliminar</th>
@@ -136,7 +136,7 @@
         {{-- </div> --}}
         <div class="col-md-2">
           <strong>Total Iva 10%: </strong>
-          <input readonly type="number" name="total_iva_10" value="0" class="form-control" id="total-iva-10">
+          <input readonly type="number" name="total_iva" value="0" class="form-control" id="total-iva-10">
         </div>
       </div>
     </div>

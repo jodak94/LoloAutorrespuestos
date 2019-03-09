@@ -17,6 +17,10 @@ $router->group(['prefix' =>'/ventas'], function (Router $router) {
         'uses' => 'VentaController@index_ajax',
         'middleware' => 'can:ventas.ventas.index'
     ]);
+    $router->get('ventas/{venta}/detalles', [
+        'as' => 'admin.ventas.venta.detalles',
+        'uses' => 'VentaController@detalles',
+    ]);
     $router->get('ventas/create', [
         'as' => 'admin.ventas.venta.create',
         'uses' => 'VentaController@create',

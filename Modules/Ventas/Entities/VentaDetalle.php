@@ -15,4 +15,8 @@ class VentaDetalle extends Model
     public function venta(){
       return $this->belongsTo('Modules\Ventas\Entities\Venta');
     }
+
+    public function producto(){
+      return $this->belongsTo('Modules\Productos\Entities\Producto');
+    }
 }

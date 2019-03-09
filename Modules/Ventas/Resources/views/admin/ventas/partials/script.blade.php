@@ -4,7 +4,7 @@
       source: '{{route('admin.productos.producto.search_ajax')}}',
       select: function( event, ui){
         $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
-        $(this).closest('tr').find('.iva').val('10%')
+        $(this).closest('tr').find('.foto').attr('src', ui.item.producto.url_foto)
         $(this).closest('tr').find('.stock').val(ui.item.producto.stock)
         $(this).closest('tr').find('.subtotal').val(0)
         $(this).closest('tr').find('.cantidad').removeAttr('readonly')
@@ -12,6 +12,12 @@
       },
     });
 
+    $("#buscar-datos").on("keydown", function(event){
+      if(event.keyCode == 9){
+        event.preventDefault();
+        $("#detalles-table tr:last").find('.buscar-producto').focus()
+      }
+    })
 
     $(".table").on('keydown ', '.cantidad', function(event){
       if(event.keyCode == 13){
@@ -102,13 +108,13 @@
         +'  <input type="hidden" class="producto_id" name="producto_id[]">'
         +'</td>'
         +'<td>'
-        +'  <input type="number" class="form-control cantidad" name="cantidad[]" required>'
+        +'  <img class="foto" src='+"{{url('images/default-product.jpg')}}"+' width="40px" height="auto" style="display:flex; margin:auto">'
+        +'</td>'
+        +'<td>'
+        +'  <input readonly type="number" class="form-control cantidad" name="cantidad[]" required>'
         +'</td>'
         +'<td>'
         +'  <input class="form-control precio" name="precio_unitario[]" readonly>'
-        +'</td>'
-        +'<td>'
-        +'  <input class="form-control iva" readonly>'
         +'</td>'
         +'<td>'
         +'  <input class="form-control stock" readonly>'
@@ -128,9 +134,11 @@
         source: '{{route('admin.productos.producto.search_ajax')}}',
         select: function( event, ui){
           $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
-          $(this).closest('tr').find('.iva').val('10%')
-          $(this).closest('tr').find('.stock').val(ui.item.producto.  stock)
+          $(this).closest('tr').find('.foto').attr('src', ui.item.producto.url_foto)
+          $(this).closest('tr').find('.stock').val(ui.item.producto.stock)
           $(this).closest('tr').find('.subtotal').val(0)
+          $(this).closest('tr').find('.cantidad').removeAttr('readonly')
+          $(this).closest('tr').find('.producto_id').val(ui.item.producto.id)
         },
       });
     })
