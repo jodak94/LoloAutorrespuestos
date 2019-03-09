@@ -1,10 +1,12 @@
 <script>
   $(document).ready(function(){
+    $(".precio_format").number( true , 0, ',', '.' );
+    $(".precio_float_format").number( true , 3, ',', '.' );
     $(".buscar-producto").autocomplete({
       source: '{{route('admin.productos.producto.search_ajax')}}',
       select: function( event, ui){
         $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
-        $(this).closest('tr').find('.iva').val('10%')
+        $(this).closest('tr').find('.foto').attr('src', ui.item.producto.url_foto)
         $(this).closest('tr').find('.stock').val(ui.item.producto.stock)
         $(this).closest('tr').find('.subtotal').val(0)
         $(this).closest('tr').find('.cantidad').removeAttr('readonly')
@@ -12,6 +14,12 @@
       },
     });
 
+    $("#buscar-datos").on("keydown", function(event){
+      if(event.keyCode == 9){
+        event.preventDefault();
+        $("#detalles-table tr:last").find('.buscar-producto').focus()
+      }
+    })
 
     $(".table").on('keydown ', '.cantidad', function(event){
       if(event.keyCode == 13){
@@ -78,8 +86,8 @@
       var forma_pago = $(this).val();
       if(forma_pago == 'credito'){
         $("#plazo_credito-1").show();
-        $("#pago_cliente").val(0);
-        $("#pago_cliente").attr('readonly', true);
+        //$("#pago_cliente").val(0);
+        //$("#pago_cliente").attr('readonly', true);
       }else{
         $("#plazo_credito-1").hide();
         $("#pago_cliente").attr('readonly', false);
@@ -102,19 +110,19 @@
         +'  <input type="hidden" class="producto_id" name="producto_id[]">'
         +'</td>'
         +'<td>'
-        +'  <input type="number" class="form-control cantidad" name="cantidad[]" required>'
+        +'  <img class="foto" src='+"{{url('images/default-product.jpg')}}"+' width="40px" height="auto" style="display:flex; margin:auto">'
         +'</td>'
         +'<td>'
-        +'  <input class="form-control precio" name="precio_unitario[]" readonly>'
+        +'  <input readonly type="number" class="form-control cantidad" name="cantidad[]" required>'
         +'</td>'
         +'<td>'
-        +'  <input class="form-control iva" readonly>'
+        +'  <input class="form-control precio precio_format" name="precio_unitario[]" readonly>'
         +'</td>'
         +'<td>'
         +'  <input class="form-control stock" readonly>'
         +'</td>'
         +'<td>'
-        +'  <input class="form-control subtotal" name="subtotal[]" readonly>'
+        +'  <input class="form-control subtotal precio_format" name="subtotal[]" readonly>'
         +'</td>'
         +'<td style="text-align:center;">'
         +'  <i class="glyphicon glyphicon-trash btn btn-danger remove-field">'
@@ -128,9 +136,12 @@
         source: '{{route('admin.productos.producto.search_ajax')}}',
         select: function( event, ui){
           $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
-          $(this).closest('tr').find('.iva').val('10%')
-          $(this).closest('tr').find('.stock').val(ui.item.producto.  stock)
+          $(this).closest('tr').find('.foto').attr('src', ui.item.producto.url_foto)
+          $(this).closest('tr').find('.stock').val(ui.item.producto.stock)
           $(this).closest('tr').find('.subtotal').val(0)
+          $(this).closest('tr').find('.cantidad').removeAttr('readonly')
+          $(this).closest('tr').find('.producto_id').val(ui.item.producto.id)
+          $(".precio_format").number( true , 0, ',', '.' );
         },
       });
     })

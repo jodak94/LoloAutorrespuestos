@@ -4,6 +4,7 @@ namespace Modules\Ventas\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class Venta extends Model
 {

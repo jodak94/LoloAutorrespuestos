@@ -5,6 +5,7 @@ namespace Modules\Ventas\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Ventas\Entities\Venta;
+use Modules\Productos\Entities\Producto;
 use Modules\Ventas\Entities\VentaDetalle;
 use Modules\Ventas\Http\Requests\CreateVentaRequest;
 use Modules\Ventas\Http\Requests\UpdateVentaRequest;
@@ -14,6 +15,7 @@ use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
 use Log;
+use Illuminate\Support\Facades\Input;
 class VentaController extends AdminBaseController
 {
     /**
@@ -44,11 +46,17 @@ class VentaController extends AdminBaseController
         $query = $this->query_index_ajax($re);
         $object = Datatables::of($query)
             ->addColumn('acciones', function( $venta ){
-              return $venta->id;
+              $route = route('admin.ventas.venta.detalles', $venta->id);
+              $html = '
+                <a class="btn btn-default btn-flat" style="display:table; margin:auto" href="'.$route.'">
+                  Ver detalles
+                </a>';
+              return $html;
             })
             ->editColumn('created_at', function( $venta ){
               return $venta->created_at->format('d/m/y');
             })
+            ->rawColumns(['acciones'])
             ->make(true);
         $data = $object->getData(true);
         return response()->json( $data );
@@ -75,6 +83,9 @@ class VentaController extends AdminBaseController
        return date("Y-m-d", strtotime( str_replace('/', '-', $date)));
     }
 
+    public function detalles(Venta $venta){
+      return view('ventas::admin.ventas.detalles', compact('venta'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -111,15 +122,18 @@ class VentaController extends AdminBaseController
           $detalle->producto_id = $producto_id;
           $detalle->cantidad = $request->cantidad[$key];
           $detalle->precio_unitario = $request->precio_unitario[$key];
+          $detalle->precio_subtotal = $request->subtotal[$key];
           $detalle->save();
+          $producto = Producto::find($producto_id);
+          $producto->stock -= $request->cantidad[$key];
+          $producto->save();
         }
         DB::commit();
       }catch(\Exception $e){
         return redirect()
             ->back()
-            ->withInput(Input::all())
             ->withError("Ocurrió un error al crear la venta");
-      }
+      }   
       return redirect()->route('admin.ventas.venta.index')
           ->withSuccess('Venta creado exitosamente');
     }

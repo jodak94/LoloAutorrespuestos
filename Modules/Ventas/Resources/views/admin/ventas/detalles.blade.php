@@ -2,12 +2,12 @@
 
 @section('content-header')
     <h1>
-        {{ trans('ventas::ventas.title.create venta') }}
+        Venta
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
         <li><a href="{{ route('admin.ventas.venta.index') }}">{{ trans('ventas::ventas.title.ventas') }}</a></li>
-        <li class="active">{{ trans('ventas::ventas.title.create venta') }}</li>
+        <li class="active">Venta</li>
     </ol>
 @stop
 @push('css-stack')
@@ -35,7 +35,6 @@
   </style>
 @endpush
 @section('content')
-    {!! Form::open(['route' => ['admin.ventas.venta.store'], 'method' => 'post', 'id' => 'venta-form']) !!}
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
@@ -45,22 +44,18 @@
                     @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
                         <?php $i++; ?>
                         <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('ventas::admin.ventas.partials.create-fields', ['lang' => $locale])
+                            @include('ventas::admin.ventas.partials.detalles-fields', ['lang' => $locale])
                         </div>
                     @endforeach
 
                     <div class="box-footer">
-                      <button id="btnCrear" type="button" disabled class="btn btn-primary btn-flat" data-toggle="modal" data-target="#facturaModal">Crear Venta</button>
-                      <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.ventas.venta.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                      <a class="btn btn-default pull-right btn-flat" href="{{ route('admin.ventas.venta.index')}}"> Volver </a>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
         </div>
     </div>
-    @include('ventas::admin.ventas.partials.modal-crear-venta')
-    {!! Form::close() !!}
 @stop
-@include('clientes::admin.clientes.partials.modal-add-cliente')
 @section('footer')
     <a data-toggle="modal" data-target="#keyboardShortcutsModal"><i class="fa fa-keyboard-o"></i></a> &nbsp;
 @stop
@@ -73,7 +68,6 @@
 
 @push('js-stack')
     <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.number.min.js') }}"></script>
     @include('ventas::admin.ventas.partials.script')
     @include('clientes::admin.datosfacturacions.partials.buscar-datos', ['create' => true])
     <script type="text/javascript">
