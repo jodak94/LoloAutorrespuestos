@@ -2,11 +2,11 @@
 
 @section('content-header')
     <h1>
-        {{ trans('productos::productos.title.productos') }}
+        {{ trans('presupuestos::presupuestodetalles.title.presupuestodetalles') }}
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li class="active">{{ trans('productos::productos.title.productos') }}</li>
+        <li class="active">{{ trans('presupuestos::presupuestodetalles.title.presupuestodetalles') }}</li>
     </ol>
 @stop
 
@@ -15,8 +15,8 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ route('admin.productos.producto.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('productos::productos.button.create producto') }}
+                    <a href="{{ route('admin.presupuestos.presupuestodetalle.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
+                        <i class="fa fa-pencil"></i> {{ trans('presupuestos::presupuestodetalles.button.create presupuestodetalle') }}
                     </a>
                 </div>
             </div>
@@ -29,51 +29,35 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Código</th>
-                                <th>Nombre del Producto</th>
-                                <th>Precio</th>
-                                <th>Stock</th>
-                                <th>Foto</th>
+                                <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($productos)): ?>
-                            <?php foreach ($productos as $producto): ?>
+                            <?php if (isset($presupuestodetalles)): ?>
+                            <?php foreach ($presupuestodetalles as $presupuestodetalle): ?>
                             <tr>
                                 <td>
-                                        {{ $producto->codigo }}
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.productos.producto.edit', [$producto->id]) }}">
-                                        {{ $producto->nombre }}
+                                    <a href="{{ route('admin.presupuestos.presupuestodetalle.edit', [$presupuestodetalle->id]) }}">
+                                        {{ $presupuestodetalle->created_at }}
                                     </a>
                                 </td>
                                 <td>
-                                        {{ $producto->precio }}
-                                </td>
-                                <td>
-                                        {{ $producto->stock }}
-                                </td>
-
-                                <td style="text-align:center">
-                                    <?php if (isset($producto->foto) && $producto->foto != ""): ?>
-                                        <img src="{{url($producto->foto)}}" width="150" height="150" style="object-fit:cover"/>
-                                    <?php else: ?>
-                                        
-                                        <img src="{{url('images/default-product.jpg')}}" width="150" height="150" style="object-fit:cover"/>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.productos.producto.edit', [$producto->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.productos.producto.destroy', [$producto->id]) }}"><i class="fa fa-trash"></i></button>
+                                        <a href="{{ route('admin.presupuestos.presupuestodetalle.edit', [$presupuestodetalle->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
+                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.presupuestos.presupuestodetalle.destroy', [$presupuestodetalle->id]) }}"><i class="fa fa-trash"></i></button>
                                     </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                             <?php endif; ?>
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>{{ trans('core::core.table.created at') }}</th>
+                                <th>{{ trans('core::core.table.actions') }}</th>
+                            </tr>
+                            </tfoot>
                         </table>
                         <!-- /.box-body -->
                     </div>
@@ -91,7 +75,7 @@
 @section('shortcuts')
     <dl class="dl-horizontal">
         <dt><code>c</code></dt>
-        <dd>{{ trans('productos::productos.title.create producto') }}</dd>
+        <dd>{{ trans('presupuestos::presupuestodetalles.title.create presupuestodetalle') }}</dd>
     </dl>
 @stop
 
@@ -100,7 +84,7 @@
         $( document ).ready(function() {
             $(document).keypressAction({
                 actions: [
-                    { key: 'c', route: "<?= route('admin.productos.producto.create') ?>" }
+                    { key: 'c', route: "<?= route('admin.presupuestos.presupuestodetalle.create') ?>" }
                 ]
             });
         });

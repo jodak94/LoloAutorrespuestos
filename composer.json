@@ -28,7 +28,8 @@
         "idavoll/translation-module": "~3.0",
         "idavoll/tag-module": "~3.0",
         "idavoll/flatly-theme": "~3.0",
-        "idavoll/adminlte-theme": "~3.0"
+        "idavoll/adminlte-theme": "~3.0",
+        "barryvdh/laravel-dompdf": "^0.8.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

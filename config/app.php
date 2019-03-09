@@ -189,6 +189,7 @@ return [
         Modules\Core\Providers\AsgardServiceProvider::class,
 
         App\Providers\RouteServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class
     ],
 
     /*
@@ -235,6 +236,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class
     ],
 
 ];
