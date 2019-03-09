@@ -5,6 +5,7 @@ namespace Modules\Ventas\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Ventas\Entities\Venta;
+use Modules\Productos\Entities\Producto;
 use Modules\Ventas\Entities\VentaDetalle;
 use Modules\Ventas\Http\Requests\CreateVentaRequest;
 use Modules\Ventas\Http\Requests\UpdateVentaRequest;
@@ -123,13 +124,16 @@ class VentaController extends AdminBaseController
           $detalle->precio_unitario = $request->precio_unitario[$key];
           $detalle->precio_subtotal = $request->subtotal[$key];
           $detalle->save();
+          $producto = Producto::find($producto_id);
+          $producto->stock -= $request->cantidad[$key];
+          $producto->save();
         }
         DB::commit();
       }catch(\Exception $e){
         return redirect()
             ->back()
             ->withError("Ocurrió un error al crear la venta");
-      }
+      }   
       return redirect()->route('admin.ventas.venta.index')
           ->withSuccess('Venta creado exitosamente');
     }
