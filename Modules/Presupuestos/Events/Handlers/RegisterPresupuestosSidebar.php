@@ -38,13 +38,13 @@ class RegisterPresupuestosSidebar implements \Maatwebsite\Sidebar\SidebarExtende
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
             $group->item('Presupuestos', function (Item $item) {
-                $item->icon('fa fa-copy');
+                $item->icon('fa fa-money');
                 $item->weight(10);
                 $item->authorize(
                      /* append */
                 );
                 $item->item(trans('presupuestos::presupuestos.title.presupuestos'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-money');
                     $item->weight(0);
                     $item->append('admin.presupuestos.presupuesto.create');
                     $item->route('admin.presupuestos.presupuesto.index');
@@ -52,7 +52,7 @@ class RegisterPresupuestosSidebar implements \Maatwebsite\Sidebar\SidebarExtende
                         $this->auth->hasAccess('presupuestos.presupuestos.index')
                     );
                 });
-                
+
 // append
 
 
