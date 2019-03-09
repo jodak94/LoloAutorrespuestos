@@ -131,9 +131,10 @@
           <strong>Monto total: </strong>
           <input name="monto_total" class="precio_format form-control" id="monto-total">
         </div>
-        {{-- <div class="col-md-7"> --}}
-          {{-- {!! Form::normalInput('monto-total-letras', 'Monto total', $errors,null,['class'=>'form-control input-sm','readonly'=>'readonly']) !!} --}}
-        {{-- </div> --}}
+        <div class="col-md-7">
+          <strong>Monto total (en letras): </strong>
+          <input readonly type="text  " name="precio_total_letras" value="" class="form-control" id="monto-total-letras">  
+        </div>
         <div class="col-md-2">
           <strong>Total Iva 10%: </strong>
           <input name="total_iva" class="precio_float_format form-control" id="total-iva-10">

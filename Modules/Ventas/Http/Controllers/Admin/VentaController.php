@@ -112,9 +112,6 @@ class VentaController extends AdminBaseController
         $request['ruc'] = $request->datos_ruc;
         $request['direccion'] = $request->datos_direccion;
         $request['telefono'] = $request->datos_telefono;
-        //$f = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-        //$request->precio_total_letras = $f->format($request->monto_total);
-        //dd($request->precio_total_letras);
         $venta = $this->venta->create($request->all());
         foreach ($request->producto_id as $key => $producto_id) {
           $detalle = new VentaDetalle();

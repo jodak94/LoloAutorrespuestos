@@ -78,6 +78,7 @@
           total += val;
       })
       $("#monto-total").val(total);
+      $("#monto-total-letras").val(numeroALetras(total, { plural: 'GUARANIES.', singular: 'GUARANI.'}));
       $("#modal-monto-total").val(total);
       $("#total-iva-10").val(parseFloat(total / 11).toFixed(2))
     }
