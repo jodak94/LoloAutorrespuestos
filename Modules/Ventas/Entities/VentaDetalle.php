@@ -19,4 +19,13 @@ class VentaDetalle extends Model
     public function producto(){
       return $this->belongsTo('Modules\Productos\Entities\Producto');
     }
+
+    public function setPrecioUnitarioAttribute($value){
+      $this->attributes['precio_unitario'] =  str_replace(',', '.',str_replace('.', '', $value));
+    }
+
+    public function setPrecioSubtotalAttribute($value){
+      $this->attributes['precio_subtotal'] =  str_replace(',', '.',str_replace('.', '', $value));
+    }
+
 }

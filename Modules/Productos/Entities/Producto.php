@@ -4,13 +4,13 @@ namespace Modules\Productos\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
-
+use Log;
 class Producto extends Model
 {
 
     protected $table = 'productos__productos';
     public $translatedAttributes = [];
-    protected $fillable = ['codigo','nombre','descripcion','stock','stock_critico','costo','precio'];
+    protected $fillable = ['codigo','nombre','descripcion','stock','stock_critico','precio'];
 
     protected $appends = [
       'url_foto'
@@ -21,5 +21,9 @@ class Producto extends Model
         return url($this->attributes['foto']);
       else
         return url('images/default-product.jpg');
+    }
+
+    public function setPrecioAttribute($value){
+      $this->attributes['precio'] =  str_replace(',', '.',str_replace('.', '', $value));
     }
 }

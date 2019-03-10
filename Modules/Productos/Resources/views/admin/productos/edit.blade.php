@@ -48,8 +48,10 @@
 @stop
 
 @push('js-stack')
+    <script src="{{ asset('js/jquery.number.min.js') }}"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
+            $(".precio").number( true , 0, ',', '.' );
             $(document).keypressAction({
                 actions: [
                     { key: 'b', route: "<?= route('admin.productos.producto.index') ?>" }

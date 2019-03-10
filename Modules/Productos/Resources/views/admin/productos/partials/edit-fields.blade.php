@@ -1,21 +1,36 @@
 <div class="box-body">
-    <p>
+  <div class="row">
+    <div class="col-md-8" style="padding:0">
+      <div class="col-md-6">
         {!! Form::normalInput('codigo', 'Codigo', $errors, $producto) !!}
-    {!! Form::normalInput('nombre', 'Nombre', $errors, $producto) !!}
-    <textarea id="descripcion" name="descripcion" placeholder="Descripción del Producto" style="resize:none;width:100%;" class="form-group" rows="10">{{$producto->descripcion}}</textarea>
-    {!! Form::normalInputOfType('number','stock', 'Stock', $errors, $producto) !!}
-    {!! Form::normalInputOfType('number','stock_critico', 'Stock Critico', $errors, $producto) !!}
-    {!! Form::normalInputOfType('number','costo', 'Costo', $errors, $producto) !!}
-    {!! Form::normalInputOfType('number','precio', 'Precio', $errors, $producto) !!}
-    <div class="form-group">
-    {!! Form::label('image','Foto')!!}
-    <?php if (isset($producto->foto) && $producto->foto != ""): ?>
-        <img id="preview" src="{{url($producto->foto)}}" width="150" height="150" style="margin:2%;display:block;object-fit:cover"/>
-    <?php else: ?>                                    
-        <img id="preview" src="#" width="150" height="150" style="margin:2%;display:none;object-fit:cover"/>
-    <?php endif; ?>
-    
-    {!! Form::file('image',['class' => 'form-control','id' => 'img-input']) !!}
+      </div>
+      <div class="col-md-6">
+        {!! Form::normalInput('nombre', 'Nombre', $errors, $producto) !!}
+      </div>
+      <div class="col-md-12">.
+        <div class="form-group ">
+          <label for="codigo">Descripción</label>
+          <textarea id="descripcion" name="descripcion" placeholder="Descripción" style="resize:none;width:100%;" class="form-control" rows="5">{{$producto->descripcion}}</textarea>
+        </div>
+      </div>
     </div>
-    </p>
+    <div class="col-md-4">
+      <div class="form-group">
+        {!! Form::label('image','Foto')!!}
+        {!! Form::file('image',['class' => 'form-control','id' => 'img-input']) !!}
+        <img id="preview" src="{{$producto->url_foto}}" width="150" height="150" style="display: flex; margin:auto; margin-top:20px;object-fit:cover"/>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      {!! Form::normalInputOfType('number','stock', 'Stock', $errors, $producto) !!}
+    </div>
+    <div class="col-md-4">
+      {!! Form::normalInputOfType('number','stock_critico', 'Stock Critico', $errors, $producto) !!}
+    </div>
+    <div class="col-md-4">
+      {!! Form::normalInput('precio', 'Precio', $errors, $producto, ['class'=>'form-control precio']) !!}
+    </div>
+  </div>
 </div>

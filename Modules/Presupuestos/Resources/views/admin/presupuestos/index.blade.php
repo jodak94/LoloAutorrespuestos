@@ -73,7 +73,7 @@
                               <tfoot>
                               <tr>
                                   <th>Fecha</th>
-                                  <th>N° Factura</th>
+                                  <th>N° Presupuesto</th>
                                   <th>Cliente</th>
                                   <th>Monto Total</th>
                                   <th>Detalles</th>

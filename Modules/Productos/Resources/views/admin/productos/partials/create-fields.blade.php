@@ -1,17 +1,36 @@
 <div class="box-body">
-    <p>
-    {!! Form::normalInput('codigo', 'Codigo', $errors) !!}
-    {!! Form::normalInput('nombre', 'Nombre', $errors) !!}
-    <textarea id="descripcion" name="descripcion" placeholder="Descripción del Producto" style="resize:none;width:100%;" class="form-group" rows="10"></textarea>
-    {!! Form::normalInputOfType('number','stock', 'Stock', $errors) !!}
-    {!! Form::normalInputOfType('number','stock_critico', 'Stock Critico', $errors) !!}
-    {!! Form::normalInputOfType('number','costo', 'Costo', $errors) !!}
-    {!! Form::normalInputOfType('number','precio', 'Precio', $errors) !!}
-    <div class="form-group">
-        {!! Form::label('image','Foto')!!}                                    
-        <img id="preview" src="#" width="150" height="150" style="margin:2%;display:none;object-fit:cover"/>   
-        {!! Form::file('image',['class' => 'form-control','id' => 'img-input']) !!}
+  <div class="row">
+    <div class="col-md-8" style="padding:0">
+      <div class="col-md-6">
+        {!! Form::normalInput('codigo', 'Codigo', $errors) !!}
+      </div>
+      <div class="col-md-6">
+        {!! Form::normalInput('nombre', 'Nombre', $errors) !!}
+      </div>
+      <div class="col-md-12">.
+        <div class="form-group ">
+          <label for="codigo">Descripción</label>
+          <textarea id="descripcion" name="descripcion" placeholder="Descripción" style="resize:none;width:100%;" class="form-control" rows="5"></textarea>
+        </div>
+      </div>
     </div>
-    
-    </p>
+    <div class="col-md-4">
+      <div class="form-group">
+        {!! Form::label('image','Foto')!!}
+        {!! Form::file('image',['class' => 'form-control','id' => 'img-input']) !!}
+        <img id="preview" src="{{url('/images/default-product.jpg')}}" width="150" height="150" style="display: flex; margin:auto; margin-top:20px;object-fit:cover"/>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      {!! Form::normalInputOfType('number','stock', 'Stock', $errors) !!}
+    </div>
+    <div class="col-md-4">
+      {!! Form::normalInputOfType('number','stock_critico', 'Stock Critico', $errors) !!}
+    </div>
+    <div class="col-md-4">
+      {!! Form::normalInput('precio', 'Precio', $errors, null, ['class'=>'form-control precio']) !!}
+    </div>
+  </div>
 </div>

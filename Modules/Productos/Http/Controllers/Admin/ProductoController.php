@@ -90,7 +90,9 @@ class ProductoController extends AdminBaseController
      */
     public function update(Producto $producto, UpdateProductoRequest $request)
     {
-         $producto = $this->producto->update($producto, $request->all());
+      $producto = $this->producto->update($producto, $request->all());
+      $producto->precio = $request->precio;
+      $producto->save();
         if ($request->hasFile('image')) {
             $image      = $request->file('image');
             $fileName   = time() . '.' . $image->getClientOriginalExtension();
@@ -104,6 +106,9 @@ class ProductoController extends AdminBaseController
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('productos::productos.title.productos')]));
     }
 
+    private function number_format($number){
+        return str_replace(',', '.',str_replace('.', '', $number));
+    }
     /**
      * Remove the specified resource from storage.
      *

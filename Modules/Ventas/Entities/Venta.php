@@ -25,4 +25,16 @@ class Venta extends Model
     public function detalles(){
       return $this->hasMany('Modules\Ventas\Entities\VentaDetalle');
     }
+
+    public function setMontoPagadoAttribute($value){
+      $this->attributes['monto_pagado'] =  str_replace(',', '.',str_replace('.', '', $value));
+    }
+
+    public function setMontoTotalAttribute($value){
+      $this->attributes['monto_total'] =  str_replace(',', '.',str_replace('.', '', $value));
+    }
+
+    public function setTotalIvaAttribute($value){
+      $this->attributes['total_iva'] =  str_replace(',', '.',str_replace('.', '', $value));
+    }
 }
