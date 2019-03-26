@@ -14,7 +14,7 @@
       bottom: 20px;
     }
     .content-wrapper {
-      background-image: linear-gradient(315deg, #3c8dbc, #ecf0f5 50%);
+      background-image: linear-gradient(315deg, #3c8dbc, #ecf0f5 40%);
       background-repeat: no-repeat;
       background-position: right bottom;
     }
