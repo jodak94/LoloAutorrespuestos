@@ -17,6 +17,23 @@
         <link media="all" type="text/css" rel="stylesheet" href="{{ URL::asset($css) }}">
     @endforeach
     <link media="all" type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+    {!! Theme::style('vendor/jquery-confirm/jquery-confirm.min.css') !!}
+    <link rel="stylesheet" href="{{ asset('themes/adminlte/css/vendor/jQueryUI/jquery-ui-1.10.3.custom.min.css') }}">
+    <style>
+      .jconfirm .jconfirm-box {
+        padding: 0;
+      }
+      .jconfirm-content-pane{
+        padding: 15px;
+      }
+      .jconfirm-title-c{
+        padding: 15px;
+        border-bottom: 2px solid rgba(60,141,188, 1);
+      }
+      .jconfirm-buttons{
+        padding: 15px;
+      }
+    </style>
     {!! Theme::script('vendor/jquery/jquery.min.js') !!}
     @include('partials.asgard-globals')
     @section('styles')
@@ -111,6 +128,78 @@
         });
     </script>
 <?php endif; ?>
+<script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
+{!! Theme::script('vendor/jquery-confirm/jquery-confirm.min.js') !!}
+  <script>
+    var html =
+     '<div class="row" style="width:100%">'
+    +'  <div class="col-md-6">'
+    +'    <div class="form-group ">'
+    +'      <label>Buscar Producto</label>'
+    +'      <input placeholder="Buscar producto" id="buscar-producto-consulta" class="form-control">'
+    +'    </div>'
+    +'    <div class="row">'
+    +'      <div class="col-md-4">'
+    +'         <label>Código:</label>'
+    +'      </div>'
+    +'      <div class="col-md-6">'
+    +'         <span id="producto-codigo-consulta"></span>'
+    +'      </div>'
+    +'    </div>'
+    +'    <div class="row">'
+    +'      <div class="col-md-4">'
+    +'         <label>Nombre:</label>'
+    +'      </div>'
+    +'      <div class="col-md-6">'
+    +'         <span id="producto-nombre-consulta"></span>'
+    +'      </div>'
+    +'    </div>'
+    +'    <div class="row">'
+    +'      <div class="col-md-4">'
+    +'         <label>Precio:</label>'
+    +'      </div>'
+    +'      <div class="col-md-6">'
+    +'         <span id="producto-precio-consulta"></span>'
+    +'      </div>'
+    +'    </div>'
+    +'    <div class="row">'
+    +'      <div class="col-md-4">'
+    +'         <label>Stock:</label>'
+    +'      </div>'
+    +'      <div class="col-md-6">'
+    +'         <span id="producto-stock-consulta"></span>'
+    +'      </div>'
+    +'    </div>'
+    +'  </div>'
+    +'  <div class="col-md-6">'
+    +'    <img id="producto-img-consulta" class="foto" src='+"{{url('images/default-product.jpg')}}"+' style="display:flex; margin:auto; max-width: 100%">'
+    +'  </div>'
+    +'</div>'
+    $('.consultarPrecio').on('click',function() {
+      $.dialog({
+        title: 'Consulta de precios',
+        boxWidth: '80%',
+        useBootstrap: false,
+        escapeKey: true,
+        backgroundDismiss: true,
+        draggable: false,
+        content: html,
+        onContentReady: function(){
+          $("#buscar-producto-consulta").autocomplete({
+            appendTo: '.jconfirm-box',
+            source: '{{route('admin.productos.producto.search_ajax')}}',
+            select: function( event, ui){
+              $("#producto-codigo-consulta").html(ui.item.producto.codigo)
+              $("#producto-nombre-consulta").html(ui.item.producto.nombre)
+              $("#producto-precio-consulta").html(ui.item.producto.precio_format + ' Gs.')
+              $("#producto-stock-consulta").html(ui.item.producto.stock)
+              $("#producto-img-consulta").attr('src', ui.item.producto.url_foto)
+            },
+          });
+        },
+      });
+    })
+  </script>
 @section('scripts')
 @show
 @stack('js-stack')

@@ -14,7 +14,6 @@
     {!! Theme::style('vendor/pickadate/css/classic.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.date.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.time.css') !!}
-    {!! Theme::style('vendor/jquery-confirm/jquery-confirm.min.css') !!}
     <style>
       .input-error{
         background-color: #d73925;
@@ -103,7 +102,6 @@
   {!! Theme::script('vendor/pickadate/js/picker.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.date.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.time.js') !!}
-  {!! Theme::script('vendor/jquery-confirm/jquery-confirm.min.js') !!}
   <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
   @include('presupuestos::admin.presupuestos.partials.script-index')
     <script type="text/javascript">

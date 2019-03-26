@@ -20,6 +20,14 @@ class VentaDetalle extends Model
       return $this->belongsTo('Modules\Productos\Entities\Producto');
     }
 
+    public function getPrecioUnitarioAttribute(){
+      return number_format($this->attributes['precio_unitario'], 0, ',', '.');
+    }
+
+    public function getPrecioSubtotalAttribute(){
+      return number_format($this->attributes['precio_subtotal'], 0, ',', '.');
+    }
+
     public function setPrecioUnitarioAttribute($value){
       $this->attributes['precio_unitario'] =  str_replace(',', '.',str_replace('.', '', $value));
     }

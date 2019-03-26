@@ -1,5 +1,32 @@
 <script>
   $(document).ready(function(){
+    $("#generar_factura").on('ifChecked', function(e){
+      $("#buscar-datos").removeAttr('disabled')
+      $("#add-cliente-button").removeAttr('disabled')
+      $("#nro_factura").val('{{$nro_factura}}')
+      $("#btnCrear").attr('disabled', true)
+    })
+    $("#generar_factura").on('ifUnchecked', function(e){
+      $("#buscar-datos").attr('disabled', 'disabled')
+      $("#add-cliente-button").attr('disabled', 'disabled')
+      limpiarDatosFacturacion()
+      $("#datosfacturacion").hide()
+      $("#nro_factura").val('xxx-xxx-xxxxxx')
+      set_disabled_to_btn_crear()
+    })
+    $("#datos_id").on('change', function(){
+      set_disabled_to_btn_crear()
+    })
+
+    function limpiarDatosFacturacion(){
+      $("#datos_razon_social").val('')
+      $("#datos_ruc").val('')
+      $("#datos_telefono").val('')
+      $("#datos_direccion").val('')
+      $("#datos_id").val('')
+      $("#buscar-datos").val('')
+    }
+
     $(".precio_format").number( true , 0, ',', '.' );
     $(".precio_float_format").number( true , 3, ',', '.' );
     $(".buscar-producto").autocomplete({
@@ -33,10 +60,20 @@
       }
     })
 
+    $(".table").on('change ', '.descuento', function(event){
+      let precio = $(this).closest('tr').find('.precio').val();
+      let cantidad = $(this).closest('tr').find('.cantidad').val()
+      let subtotal = cantidad * precio * $(this).val()
+      $(this).closest('tr').find('.subtotal').val(subtotal)
+      calculate_all()
+    })
+
     $(".table").on('keyup ', '.cantidad', function(event){
       let cantidad = parseInt($(this).val())
       if (!isNaN(cantidad)) {
-        let subtotal = $(this).val() * $(this).closest('tr').find('.precio').val()
+        let precio = $(this).closest('tr').find('.precio').val();
+        let descuento = $(this).closest('tr').find('.descuento').val()
+        let subtotal = $(this).val() * precio * descuento
         $(this).closest('tr').find('.subtotal').val(subtotal)
         calculate_all()
         if(cantidad > $(this).closest('tr').find('.stock').val())
@@ -62,6 +99,8 @@
           return;
         }
       })
+      if($("#generar_factura").prop('checked') && !$("#datos_id").val())
+        ready = false;
       if(ready)
         $("#btnCrear").removeAttr('disabled')
       else
@@ -96,12 +135,22 @@
     })
 
     $('#pago_cliente').on('keyup', function(){
-      let val = $(this).val() - $("#modal-monto-total").val();
+      checkVuelto()
+    })
+
+    function checkVuelto(){
+      let val = $('#pago_cliente').val() - $("#modal-monto-total").val();
       $("#vuelto").val(val)
       if(val >= 0)
-        $("#generar_factura").removeAttr('disabled')
+        $("#generar_venta").removeAttr('disabled')
       else
-        $("#generar_factura").attr('disabled', true)
+        $("#generar_venta").attr('disabled', true)
+    }
+
+    $("#btnCrear").on('click', function(){
+      if($("#pago_cliente").val())
+        checkVuelto()
+      $("#facturaModal").modal('show');
     })
 
     var row =
@@ -118,6 +167,13 @@
         +'</td>'
         +'<td>'
         +'  <input class="form-control precio precio_format" name="precio_unitario[]" readonly>'
+        +'</td>'
+        +'<td>'
+        +  '<select name="descuento[]" class="form-control descuento">'
+          @foreach ($descuentos as $key => $descuento)
+            + '<option value="'+'{{$key}}'+'">'+'{{$descuento}}'+'</option>'
+          @endforeach
+        +  '</select>'
         +'</td>'
         +'<td>'
         +'  <input class="form-control stock" readonly>'

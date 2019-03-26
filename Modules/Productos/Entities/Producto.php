@@ -13,7 +13,8 @@ class Producto extends Model
     protected $fillable = ['codigo','nombre','descripcion','stock','stock_critico','precio'];
 
     protected $appends = [
-      'url_foto'
+      'url_foto',
+      'precio_format'
     ];
 
     public function getUrlFotoAttribute(){
@@ -25,5 +26,9 @@ class Producto extends Model
 
     public function setPrecioAttribute($value){
       $this->attributes['precio'] =  str_replace(',', '.',str_replace('.', '', $value));
+    }
+
+    public function getPrecioFormatAttribute(){
+      return number_format($this->attributes['precio'], 0, ',', '.');
     }
 }

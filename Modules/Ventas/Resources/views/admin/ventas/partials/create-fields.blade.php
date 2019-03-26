@@ -11,13 +11,13 @@
     <div class="box-body">
       <div class="row">
         <div class="col-md-4">
-          {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura], ['readonly' => 'true']) !!}
+          {!! Form::normalInputOfType('date','fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('Y-m-d')], ['readonly' => 'true']) !!}
         </div>
         <div class="col-md-4">
           {!! Form::normalInput('timbrado', 'Timbrado', $errors, (object)['timbrado' => '123456789'], ['readonly' => 'true']) !!}
         </div>
         <div class="col-md-4">
-          {!! Form::normalInputOfType('date','fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('Y-m-d')], ['readonly' => 'true']) !!}
+          {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura]) !!}
         </div>
       </div>
       <div class="row" style="margin-bottom: 20px">
@@ -32,6 +32,10 @@
               </button>
             </span>
           </div>
+        </div>
+        <div class="col-md-4">
+          <label>Generar Factura</label>
+          {!! Form:: normalCheckbox('generar_factura', '', $errors, (object)['generar_factura' => 1]) !!}
         </div>
       </div>
       <div id="datosfacturacion" style="display:none">
@@ -89,6 +93,14 @@
           <input class="form-control precio precio_format" name="precio_unitario[]" readonly>
         </td>
         <td>
+          <select name="descuento[]" class="form-control descuento"> ';
+        foreach ($descuentos as $key => $descuento) {
+          $row .= '<option value="'.$key.'">'.$descuento.'</option>';
+        }
+        $row .=
+        ' </select>
+        </td>
+        <td>
           <input class="form-control stock" readonly>
         </td>
         <td>
@@ -96,7 +108,7 @@
         </td>
         <td>
         </td>
-      </tr>'
+      </tr>';
     @endphp
     <div class="box-body">
       <table id="detalles-table" class="data-table table table-bordered table-hover">
@@ -106,6 +118,7 @@
             <th>Foto</th>
             <th>Cantidad</th>
             <th>Precio</th>
+            <th>Descuento</th>
             <th>Stock</th>
             <th>SubTotal</th>
             <th>Eliminar</th>
@@ -129,15 +142,15 @@
       <div class="row">
         <div class="col-md-2">
           <strong>Monto total: </strong>
-          <input name="monto_total" class="precio_format form-control" id="monto-total">
+          <input readonly name="monto_total" class="precio_format form-control" id="monto-total">
         </div>
         <div class="col-md-7">
           <strong>Monto total (en letras): </strong>
-          <input readonly type="text  " name="precio_total_letras" value="" class="form-control" id="monto-total-letras">  
+          <input readonly type="text" name="precio_total_letras" value="" class="form-control" id="monto-total-letras">
         </div>
         <div class="col-md-2">
           <strong>Total Iva 10%: </strong>
-          <input name="total_iva" class="precio_float_format form-control" id="total-iva-10">
+          <input readonly name="total_iva" class="precio_float_format form-control" id="total-iva-10">
         </div>
       </div>
     </div>

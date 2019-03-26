@@ -65,7 +65,7 @@
               $("#datos_direccion").val(direccion)
               $("#datosfacturacion").show()
               $("#buscar-datos").val("")
-              $("#datos_id").val(data.datos.id)
+              $("#datos_id").val(data.datos.id).trigger('change')
               $("#addClienteModal").modal('hide');
             }
             $("#spin").hide();

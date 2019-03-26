@@ -38,24 +38,13 @@ class RegisterPresupuestosSidebar implements \Maatwebsite\Sidebar\SidebarExtende
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
             $group->item('Presupuestos', function (Item $item) {
-                $item->icon('fa fa-money');
+                $item->icon('fa fa-list-alt');
                 $item->weight(10);
+                $item->append('admin.presupuestos.presupuesto.create');
+                $item->route('admin.presupuestos.presupuesto.index');
                 $item->authorize(
-                     /* append */
+                    $this->auth->hasAccess('presupuestos.presupuestos.index')
                 );
-                $item->item(trans('presupuestos::presupuestos.title.presupuestos'), function (Item $item) {
-                    $item->icon('fa fa-money');
-                    $item->weight(0);
-                    $item->append('admin.presupuestos.presupuesto.create');
-                    $item->route('admin.presupuestos.presupuesto.index');
-                    $item->authorize(
-                        $this->auth->hasAccess('presupuestos.presupuestos.index')
-                    );
-                });
-
-// append
-
-
             });
         });
 

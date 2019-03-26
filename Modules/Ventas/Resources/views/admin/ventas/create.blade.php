@@ -11,7 +11,6 @@
     </ol>
 @stop
 @push('css-stack')
-  <link rel="stylesheet" href="{{ asset('themes/adminlte/css/vendor/jQueryUI/jquery-ui-1.10.3.custom.min.css') }}">
   <style>
     .input-error{
       background-color: #d73925;
@@ -50,7 +49,7 @@
                     @endforeach
 
                     <div class="box-footer">
-                      <button id="btnCrear" type="button" disabled class="btn btn-primary btn-flat" data-toggle="modal" data-target="#facturaModal">Crear Venta</button>
+                      <button id="btnCrear" type="button" disabled class="btn btn-primary btn-flat">Crear Venta</button>
                       <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.ventas.venta.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
                 </div>
@@ -72,7 +71,6 @@
 @stop
 
 @push('js-stack')
-    <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery.number.min.js') }}"></script>
     @include('ventas::admin.ventas.partials.numero-a-letras')
     @include('ventas::admin.ventas.partials.script')

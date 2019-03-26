@@ -5,6 +5,7 @@ namespace Modules\Ventas\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Ventas\Entities\Venta;
+use Modules\Clientes\Entities\DatosFacturacion;
 use Modules\Productos\Entities\Producto;
 use Modules\Ventas\Entities\VentaDetalle;
 use Modules\Ventas\Http\Requests\CreateVentaRequest;
@@ -95,7 +96,8 @@ class VentaController extends AdminBaseController
     {
         $nro_factura = '001-034-001123';
         $tipos_factura = Venta::$tipos_factura;
-        return view('ventas::admin.ventas.create', compact('nro_factura', 'tipos_factura'));
+        $descuentos = Venta::$descuentos;
+        return view('ventas::admin.ventas.create', compact('nro_factura', 'tipos_factura', 'descuentos'));
     }
 
     /**
@@ -108,10 +110,7 @@ class VentaController extends AdminBaseController
     {
       try{
         DB::beginTransaction();
-        $request ['razon_social'] = $request->datos_razon_social;
-        $request['ruc'] = $request->datos_ruc;
-        $request['direccion'] = $request->datos_direccion;
-        $request['telefono'] = $request->datos_telefono;
+        $request = $this->getDatosFacturacion($request);
         $venta = $this->venta->create($request->all());
         foreach ($request->producto_id as $key => $producto_id) {
           $detalle = new VentaDetalle();
@@ -119,6 +118,7 @@ class VentaController extends AdminBaseController
           $detalle->producto_id = $producto_id;
           $detalle->cantidad = $request->cantidad[$key];
           $detalle->precio_unitario = $request->precio_unitario[$key];
+          $detalle->descuento = $request->descuento[$key];
           $detalle->precio_subtotal = $request->subtotal[$key];
           $detalle->save();
           $producto = Producto::find($producto_id);
@@ -130,9 +130,30 @@ class VentaController extends AdminBaseController
         return redirect()
             ->back()
             ->withError("Ocurrió un error al crear la venta");
-      }   
+      }
       return redirect()->route('admin.ventas.venta.index')
           ->withSuccess('Venta creado exitosamente');
+    }
+
+    private function getDatosFacturacion(Request $request){
+      if($request->generar_factura){
+        $request ['razon_social'] = $request->datos_razon_social;
+        $request['ruc'] = $request->datos_ruc;
+        $request['direccion'] = $request->datos_direccion;
+        $request['telefono'] = $request->datos_telefono;
+      }else{
+        $datos = DatosFacturacion::where('ruc', 'xxxxxx');
+        if(isset($datos)){
+          $datos = new DatosFacturacion();
+          $datos->ruc = 'xxxxxx';
+          $datos->razon_social = 'Cliente Mostrador';
+          $datos->save();
+        }
+        $request ['razon_social'] = $datos->razon_social;
+        $request['ruc'] = $datos->ruc;
+        $request['datos_id'] = $datos->id;
+      }
+      return $request;
     }
 
     /**

@@ -8,7 +8,7 @@
         <div class="modal-body">
            <div class="row" style="">
               <div class="col-sm-6">
-                 {!! Form::normalInput('nro_factura', 'Nro Factura', $errors, (object)['nro_factura' => $nro_factura ], ['class' => 'form-control','readonly'=>'']) !!}
+                 {!! Form::normalInput('nro_factura_', 'Nro Factura', $errors, (object)['nro_factura' => $nro_factura ], ['class' => 'form-control','readonly'=>'']) !!}
               </div>
               <div class="col-sm-6">
                  {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura:', $errors, $tipos_factura) !!}
@@ -20,12 +20,10 @@
            <div id="plazo_credito-1" style="display:none">
               {!! Form:: normalSelect('plazo_credito', 'Plazo del Crédito:', $errors, [''=>'---','5'=>'5 días','10'=>'10 días','30'=>'30 días','60'=>'60 días','90'=>'90 días'],null,['id'=>'plazo_credito']) !!}
            </div>
-           {!! Form::hidden('generar_factura', '0') !!}
-           <input type="hidden" id="client_ip" name="client_ip">
            <div class="modal-body">
               <div class="box-footer">
                   <div class="modal-footer">
-                      <button type="submit" disabled class="btn btn-primary btn-flat" id="generar_factura">Guardar y Generar Factura</button>
+                      <button type="submit" disabled class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
                       <button type="button" class="btn btn-danger pull-right btn-flat" data-dismiss="modal"><i class="fa fa-times"></i>Cancelar</button>
                   </div>
               </div>

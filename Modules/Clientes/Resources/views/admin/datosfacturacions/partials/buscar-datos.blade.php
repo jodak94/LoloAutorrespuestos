@@ -3,7 +3,7 @@
     $("#buscar-datos").autocomplete({
       source: '{{route('admin.clientes.datosfacturacion.search_ajax')}}',
       select: function( event, ui){
-        $("#datos_id").val(ui.item.datos.id)
+        $("#datos_id").val(ui.item.datos.id).trigger('change')
         @if(isset($create) && $create)
           $("#datos_razon_social").val(ui.item.datos.razon_social)
           $("#datos_ruc").val(ui.item.datos.ruc)
@@ -14,7 +14,7 @@
           $("#ruc").val(ui.item.datos.ruc)
           $("#telefono").val(ui.item.datos.telefono)
           $("#direccion").val(ui.item.datos.direccion)
-        @endif      
+        @endif
       },
     })
   })
