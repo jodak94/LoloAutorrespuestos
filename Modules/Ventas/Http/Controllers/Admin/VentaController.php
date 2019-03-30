@@ -36,22 +36,35 @@ class VentaController extends AdminBaseController
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $credito = false;
+        if($request->has('credito')){
+            $credito = true;
+        }
         $today = Carbon::now()->format('d/m/Y');
-        return view('ventas::admin.ventas.index', compact('today'));
+        return view('ventas::admin.ventas.index', compact('today', 'credito'));
     }
+
 
     public function index_ajax(Request $re)
     {
         $query = $this->query_index_ajax($re);
         $object = Datatables::of($query)
-            ->addColumn('acciones', function( $venta ){
+            ->addColumn('acciones', function( $venta ) use ($re){
               $route = route('admin.ventas.venta.detalles', $venta->id);
               $html = '
-                <a class="btn btn-default btn-flat" style="display:table; margin:auto" href="'.$route.'">
-                  Ver detalles
-                </a>';
+                <div class="btn-group">';
+                  if($re->has('credito') && $re->credito && $venta->monto_pagado < $venta->monto_total)
+                  $html .=
+                  '
+                    <button class="btn btn-warning btn-flat pagar" venta="'.$venta->id.'">Pagar</button>
+                  ';
+                  $html .= '
+                  <a class="btn btn-default btn-flat" style="display:table; margin:auto" href="'.$route.'">
+                    Ver detalles
+                  </a>
+                </div>';
               return $html;
             })
             ->editColumn('created_at', function( $venta ){
@@ -77,6 +90,10 @@ class VentaController extends AdminBaseController
         if (isset($re->fecha_hasta) && trim($re->fecha_hasta) != '')
           $query->whereDate('created_at', '<=', $this->fechaFormat($re->fecha_hasta) );
 
+        if($re->has('credito') && $re->credito)
+          $query->where('tipo_factura', 'credito');
+        else
+          $query->where('tipo_factura', '!=', 'credito');
         return $query;
     }
 
@@ -110,6 +127,9 @@ class VentaController extends AdminBaseController
     {
       try{
         DB::beginTransaction();
+        if($request->tipo_factura == 'credito' && $request->pago_cliente == null){
+          $request->monto_pagado = 0;
+        }
         $request = $this->getDatosFacturacion($request);
         $venta = $this->venta->create($request->all());
         foreach ($request->producto_id as $key => $producto_id) {
@@ -131,7 +151,11 @@ class VentaController extends AdminBaseController
             ->back()
             ->withError("Ocurrió un error al crear la venta");
       }
-      return redirect()->route('admin.ventas.venta.index')
+      $query = [];
+      if($request->tipo_factura == 'credito')
+        $query = ['credito'];
+
+      return redirect()->route('admin.ventas.venta.index', $query)
           ->withSuccess('Venta creado exitosamente');
     }
 
@@ -194,5 +218,16 @@ class VentaController extends AdminBaseController
 
         return redirect()->route('admin.ventas.venta.index')
             ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('ventas::ventas.title.ventas')]));
+    }
+
+    public function pago_credito(Request $request){
+      try{
+        $venta = Venta::find($request->venta_id);
+        $venta->monto_pagado = $request->monto_pagado;
+        $venta->save();
+        return response()->json(['error' => false, 'message' => 'El pago se realizó con éxito']);
+      }catch(Exception $e){
+        return response()->json(['error' => true, 'message' => 'Ocurrió un error al intentar guardar el pago']);
+      }
     }
 }

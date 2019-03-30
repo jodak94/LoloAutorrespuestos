@@ -31,6 +31,11 @@ $router->group(['prefix' =>'/ventas'], function (Router $router) {
         'uses' => 'VentaController@store',
         'middleware' => 'can:ventas.ventas.create'
     ]);
+    $router->post('ventas/pago-credito', [
+        'as' => 'admin.ventas.venta.pago_credito',
+        'uses' => 'VentaController@pago_credito',
+        'middleware' => 'can:ventas.ventas.create'
+    ]);
     $router->get('ventas/{venta}/edit', [
         'as' => 'admin.ventas.venta.edit',
         'uses' => 'VentaController@edit',

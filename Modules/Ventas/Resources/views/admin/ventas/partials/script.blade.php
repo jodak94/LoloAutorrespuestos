@@ -125,22 +125,31 @@
     $("select[name=tipo_factura]").change(function(){
       var forma_pago = $(this).val();
       if(forma_pago == 'credito'){
-        $("#plazo_credito-1").show();
-        //$("#pago_cliente").val(0);
-        //$("#pago_cliente").attr('readonly', true);
+        // $("#plazo_credito-1").show();
+        $("#vuelto_container").hide()
+        $("#generar_venta").removeAttr('disabled')
+        $("#monto_pagado").removeAttr('required')
+        //$("#monto_pagado").val(0);
+        //$("#monto_pagado").attr('readonly', true);
       }else{
-        $("#plazo_credito-1").hide();
-        $("#pago_cliente").attr('readonly', false);
+        $("#vuelto_container").show()
+        // $("#plazo_credito-1").hide();
+        $("#monto_pagado").attr('required', 'required')
+        $("#monto_pagado").attr('readonly', false);
       }
     })
 
-    $('#pago_cliente').on('keyup', function(){
+    $('#monto_pagado').on('keyup', function(){
       checkVuelto()
     })
 
     function checkVuelto(){
-      let val = $('#pago_cliente').val() - $("#modal-monto-total").val();
+      let val = $('#monto_pagado').val() - $("#modal-monto-total").val();
       $("#vuelto").val(val)
+      if($("select[name=tipo_factura]").val() == 'credito'){
+        $("#generar_venta").removeAttr('disabled')
+        return
+      }
       if(val >= 0)
         $("#generar_venta").removeAttr('disabled')
       else
@@ -148,7 +157,7 @@
     }
 
     $("#btnCrear").on('click', function(){
-      if($("#pago_cliente").val())
+      if($("#monto_pagado").val())
         checkVuelto()
       $("#facturaModal").modal('show');
     })

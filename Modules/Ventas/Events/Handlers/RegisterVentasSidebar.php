@@ -52,6 +52,14 @@ class RegisterVentasSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('ventas.ventas.index')
                     );
                 });
+                $item->item('Ventas a crédito', function (Item $item) {
+                    $item->icon('fa fa-credit-card');
+                    $item->weight(0);
+                    $item->route('admin.ventas.venta.index', ['credito']);
+                    $item->authorize(
+                        $this->auth->hasAccess('ventas.ventas.index')
+                    );
+                });
             });
         });
 

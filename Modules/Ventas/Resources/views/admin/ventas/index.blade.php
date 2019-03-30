@@ -2,7 +2,11 @@
 
 @section('content-header')
     <h1>
-        {{ trans('ventas::ventas.title.ventas') }}
+        @if($credito)
+          Ventas a Crédito
+        @else
+          {{ trans('ventas::ventas.title.ventas') }}
+        @endif
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
@@ -11,6 +15,7 @@
 @stop
 @push('css-stack')
     <link rel="stylesheet" href="{{ asset('themes/adminlte/css/vendor/jQueryUI/jquery-ui-1.10.3.custom.min.css') }}">
+    {!! Theme::style('vendor/jquery-toast/jquery.toast.min.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.date.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.time.css') !!}
@@ -64,7 +69,10 @@
                                   <th>N° Factura</th>
                                   <th>Cliente</th>
                                   <th>Monto Total</th>
-                                  <th data-sortable="false">Detalles</th>
+                                  @if($credito)
+                                    <th>Monto Pagado</th>
+                                  @endif
+                                  <th data-sortable="false">Acciones</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -75,7 +83,10 @@
                                   <th>N° Factura</th>
                                   <th>Cliente</th>
                                   <th>Monto Total</th>
-                                  <th>Detalles</th>
+                                  @if($credito)
+                                    <th>Monto Pagado</th>
+                                  @endif
+                                  <th>Acciones</th>
                               </tr>
                         </table>
                         <!-- /.box-body -->
@@ -99,9 +110,12 @@
 @stop
 
 @push('js-stack')
+  <script src="{{ asset('js/jquery.number.min.js') }}"></script>
+  {!! Theme::script('vendor/jquery-toast/jquery.toast.min.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.date.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.time.js') !!}
+
   <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
   @include('ventas::admin.ventas.partials.script-index')
     <script type="text/javascript">

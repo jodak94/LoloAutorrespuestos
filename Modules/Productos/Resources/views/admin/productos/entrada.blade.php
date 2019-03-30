@@ -11,9 +11,6 @@
     </ol>
 @stop
 
-@push('css-stack')
-  <link rel="stylesheet" href="{{ asset('themes/adminlte/css/vendor/jQueryUI/jquery-ui-1.10.3.custom.min.css') }}">
-@endpush
 
 @section('content')
     {!! Form::open(['route' => ['admin.productos.producto.update_stock'], 'method' => 'post']) !!}
@@ -52,7 +49,6 @@
 @stop
 
 @push('js-stack')
-    <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
     @include('productos::admin.productos.partials.script')
     <script type="text/javascript">
         $( document ).ready(function() {

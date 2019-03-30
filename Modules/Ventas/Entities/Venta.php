@@ -41,6 +41,10 @@ class Venta extends Model
       return number_format($this->attributes['monto_total'], 0, ',', '.');
     }
 
+    public function getMontoPagadoAttribute(){
+      return number_format($this->attributes['monto_pagado'], 0, ',', '.');
+    }
+
     public function getTotalIvaAttribute(){
       return number_format($this->attributes['total_iva'], 0, ',', '.');
     }

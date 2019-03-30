@@ -11,10 +11,6 @@
     </ol>
 @stop
 
-@push('css-stack')
-  <link rel="stylesheet" href="{{ asset('themes/adminlte/css/vendor/jQueryUI/jquery-ui-1.10.3.custom.min.css') }}">
-@endpush
-
 @section('content')
     {!! Form::open(['route' => ['admin.presupuestos.presupuesto.store'], 'method' => 'post']) !!}
     <div class="row">
@@ -52,7 +48,6 @@
 @stop
 
 @push('js-stack')
-    <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
     @include('presupuestos::admin.presupuestos.partials.script')
     <script type="text/javascript">
         $( document ).ready(function() {

@@ -10,7 +10,6 @@
     </ol>
 @stop
 @push('css-stack')
-    <link rel="stylesheet" href="{{ asset('themes/adminlte/css/vendor/jQueryUI/jquery-ui-1.10.3.custom.min.css') }}">
     {!! Theme::style('vendor/pickadate/css/classic.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.date.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.time.css') !!}
@@ -102,7 +101,6 @@
   {!! Theme::script('vendor/pickadate/js/picker.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.date.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.time.js') !!}
-  <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
   @include('presupuestos::admin.presupuestos.partials.script-index')
     <script type="text/javascript">
         $( document ).ready(function() {
