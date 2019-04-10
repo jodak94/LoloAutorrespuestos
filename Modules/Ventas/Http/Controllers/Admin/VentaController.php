@@ -52,18 +52,25 @@ class VentaController extends AdminBaseController
         $query = $this->query_index_ajax($re);
         $object = Datatables::of($query)
             ->addColumn('acciones', function( $venta ) use ($re){
-              $route = route('admin.ventas.venta.detalles', $venta->id);
               $html = '
                 <div class="btn-group">';
-                  if($re->has('credito') && $re->credito && $venta->monto_pagado < $venta->monto_total)
+                $pagado = str_replace(',', '.',str_replace('.', '', $venta->monto_pagado));
+                $total = str_replace(',', '.',str_replace('.', '', $venta->monto_total));
+                  if($re->has('credito') && $re->credito && $pagado < $total)
                   $html .=
                   '
                     <button class="btn btn-warning btn-flat pagar" venta="'.$venta->id.'">Pagar</button>
                   ';
                   $html .= '
-                  <a class="btn btn-default btn-flat" style="display:table; margin:auto" href="'.$route.'">
-                    Ver detalles
-                  </a>
+                  <button class="btn btn-default btn-flat btn-show" style="display:table; margin:auto">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-default btn-flat btn-print" style="display:table; margin:auto">
+                    <i class="fa fa-print" aria-hidden="true"></i>
+                  </button>
                 </div>';
               return $html;
             })
