@@ -50,6 +50,22 @@ $router->group(['prefix' =>'/productos'], function (Router $router) {
         'as' => 'admin.productos.producto.entrada',
         'uses' => 'ProductoController@entrada',
     ]);
+    $router->get('productos/import', [
+        'as' => 'admin.productos.producto.import',
+        'uses' => 'ProductoController@import_view',
+    ]);
+    $router->post('productos/import_excel', [
+        'as' => 'admin.productos.producto.import_productos',
+        'uses' => 'ProductoController@import_productos',
+    ]);
+    $router->post('productos/validation', [
+        'as' => 'admin.productos.producto.validation',
+        'uses' => 'ProductoController@producto_validation',
+    ]);
+    $router->post('productos/store_ajax', [
+        'as' => 'admin.productos.producto.store_ajax',
+        'uses' => 'ProductoController@store_ajax',
+    ]);
 // append
 
 });

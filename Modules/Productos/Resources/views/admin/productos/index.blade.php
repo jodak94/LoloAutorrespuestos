@@ -15,6 +15,9 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
+                <a href="{{ route('admin.productos.producto.import') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
+                        <i class="fa fa-file-excel"></i> Importar desde Excel 
+                    </a>
                     <a href="{{ route('admin.productos.producto.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
                         <i class="fa fa-pencil"></i> {{ trans('productos::productos.button.create producto') }}
                     </a>

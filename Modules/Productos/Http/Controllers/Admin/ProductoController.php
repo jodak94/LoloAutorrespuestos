@@ -11,6 +11,8 @@ use Modules\Productos\Repositories\ProductoRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use \Excel;
+use App\Imports\ProductosImport;
 
 class ProductoController extends AdminBaseController
 {
@@ -18,12 +20,22 @@ class ProductoController extends AdminBaseController
      * @var ProductoRepository
      */
     private $producto;
+    private $rules;
 
     public function __construct(ProductoRepository $producto)
     {
         parent::__construct();
 
         $this->producto = $producto;
+        $this->rules = [
+            'codigo' => 'required|unique:productos__productos',
+            'nombre'  => 'required',
+            'descripcion' => '',
+            'precio'     => 'required|numeric|min:0',
+            'stock'     => 'required|numeric|min:0',
+            'stock_critico' => 'required|numeric|min:0',
+            'costo' => 'required|numeric|min:0'
+        ];
     }
 
     /**
@@ -154,5 +166,108 @@ class ProductoController extends AdminBaseController
     public function entrada()
     {
         return view('productos::admin.productos.entrada');
+    }
+
+    public function import_view()
+    {
+        return view('productos::admin.productos.import');
+    }
+
+    public function import_productos(Request $request) {
+        
+        $extensions = array("xls","xlsx");
+
+        $result = array($request->file('excel')->getClientOriginalExtension());
+
+        if(in_array($result[0],$extensions)){
+            $rows = Excel::toArray(new ProductosImport, request()->file('excel'));
+            $errors = [];
+            $productos_error = [];
+            $productos_cargados = 0;
+            foreach($rows as $row) {
+                foreach($row as $producto) {
+                    $error = $this->cell_validation($producto, $this->rules);
+                        if (!empty($error)) {
+                            $errors[] = $error;
+                            $productos_error[] = $producto;
+                        }else {
+                            $nuevo_producto = new Producto();
+                            $nuevo_producto->codigo = $producto["codigo"];
+                            $nuevo_producto->nombre = $producto["nombre"];
+                            $nuevo_producto->descripcion = $producto["descripcion"];
+                            $nuevo_producto->stock = $producto["stock"];
+                            $nuevo_producto->stock_critico = $producto["stock_critico"];
+                            $nuevo_producto->precio = $producto["precio"];
+                            $nuevo_producto->costo = $producto["costo"];
+                            $nuevo_producto->descuento = $producto["descuento"]?$producto["descuento"]/100:0;
+                            $nuevo_producto->save();
+                            $productos_cargados++;
+                        }
+                }
+            }
+            return response()->json([
+                "cargados" => $productos_cargados,
+                "productos" => $productos_error,
+                "errores" => $errors
+            ]);
+        }else{
+            return response()->json([
+                "error" => "error en tipo de archivo",
+            ],400);
+        }
+
+        
+    }
+
+    public function producto_validation(Request $request) {
+        $error = $this->cell_validation($request->producto,$this->rules);
+        if (!empty($error)) {
+            
+            return response()->json([
+                'status' => false,
+                'error' => $error[0]
+            ],400);
+        }
+        return response()->json([
+            'status' => true,
+        ]);
+    }
+
+    protected function cell_validation(array $data, array $rules)
+    {
+        // Perform Validation
+        $validator = \Validator::make($data, $rules);
+        $errors = [];
+        if ($validator->fails()) {
+            $errorMessages = $validator->errors()->messages();
+            foreach ($errorMessages as $key => $value) {
+                $error[$key] = $value[0];
+            }
+            $errors[] = $error;
+            return $errors;
+        }
+        return [];
+    }
+
+    public function store_ajax(Request $request) {
+        $productos_cargados = 0;
+        foreach($request->productos as $req) {
+            if($req != null){
+                $producto = new Producto();
+                $producto->codigo = $req["codigo"];
+                $producto->nombre = $req["nombre"];
+                $producto->descripcion = $req["descripcion"];
+                $producto->stock = $req["stock"];
+                $producto->stock_critico = $req["stock_critico"];
+                $producto->precio = $req["precio"];
+                $producto->costo = $req["costo"];
+                $producto->descuento = $req["descuento"]?$req["descuento"]/100:0;
+                $producto->save();
+                $productos_cargados++;
+            }
+        }
+        $request->session()->flash('message', 'Nuevos Productos agregados.');
+        $request->session()->flash('message-type', 'success');
+        return response()->json(['cargados'=>$productos_cargados]);
     }
 }
