@@ -77,6 +77,7 @@
             title: 'Vista Previa',
             boxWidth: '80%',
             useBootstrap: false,
+            closeIcon: true,
             escapeKey: true,
             backgroundDismiss: true,
             draggable: false,
