@@ -40,7 +40,7 @@
                 <div class="box-header">
                     <div class="row">
                       <div class="col-md-3">
-                        {!! Form::normalInput('fecha_desde', 'Fecha desde', $errors,(object)['fecha_desde'=>$today],['class'=>'form-control fecha','id'=>'fecha_desde']) !!}
+                        {!! Form::normalInput('fecha_desde', 'Fecha desde', $errors,(object)['fecha_desde'=>$fecha_desde],['class'=>'form-control fecha','id'=>'fecha_desde']) !!}
                       </div>
                       <div class="col-md-3">
                         {!! Form::normalInput('fecha_hasta', 'Fecha hasta', $errors,(object)['fecha_hasta'=>$today],['class'=>'form-control fecha','id'=>'fecha_hasta']) !!}

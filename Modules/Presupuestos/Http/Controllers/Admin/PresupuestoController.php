@@ -38,8 +38,12 @@ class PresupuestoController extends AdminBaseController
      */
     public function index()
     {
-        $today = Carbon::now()->format('d/m/Y');
-        return view('presupuestos::admin.presupuestos.index', compact('today'));
+        $today = Carbon::now();
+        $fecha_desde = $today;
+        $fecha_desde->day = 1;
+        $fecha_desde = $fecha_desde->format('d/m/Y');
+        $today = $today->format('d/m/Y');
+        return view('presupuestos::admin.presupuestos.index', compact('today', 'fecha_desde'));
     }
 
     /**
@@ -73,7 +77,7 @@ class PresupuestoController extends AdminBaseController
               $detalle->save();
             }
             DB::commit();
-            
+
           }catch(\Exception $e){
 
             return redirect()
@@ -161,7 +165,7 @@ class PresupuestoController extends AdminBaseController
                 }else {
                     $view = View::make('presupuestos::pdf.presupuesto',compact('datosPresupuesto','presupuestoDetalles','format'));
                     return $view->render();
-                
+
                 }
             }
     }
