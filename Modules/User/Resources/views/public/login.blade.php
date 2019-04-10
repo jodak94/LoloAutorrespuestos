@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="login-logo">
-        <a href="{{ url('/') }}">{{ setting('core::site-name') }}</a>
+        <img src="{{ asset('/images/logo1.png') }}" width="100%">
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -28,9 +28,9 @@
             </div>
             <div class="row">
                 <div class="col-xs-8">
-                    <div class="checkbox icheck">
+                    <div class="checkbox icheck" style="display:none">
                         <label>
-                            <input type="checkbox" name="remember_me"> {{ trans('user::auth.remember me') }}
+                            <input type="checkbox" name="remember_me" checked> {{ trans('user::auth.remember me') }}
                         </label>
                     </div>
                 </div>
@@ -41,10 +41,5 @@
                 </div>
             </div>
         </form>
-
-        <a href="{{ route('reset')}}">{{ trans('user::auth.forgot password') }}</a><br>
-        @if (config('asgard.user.config.allow_user_registration'))
-            <a href="{{ route('register')}}" class="text-center">{{ trans('user::auth.register')}}</a>
-        @endif
     </div>
 @stop
