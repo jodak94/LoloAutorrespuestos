@@ -18,7 +18,7 @@
       source: '{{route('admin.productos.producto.search_ajax')}}',
       select: function( event, ui){
         $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
-        $(this).closest('tr').find('.total').val(0)
+        $(this).closest('tr').find('.subtotal').val(0)
         $(this).closest('tr').find('.cantidad').removeAttr('readonly')
         $(this).closest('tr').find('.producto_id').val(ui.item.producto.id)
       },
@@ -40,8 +40,8 @@
     $(".table").on('keyup ', '.cantidad', function(event){
       let cantidad = parseInt($(this).val())
       if (!isNaN(cantidad)) {
-        let subtotal = $(this).val() * $(this).closest('tr').find('.precio').val()
-        $(this).closest('tr').find('.total').val(subtotal)
+        let subtotal = $(this).val() * $(this).closest('tr').find('.precio').val() * $(this).closest('tr').find('.descuento').val()
+        $(this).closest('tr').find('.subtotal').val(Math.round(subtotal))
         calculate_all()
         if(cantidad > $(this).closest('tr').find('.stock').val())
           $(this).closest('tr').addClass('tr-error');
@@ -49,6 +49,14 @@
           $(this).closest('tr').removeClass('tr-error');
       }
       set_disabled_to_btn_crear()
+    })
+
+    $(".table").on('change ', '.descuento', function(event){
+      let precio = $(this).closest('tr').find('.precio').val();
+      let cantidad = $(this).closest('tr').find('.cantidad').val()
+      let subtotal = cantidad * precio * $(this).val()
+      $(this).closest('tr').find('.subtotal').val(Math.round(subtotal))
+      calculate_all()
     })
 
     $(".table").on('click', '.remove-field', function(){
@@ -76,13 +84,13 @@
       let total = 0;
       let subtotal = 0;
       let val = 0;
-      $('.total').each(function(i){
+      $('.subtotal').each(function(i){
         val = parseFloat($(this).val());
         if(!isNaN(val))
           total += val;
       })
-      $("#total").val(total);
-      $("#sub-total").val(total);
+      $("#total").val(Math.round(total));
+      $("#sub-total").val(Math.round(total));
     }
 
 
@@ -98,8 +106,15 @@
         +'<td>'
         +'  <input class="form-control precio" name="precio_unitario[]" readonly>'
         +'</td>'
+         +'<td>'
+        +  '<select name="descuento[]" class="form-control descuento">'
+          @foreach ($descuentos as $key => $descuento)
+            + '<option value="'+'{{$key}}'+'">'+'{{$descuento}}'+'</option>'
+          @endforeach
+        +  '</select>'
+        +'</td>'
         +'<td>'
-        +'  <input class="form-control total" name="total[]" readonly>'
+        +'  <input class="form-control subtotal" name="total[]" readonly>'
         +'</td>'
         +'<td style="text-align:center;">'
         +'  <i class="glyphicon glyphicon-trash btn btn-danger remove-field">'
@@ -113,7 +128,7 @@
         source: '{{route('admin.productos.producto.search_ajax')}}',
         select: function( event, ui){
         $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
-        $(this).closest('tr').find('.total').val(0)
+        $(this).closest('tr').find('.subtotal').val(0)
         $(this).closest('tr').find('.cantidad').removeAttr('readonly')
         $(this).closest('tr').find('.producto_id').val(ui.item.producto.id)
         },

@@ -4,6 +4,7 @@ namespace Modules\Presupuestos\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Ventas\Entities\Venta;
 use Modules\Presupuestos\Entities\Presupuesto;
 use Modules\Presupuestos\Entities\PresupuestoDetalle;
 use Modules\Productos\Entities\Producto;
@@ -50,7 +51,8 @@ class PresupuestoController extends AdminBaseController
     public function create()
     {
         $nro_presupuesto = "000000001";
-        return view('presupuestos::admin.presupuestos.create',compact('nro_presupuesto'));
+        $descuentos = Venta::$descuentos;
+        return view('presupuestos::admin.presupuestos.create',compact('nro_presupuesto','descuentos'));
     }
 
     /**
@@ -69,6 +71,7 @@ class PresupuestoController extends AdminBaseController
               $detalle->presupuesto_id = $presupuesto->id;
               $detalle->producto_id = $producto_id;
               $detalle->cantidad = $request->cantidad[$key];
+              $detalle->descuento = $request->descuento[$key];
               $detalle->precio_unitario = $request->precio_unitario[$key];
               $detalle->save();
             }
@@ -143,8 +146,9 @@ class PresupuestoController extends AdminBaseController
               $producto = Producto::find($detalle->producto_id);
               $pdfDetalle["producto"] = $producto->nombre;
               $pdfDetalle["cantidad"] = number_format($detalle->cantidad,0,"",".");
+              $pdfDetalle["descuento"] = number_format(100-$detalle->descuento*100,0,"",".")."%";
               $pdfDetalle["precio_unitario"] = number_format($detalle->precio_unitario,0,"",".");
-              $pdfDetalle["subtotal"] = number_format($detalle->cantidad * $detalle->precio_unitario,0,"",".");
+              $pdfDetalle["subtotal"] = number_format($detalle->cantidad * $detalle->precio_unitario * $detalle->descuento,0,"",".");
               $presupuestoDetalles[] = $pdfDetalle;
 
             }

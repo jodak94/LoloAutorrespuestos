@@ -57,7 +57,15 @@
           <input class="form-control precio" name="precio_unitario[]" readonly>
         </td>
         <td>
-          <input class="form-control total" readonly>
+          <select name="descuento[]" class="form-control descuento"> ';
+        foreach ($descuentos as $key => $descuento) {
+          $row .= '<option value="'.$key.'">'.$descuento.'</option>';
+        }
+        $row .=
+        ' </select>
+        </td>
+        <td>
+          <input class="form-control subtotal" readonly>
         </td>
         <td>
         </td>
@@ -67,10 +75,11 @@
       <table id="detalles-table" class="data-table table table-bordered table-hover">
         <thead>
           <tr>
-            <th>Concepto</th>
+            <th>Producto</th>
             <th>Cantidad</th>
             <th>Precio</th>
-            <th>Total</th>
+            <th>Descuento</th>
+            <th>Subtotal</th>
             <th> </th>
           </tr>
         </thead>
@@ -90,10 +99,6 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-2">
-          <strong>Sub-total: </strong>
-          <input readonly type="number" name="sub_total" value="0" class="form-control" id="sub-total">
-        </div>
         <div class="col-md-2">
           <strong>Total: </strong>
           <input readonly type="number" name="precio_total" value="0" class="form-control" id="total">
