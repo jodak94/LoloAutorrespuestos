@@ -13,7 +13,7 @@ use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 class DatosFacturacionController extends AdminBaseController
 {
     /**
-     * @var DatosFacturacionRepository
+     * @var DatosFacturacionFRepository
      */
     private $datosfacturacion;
 
@@ -129,6 +129,7 @@ class DatosFacturacionController extends AdminBaseController
         Where('ruc','like',  '%' . $re->term . '%')
         ->With('cliente');
       $query_datos->orWhere('razon_social','like',  '%' . $re->term_explode[0] . '%');
+      $query_datos->where('ruc', '!=', 'xxxxxx');
       $datos = $query_datos->take(5)->get();
       $results = [];
       foreach ($datos as $q){
