@@ -16,6 +16,9 @@ class Venta extends Model
       'total_iva', 'precio_total_letras', 'plazo_credito', 'razon_social',
       'ruc', 'direccion', 'telefono'
     ];
+    protected $appends = [
+      'monto_total_format', 'monto_pagado_format', 'total_iva_format'
+    ];
     public static $descuentos = [
       '1'    => '--',
       '0.95' => '5%',
@@ -33,19 +36,15 @@ class Venta extends Model
       return $this->hasMany('Modules\Ventas\Entities\VentaDetalle');
     }
 
-    public function getMontoPagadoFormaAttribute(){
+    public function getMontoPagadoFormatAttribute(){
       return number_format($this->attributes['monto_pagado'], 0, ',', '.');
     }
 
-    public function getMontoTotalAttribute(){
+    public function getMontoTotalFormatAttribute(){
       return number_format($this->attributes['monto_total'], 0, ',', '.');
     }
 
-    public function getMontoPagadoAttribute(){
-      return number_format($this->attributes['monto_pagado'], 0, ',', '.');
-    }
-
-    public function getTotalIvaAttribute(){
+    public function getTotalIvaFormatAttribute(){
       return number_format($this->attributes['total_iva'], 0, ',', '.');
     }
 

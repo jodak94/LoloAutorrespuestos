@@ -51,6 +51,9 @@ class VentaController extends AdminBaseController
     public function index_ajax(Request $re)
     {
         $query = $this->query_index_ajax($re);
+        $ventas = $query->get();
+        $suma = $ventas->sum('monto_total');
+        $suma = number_format($suma, 0, ',', '.');
         $object = Datatables::of($query)
             ->addColumn('acciones', function( $venta ) use ($re){
               $html = '
@@ -75,6 +78,9 @@ class VentaController extends AdminBaseController
                 </div>';
               return $html;
             })
+            ->with([
+              'suma' => $suma
+            ])
             ->editColumn('created_at', function( $venta ){
               return $venta->created_at->format('d/m/y');
             })

@@ -31,10 +31,11 @@ class ConfiguracionController extends AdminBaseController
         ->where('admin', 0)
         ->orderBy('orden')
         ->get();
-      return view('configuracion::admin.configuracions.configurar', compact('configuraciones', 'conf_factura'));
+      return view('configuracion::admin.configuracions.configurar', compact('configuracions', 'conf_factura'));
     }
 
     public function updateConfigurar(Request $request){
+
       $pad = 3;
       foreach ($request->fac_id as $key => $conf) {
         if($key == 2)
@@ -43,6 +44,16 @@ class ConfiguracionController extends AdminBaseController
         $conf->value = str_pad($request->factura[$key], $pad, '0', STR_PAD_LEFT);
         $conf->save();
       }
+      $configuracions = Configuracion::where('slug', '!=', 'factura')
+        ->where('admin', 0)
+        ->orderBy('orden')
+        ->get();
+
+      foreach ($configuracions as $conf) {
+        $conf->value = $request[$conf->slug];
+        $conf->save();
+      }
+
       return redirect()->route('dashboard.index')->withSuccess('Configuración guardada');
     }
 

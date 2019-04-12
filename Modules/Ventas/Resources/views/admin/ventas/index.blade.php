@@ -29,6 +29,11 @@
       .picker__select--month{
         padding: 1px;
       }
+      .suma{
+        color: #DC3601;
+        font-size: 25px;
+        font-weight: 200;
+      }
     </style>
 @endpush
 @section('content')
@@ -56,6 +61,11 @@
                       <div class="col-md-3">
                         {!! Form::normalInput('razon_social', 'Razón Social', $errors,null,['placeholder' => 'Ingresar Ruc o Razón social', 'type'=>'text']) !!}
                       </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <span class="pull-right suma">Total ventas: <span  id="suma"></span> Gs.</span> 
+                    </div>
                   </div>
                 </div>
                 <!-- /.box-header -->

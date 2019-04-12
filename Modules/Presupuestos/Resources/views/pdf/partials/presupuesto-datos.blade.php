@@ -1,12 +1,12 @@
 <table  cellspacing="0" width="80%" style="margin:auto;border-collapse: collapse" >
        <tr style="border-left: 0;border-right: 0 ;border-bottom: 1px;border-top: 0; border-style: solid">
             <td colspan="3" >
-                @if ($format == "html") 
+                @if ($format == "html")
                     <img src="{{ url('images/logo.png') }}" width="150px">
                 @else
                     <img src="{{ public_path('images/logo.png') }}" width="150px">
                 @endif
-                    
+
                 <div style="padding-left:5%;display:inline-block;font-size:12px">
                     <p style="margin-top:2%">Lolo AutoRepuestos S.R.L</p>
                     <p>Avda. Defensores Chaco c/ Cerro Corá</p>
@@ -14,7 +14,7 @@
                 </div>
             </td>
             <td colspan="2" style="text-align: center">
-                <p><b>Presupuesto</b></p> 
+                <p><b>Presupuesto</b></p>
                 <p><b>N° {{ $datosPresupuesto["nro_presupuesto"] }}</b></p>
                 <br>
                 <p style="text-align: left"><b>Fecha:</b> {{$datosPresupuesto["fecha"]}}</p>
@@ -22,12 +22,12 @@
         </tr>
         <tr>
             <td>
-                <p><b>Nombre del Cliente: </b> {{$datosPresupuesto["nombre_cliente"]}} </p> 
-                <p><b>Dirección: </b> {{$datosPresupuesto["direccion_cliente"]}}</p> 
+                <p><b>Nombre del Cliente: </b> {{$datosPresupuesto["nombre_cliente"]}} </p>
+                <p><b>Dirección: </b> {{$datosPresupuesto["direccion_cliente"]}}</p>
             </td>
             <td colspan="3">
                     <p><b>Telefono: </b> {{$datosPresupuesto["telefono_cliente"]}}</p>
-                    <p><b>E-mail: </b> {{$datosPresupuesto["email_cliente"]}}</p> 
+                    <p><b>E-mail: </b> {{$datosPresupuesto["email_cliente"]}}</p>
             </td>
         </tr>
         <tr style="text-align: center;font-weight: bold">
@@ -64,7 +64,7 @@
             @endforeach
             </td>
         </tr>
-        
+
         <tr>
                 <td style="border: 0" colspan="3"></td>
                 <td style="border: 1px solid black;font-weight: bold">Total: </td>
@@ -72,7 +72,7 @@
             </tr>
             <tr style="border: 0">
                     <td colspan="3">
-                        <p>El presupuesto tiene una validez de x días.</p>
+                        <p>El presupuesto tiene una validez de {{\Configuracion::where('slug', 'periodo_validez_presupuesto')->first()->value}} días.</p>
                         <p>Formas y términos de pago a definir.</p>
                     </td>
                     <td colspan="2"></td>
