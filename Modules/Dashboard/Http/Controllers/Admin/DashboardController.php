@@ -8,7 +8,9 @@ use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Dashboard\Repositories\WidgetRepository;
 use Modules\User\Contracts\Authentication;
 use Nwidart\Modules\Contracts\RepositoryInterface;
-
+use Modules\Ventas\Entities\Venta;
+use DB;
+use Carbon\Carbon;
 class DashboardController extends AdminBaseController
 {
     /**
@@ -47,8 +49,26 @@ class DashboardController extends AdminBaseController
         if ($widget) {
             $customWidgets = $widget->widgets;
         }
+        $from = Carbon::now();
+        $from->hour = '00';
+        $from->minute = '00';
+        $to = Carbon::now();
+        $to->hour = '23';
+        $to->minute = '59';
+        $query = "
+          select sum(monto_total) as suma
+          from ventas__ventas
+          where created_at > '".$from."'
+          and created_at < '".$to."'
+        ";
+        $total_contado = DB::select($query . "and tipo_factura = 'contado'")[0]->suma;
+        $total_credito = DB::select($query . "and tipo_factura = 'credito'")[0]->suma;
+        $total = $total_contado + $total_credito;
+        $total_contado = number_format($total_contado, 0, ',', '.');
+        $total_credito = number_format($total_credito, 0, ',', '.');
+        $total = number_format($total, 0, ',', '.');
 
-        return view('dashboard::admin.dashboard', compact('customWidgets'));
+        return view('dashboard::admin.dashboard', compact('customWidgets', 'total_contado', 'total_credito', 'total'));
     }
 
     /**

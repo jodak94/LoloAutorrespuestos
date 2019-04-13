@@ -43,7 +43,7 @@ class RegisterVentasSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->authorize(
                      /* append */
                 );
-                $item->item(trans('ventas::ventas.title.ventas'), function (Item $item) {
+                $item->item(trans('Ventas'), function (Item $item) {
                     $item->icon('fa fa-cart-plus');
                     $item->weight(0);
                     $item->append('admin.ventas.venta.create');

@@ -17,7 +17,7 @@ class Venta extends Model
       'ruc', 'direccion', 'telefono'
     ];
     protected $appends = [
-      'monto_total_format', 'monto_pagado_format', 'total_iva_format'
+      'monto_total_format', 'monto_pagado_format', 'total_iva_format', 'tipo_factura_format'
     ];
 
     public static $tipos_factura = [
@@ -51,5 +51,9 @@ class Venta extends Model
 
     public function setTotalIvaAttribute($value){
       $this->attributes['total_iva'] =  str_replace(',', '.',str_replace('.', '', $value));
+    }
+
+    public function getTipoFacturaFormatAttribute(){
+      return self::$tipos_factura[$this->tipo_factura];
     }
 }

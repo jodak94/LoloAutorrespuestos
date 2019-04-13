@@ -44,7 +44,9 @@ class VentaController extends AdminBaseController
             $credito = true;
         }
         $today = Carbon::now()->format('d/m/Y');
-        return view('ventas::admin.ventas.index', compact('today', 'credito'));
+        $tipos_factura = ['todos' => '--'];
+        $tipos_factura = array_merge($tipos_factura, Venta::$tipos_factura);
+        return view('ventas::admin.ventas.index', compact('today', 'credito', 'tipos_factura'));
     }
 
 
@@ -106,8 +108,9 @@ class VentaController extends AdminBaseController
 
         if($re->has('credito') && $re->credito)
           $query->where('tipo_factura', 'credito');
-        else
-          $query->where('tipo_factura', '!=', 'credito');
+
+        if($re->has('tipo_factura') && $re->tipo_factura != 'todos')
+          $query->where('tipo_factura', $re->tipo_factura);
         return $query;
     }
 
@@ -146,6 +149,8 @@ class VentaController extends AdminBaseController
           $request->monto_pagado = 0;
         }
         $request = $this->getDatosFacturacion($request);
+        if($request->tipo_factura == 'contado')
+          $request['monto_pagado'] = $request->monto_total;
         $venta = $this->venta->create($request->all());
         foreach ($request->producto_id as $key => $producto_id) {
           $detalle = new VentaDetalle();
@@ -160,9 +165,11 @@ class VentaController extends AdminBaseController
           $producto->stock -= $request->cantidad[$key];
           $producto->save();
         }
-        $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
-        $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
-        $conf_factura->save();
+        if($request->generar_factura){
+          $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
+          $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
+          $conf_factura->save();
+        }
         DB::commit();
       }catch(\Exception $e){
         return redirect()

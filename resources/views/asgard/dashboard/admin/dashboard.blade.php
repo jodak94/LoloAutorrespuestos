@@ -18,17 +18,33 @@
       background-repeat: no-repeat;
       background-position: right bottom;
     }
+    .resumen-container{
+      position: relative;
+      width: 25%;
+      position: absolute;
+      left: 25px;
+      bottom: 20px;
+    }
+    .content-wrapper{
+      position: relative;
+    }
+    .table-bordered-2 > thead > tr > th, .table-bordered-2 > tbody > tr > th, .table-bordered-2 > tfoot > tr > th, .table-bordered-2 > thead > tr > td, .table-bordered-2 > tbody > tr > td, .table-bordered-2 > tfoot > tr > td {
+      border: 1px solid #b2b2b2;
+    }
+    .table-2{
+        background-color: #e1e6ed;
+    }
+    .table-2>tbody>tr>td, .table-2>tbody>tr>th, .table-2>tfoot>tr>td, .table-2>tfoot>tr>th, .table-2>thead>tr>td, .table-2>thead>tr>th {
+      padding: 4px;
+    }
   </style>
 @stop
 
 @section('content')
     <div class="row">
       <div class="col-md-12">
-        <div class="box box-primary">
-          <div class="box-header">
-            <h3 class="box-title">
-            </h3>
-          </div>
+        {{-- <div class="box box-primary"> --}}
+        <div>
           <div class="box-body">
             <div class="row">
               <div class="col-md-3">
@@ -95,6 +111,20 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="resumen-container">
+      <table class="table table-bordered table-bordered-2 table-2 table-hover">
+        <tr><td colspan="2" style="text-align:center"><label>Resumen del día</label></td></tr>
+        <tr><td><label>Ventas al Contado</label></td>
+          <td>{{$total_contado}} Gs.</td>
+        </tr>
+        <tr><td><label>Ventas a Crédito</label></td>
+          <td>{{$total_credito}}Gs.</td>
+        </tr>
+        <tr><td><label>Total</label></td>
+          <td>{{$total}} Gs.</td>
+        </tr>
+      </table>
     </div>
     <img src="{{url('/images/logo1.png')}}" class="logo">
 

@@ -35,6 +35,7 @@
             d.fecha_desde = $("#fecha_desde").val();
             d.fecha_hasta = $("#fecha_hasta").val();
             d.credito = '{{$credito}}'
+            d.tipo_factura = $("[name=tipo_factura]").val();
         },
         headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
       },
@@ -50,6 +51,7 @@
         @if($credito)
           { data: 'monto_pagado_format', name: 'monto_pagado_format', className: 'monto_pagado' },
         @endif
+        { data: 'tipo_factura_format', name: 'tipo_factura_format' },
         { data: 'acciones', name: 'acciones' },
       ],
       columnDefs: [
@@ -84,6 +86,9 @@
     $(".fecha").change(function(){
         table.ajax.reload();
     });
+    $("[name=tipo_factura]").change(function(){
+        table.ajax.reload();
+    });
     @if($credito)
       $('.data-table').on('click','.pagar',function() {
         let factura = $(this).closest('tr').find('.nro_factura').html()
@@ -92,7 +97,9 @@
         let venta_id = $(this).attr('venta')
         monto_total = monto_total.replace(/\./g, '').replace(',', '.')
         monto_pagado = monto_pagado.replace(/\./g, '').replace(',', '.')
+        let pagado_inicial = monto_pagado;
         let deuda = monto_total - monto_pagado
+        let deuda_inicial = deuda;
         let html =
          '<div class="row" style="width:100%">'
         +'  <div class="col-md-4">'
@@ -173,14 +180,18 @@
            onContentReady: function(){
              $(".pago_format").number( true , 0, ',', '.' );
              $("#a_pagar").on('keyup', function(){
+               console.log('entra')
                if($("#a_pagar").val() != '' && $("#a_pagar").val() != undefined){
                  let pagado_ = parseInt(monto_pagado) + parseInt($(this).val())
                  let deuda_ = parseInt(deuda) - parseInt($(this).val())
                  $("#deuda_modal").val(deuda_)
                  $("#pagado_modal").val(pagado_)
-                }
-             })
-           }
+               }else {
+                 $("#deuda_modal").val(deuda_inicial)
+                 $("#pagado_modal").val(pagado_inicial)
+               }
+            })
+          }
        });
      });
     @endif

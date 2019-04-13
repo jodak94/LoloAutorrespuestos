@@ -63,8 +63,11 @@
                       </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
-                      <span class="pull-right suma">Total ventas: <span  id="suma"></span> Gs.</span> 
+                    <div class="col-md-3">
+                      {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura', $errors, $tipos_factura) !!} 
+                    </div>
+                    <div class="col-md-9">
+                      <span class="pull-right suma">Total ventas: <span  id="suma"></span> Gs.</span>
                     </div>
                   </div>
                 </div>
@@ -81,6 +84,7 @@
                                   @if($credito)
                                     <th>Monto Pagado</th>
                                   @endif
+                                  <th>Tipo de Factura</th>
                                   <th data-sortable="false">Acciones</th>
                                 </tr>
                               </thead>
@@ -95,6 +99,7 @@
                                   @if($credito)
                                     <th>Monto Pagado</th>
                                   @endif
+                                  <th>Tipo de Factura</th>
                                   <th>Acciones</th>
                               </tr>
                         </table>
