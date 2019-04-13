@@ -36,6 +36,7 @@
             d.fecha_hasta = $("#fecha_hasta").val();
             d.credito = '{{$credito}}'
             d.tipo_factura = $("[name=tipo_factura]").val();
+            d.con_factura = $("[name=con_factura]").val();
         },
         headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
       },
@@ -89,6 +90,9 @@
     $("[name=tipo_factura]").change(function(){
         table.ajax.reload();
     });
+    $("[name=con_factura]").change(function(){
+        table.ajax.reload();
+    })
     @if($credito)
       $('.data-table').on('click','.pagar',function() {
         let factura = $(this).closest('tr').find('.nro_factura').html()

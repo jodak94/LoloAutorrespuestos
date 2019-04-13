@@ -14,7 +14,7 @@ class Venta extends Model
     protected $fillable = [
       'nro_factura', 'monto_total', 'datos_id', 'tipo_factura', 'monto_pagado',
       'total_iva', 'precio_total_letras', 'plazo_credito', 'razon_social',
-      'ruc', 'direccion', 'telefono'
+      'ruc', 'direccion', 'telefono', 'generar_factura'
     ];
     protected $appends = [
       'monto_total_format', 'monto_pagado_format', 'total_iva_format', 'tipo_factura_format'

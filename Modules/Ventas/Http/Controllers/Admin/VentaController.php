@@ -46,7 +46,8 @@ class VentaController extends AdminBaseController
         $today = Carbon::now()->format('d/m/Y');
         $tipos_factura = ['todos' => '--'];
         $tipos_factura = array_merge($tipos_factura, Venta::$tipos_factura);
-        return view('ventas::admin.ventas.index', compact('today', 'credito', 'tipos_factura'));
+        $con_factura = ['todos' => '--', '1' => 'Sí', '0' => 'No'];
+        return view('ventas::admin.ventas.index', compact('today', 'credito', 'tipos_factura', 'con_factura'));
     }
 
 
@@ -111,6 +112,9 @@ class VentaController extends AdminBaseController
 
         if($re->has('tipo_factura') && $re->tipo_factura != 'todos')
           $query->where('tipo_factura', $re->tipo_factura);
+
+        if($re->has('con_factura') && $re->con_factura != 'todos')
+          $query->where('generar_factura', $re->con_factura);
         return $query;
     }
 

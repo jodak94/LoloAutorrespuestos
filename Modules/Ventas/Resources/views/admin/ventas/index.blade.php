@@ -63,9 +63,12 @@
                   </div>
                   <div class="row">
                     <div class="col-md-3">
+                      {!! Form:: normalSelect('con_factura', 'Con Factura', $errors, $con_factura, (object)['con_factura' => 'todos']) !!}
+                    </div>
+                    <div class="col-md-3">
                       {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura', $errors, $tipos_factura) !!}
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                       <span class="pull-right suma">Total ventas: <span  id="suma"></span> Gs.</span>
                     </div>
                   </div>
