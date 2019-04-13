@@ -43,7 +43,7 @@ class PresupuestoController extends AdminBaseController
         $fecha_desde = $today;
         $fecha_desde->day = 1;
         $fecha_desde = $fecha_desde->format('d/m/Y');
-        $today = $today->format('d/m/Y');
+        $today = Carbon::now()->format('d/m/Y');
         return view('presupuestos::admin.presupuestos.index', compact('today', 'fecha_desde'));
     }
 

@@ -38,6 +38,10 @@
         },
         headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
       },
+      "drawCallback": function (data) {
+        var response = data.json;
+        $("#suma").html(response.suma);
+      },
       columns:[
         { data: 'created_at', name: 'created_at' },
         { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },

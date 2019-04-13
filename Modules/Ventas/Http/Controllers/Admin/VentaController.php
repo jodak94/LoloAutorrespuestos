@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Ventas\Entities\Venta;
 use Modules\Clientes\Entities\DatosFacturacion;
 use Modules\Productos\Entities\Producto;
+use Modules\Configuracion\Entities\Configuracion;
 use Modules\Ventas\Entities\VentaDetalle;
 use Modules\Ventas\Http\Requests\CreateVentaRequest;
 use Modules\Ventas\Http\Requests\UpdateVentaRequest;
@@ -50,6 +51,9 @@ class VentaController extends AdminBaseController
     public function index_ajax(Request $re)
     {
         $query = $this->query_index_ajax($re);
+        $ventas = $query->get();
+        $suma = $ventas->sum('monto_total');
+        $suma = number_format($suma, 0, ',', '.');
         $object = Datatables::of($query)
             ->addColumn('acciones', function( $venta ) use ($re){
               $html = '
@@ -74,6 +78,9 @@ class VentaController extends AdminBaseController
                 </div>';
               return $html;
             })
+            ->with([
+              'suma' => $suma
+            ])
             ->editColumn('created_at', function( $venta ){
               return $venta->created_at->format('d/m/y');
             })
@@ -118,7 +125,8 @@ class VentaController extends AdminBaseController
      */
     public function create()
     {
-        $nro_factura = '001-034-001123';
+        $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
+        $nro_factura = implode('-',$nro_factura);
         $tipos_factura = Venta::$tipos_factura;
         $descuentos = Venta::$descuentos;
         return view('ventas::admin.ventas.create', compact('nro_factura', 'tipos_factura', 'descuentos'));
@@ -152,6 +160,9 @@ class VentaController extends AdminBaseController
           $producto->stock -= $request->cantidad[$key];
           $producto->save();
         }
+        $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
+        $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
+        $conf_factura->save();
         DB::commit();
       }catch(\Exception $e){
         return redirect()
@@ -173,7 +184,7 @@ class VentaController extends AdminBaseController
         $request['direccion'] = $request->datos_direccion;
         $request['telefono'] = $request->datos_telefono;
       }else{
-        $datos = DatosFacturacion::where('ruc', 'xxxxxx');
+        $datos = DatosFacturacion::where('ruc', 'xxxxxx')->first();
         if(isset($datos)){
           $datos = new DatosFacturacion();
           $datos->ruc = 'xxxxxx';
