@@ -54,8 +54,9 @@ class PresupuestoController extends AdminBaseController
      */
     public function create()
     {
-        $nro_presupuesto = "000000001";
-        $descuentos = Venta::$descuentos;
+        $nro_presupuesto = Presupuesto::orderBy('created_at', 'desc')->limit(1)->get()[0]->nro_presupuesto;
+        $nro_presupuesto = str_pad($nro_presupuesto + 1, 9, '0', STR_PAD_LEFT);
+        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
         return view('presupuestos::admin.presupuestos.create',compact('nro_presupuesto','descuentos'));
     }
 
