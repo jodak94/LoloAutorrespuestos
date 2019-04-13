@@ -34,13 +34,14 @@
         padding: 15px;
       }
     </style>
+    {!! Theme::style('vendor/jquery-toast/jquery.toast.min.css') !!}
     {!! Theme::script('vendor/jquery/jquery.min.js') !!}
     @include('partials.asgard-globals')
     @section('styles')
     @show
     @stack('css-stack')
     @stack('translation-stack')
-
+    {!! Theme::script('vendor/jquery-toast/jquery.toast.min.js') !!}
     <script>
         $.ajaxSetup({
             headers: { 'Authorization': 'Bearer {{ $currentUser->getFirstApiKey() }}' }
@@ -129,6 +130,7 @@
     </script>
 <?php endif; ?>
 <script type="text/javascript" src="{{ asset('themes/adminlte/js/vendor/jquery-ui-1.10.3.min.js') }}"></script>
+
 {!! Theme::script('vendor/jquery-confirm/jquery-confirm.min.js') !!}
   <script>
     var html =

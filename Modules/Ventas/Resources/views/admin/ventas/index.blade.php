@@ -14,7 +14,6 @@
     </ol>
 @stop
 @push('css-stack')
-    {!! Theme::style('vendor/jquery-toast/jquery.toast.min.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.date.css') !!}
     {!! Theme::style('vendor/pickadate/css/classic.time.css') !!}
@@ -64,7 +63,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-3">
-                      {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura', $errors, $tipos_factura) !!} 
+                      {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura', $errors, $tipos_factura) !!}
                     </div>
                     <div class="col-md-9">
                       <span class="pull-right suma">Total ventas: <span  id="suma"></span> Gs.</span>
@@ -125,7 +124,6 @@
 
 @push('js-stack')
   <script src="{{ asset('js/jquery.number.min.js') }}"></script>
-  {!! Theme::script('vendor/jquery-toast/jquery.toast.min.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.date.js') !!}
   {!! Theme::script('vendor/pickadate/js/picker.time.js') !!}

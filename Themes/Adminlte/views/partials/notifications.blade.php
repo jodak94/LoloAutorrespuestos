@@ -1,20 +1,41 @@
 @if (Session::has('success'))
-    <div class="alert alert-success fade in alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        {{ Session::get('success') }}
-    </div>
+  <script>
+    $(document).on('ready', function(){
+      $.toast({
+        heading: 'Operación exitosa',
+        text: '{{ Session::get('success') }}',
+        showHideTransition: 'slide',
+        icon:'success',
+        position: 'top-right'
+      })
+    })
+  </script>
 @endif
 
 @if (Session::has('error'))
-    <div class="alert alert-danger fade in alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        {{ Session::get('error') }}
-    </div>
+  <script>
+    $(document).on('ready', function(){
+      $.toast({
+        heading: 'Error',
+        text: '{{ Session::get('error') }}',
+        showHideTransition: 'slide',
+        icon:'error',
+        position: 'top-right'
+      })
+    })
+  </script>
 @endif
 
 @if (Session::has('warning'))
-    <div class="alert alert-warning fade in alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        {{ Session::get('warning') }}
-    </div>
+  <script>
+    $(document).on('ready', function(){
+      $.toast({
+        heading: 'Atención  ',
+        text: '{{ Session::get('warning') }}',
+        showHideTransition: 'slide',
+        icon:'warning',
+        position: 'top-right'
+      })
+    })
+  </script>
 @endif
