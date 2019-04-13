@@ -15,8 +15,11 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                <a href="{{ route('admin.productos.producto.import') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-file-excel"></i> Importar desde Excel 
+                    <a href="{{ route('admin.productos.producto.export') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px; margin-right: 10px">
+                      <i class="fa fa-file-excel-o"></i> Exportar a Excel
+                    </a>
+                    <a href="{{ route('admin.productos.producto.import') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px; margin-right: 10px">
+                      <i class="fa fa-file-excel-o"></i> Importar desde Excel
                     </a>
                     <a href="{{ route('admin.productos.producto.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
                         <i class="fa fa-pencil"></i> {{ trans('productos::productos.button.create producto') }}
@@ -63,7 +66,7 @@
                                     <?php if (isset($producto->foto) && $producto->foto != ""): ?>
                                         <img src="{{url($producto->foto)}}" width="150" height="150" style="object-fit:cover"/>
                                     <?php else: ?>
-                                        
+
                                         <img src="{{url('images/default-product.jpg')}}" width="150" height="150" style="object-fit:cover"/>
                                     <?php endif; ?>
                                 </td>

@@ -54,6 +54,10 @@ $router->group(['prefix' =>'/productos'], function (Router $router) {
         'as' => 'admin.productos.producto.import',
         'uses' => 'ProductoController@import_view',
     ]);
+    $router->get('productos/export', [
+        'as' => 'admin.productos.producto.export',
+        'uses' => 'ProductoController@export',
+    ]);
     $router->post('productos/import_excel', [
         'as' => 'admin.productos.producto.import_productos',
         'uses' => 'ProductoController@import_productos',

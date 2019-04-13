@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use \Excel;
 use App\Imports\ProductosImport;
+use App\Exports\ProductosExport;
 use Validator;
+use Carbon\Carbon;
 
 class ProductoController extends AdminBaseController
 {
@@ -304,5 +306,9 @@ class ProductoController extends AdminBaseController
         $request->session()->flash('message', 'Nuevos Productos agregados.');
         $request->session()->flash('message-type', 'success');
         return response()->json(['cargados'=>$productos_cargados]);
+    }
+
+    public function export() {
+        return Excel::download(new ProductosExport, 'Inventario '.Carbon::now()->format('d-m-Y').'.xlsx');
     }
 }
