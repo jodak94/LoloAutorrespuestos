@@ -28,6 +28,14 @@
             </div>
             <div class="box box-primary">
                 <div class="box-header">
+                  <div class="row">
+                    <div class="col-md-3">
+                      {!! Form::normalInput('codigo', 'Código', $errors) !!}
+                    </div>
+                    <div class="col-md-3">
+                      {!! Form::normalInput('nombre', 'Nombre', $errors) !!}
+                    </div>
+                </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -37,49 +45,25 @@
                             <tr>
                                 <th>Código</th>
                                 <th>Nombre del Producto</th>
+                                <th>Costo</th>
                                 <th>Precio</th>
                                 <th>Stock</th>
                                 <th>Foto</th>
-                                <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
+                                <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($productos)): ?>
-                            <?php foreach ($productos as $producto): ?>
-                            <tr>
-                                <td>
-                                        {{ $producto->codigo }}
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.productos.producto.edit', [$producto->id]) }}">
-                                        {{ $producto->nombre }}
-                                    </a>
-                                </td>
-                                <td>
-                                        {{ $producto->precio }}
-                                </td>
-                                <td>
-                                        {{ $producto->stock }}
-                                </td>
 
-                                <td style="text-align:center">
-                                    <?php if (isset($producto->foto) && $producto->foto != ""): ?>
-                                        <img src="{{url($producto->foto)}}" width="150" height="150" style="object-fit:cover"/>
-                                    <?php else: ?>
-
-                                        <img src="{{url('images/default-product.jpg')}}" width="150" height="150" style="object-fit:cover"/>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.productos.producto.edit', [$producto->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.productos.producto.destroy', [$producto->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
                             </tbody>
+                            <tfoot>
+                              <th>Código</th>
+                              <th>Nombre del Producto</th>
+                              <th>Costo</th>
+                              <th>Precio</th>
+                              <th>Stock</th>
+                              <th>Foto</th>
+                              <th>Acciones</th>
+                            </tfoot>
                         </table>
                         <!-- /.box-body -->
                     </div>
@@ -102,29 +86,13 @@
 @stop
 
 @push('js-stack')
+    @include('productos::admin.productos.partials.script-index')
     <script type="text/javascript">
         $( document ).ready(function() {
             $(document).keypressAction({
                 actions: [
                     { key: 'c', route: "<?= route('admin.productos.producto.create') ?>" }
                 ]
-            });
-        });
-    </script>
-    <?php $locale = locale(); ?>
-    <script type="text/javascript">
-        $(function () {
-            $('.data-table').dataTable({
-                "paginate": true,
-                "lengthChange": true,
-                "filter": true,
-                "sort": true,
-                "info": true,
-                "autoWidth": true,
-                "order": [[ 0, "desc" ]],
-                "language": {
-                    "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
-                }
             });
         });
     </script>

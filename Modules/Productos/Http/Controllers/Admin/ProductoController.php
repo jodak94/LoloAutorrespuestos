@@ -16,6 +16,8 @@ use App\Imports\ProductosImport;
 use App\Exports\ProductosExport;
 use Validator;
 use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
+use DB;
 
 class ProductoController extends AdminBaseController
 {
@@ -59,6 +61,46 @@ class ProductoController extends AdminBaseController
     {
         $productos = $this->producto->all();
         return view('productos::admin.productos.index', compact('productos'));
+    }
+
+    public function index_ajax(Request $re){
+      $query = $this->query_index_ajax($re);
+      $ventas = $query->get();
+      $object = Datatables::of($query)
+          ->editColumn('url_foto', function($producto){
+            $html = '<img src="'.$producto->url_foto.'" width="40px" height="auto" class="foto" style="display: flex; margin: auto;">';
+            return $html;
+          })
+          ->addColumn('acciones', function( $producto ){
+            $edit_route = route('admin.productos.producto.edit', $producto->id);
+            $delete_route = route('admin.productos.producto.destroy', $producto->id);
+            $html = '
+              <div class="btn-group">
+                <a href="'.$edit_route.'" class="btn btn-default btn-flat">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <button data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="'.$delete_route.'" class="btn btn-danger btn-flat">
+                  <i class="fa fa-trash"></i>
+                  </button>
+              </div>
+            ';
+            return $html;
+          })
+          ->rawColumns(['acciones', 'url_foto'])
+          ->make(true);
+      $data = $object->getData(true);
+      return response()->json( $data );
+    }
+
+    public function query_index_ajax($re){
+        $query = Producto::select();
+        if(isset($re->codigo) && trim($re->codigo) != '')
+          $query->where('codigo', 'LIKE', '%'.$re->codigo.'%');
+
+        if(isset($re->nombre) && trim($re->nombre) != '')
+          $query->where('nombre', 'LIKE', '%'.$re->nombre.'%');
+
+        return $query;
     }
 
     /**

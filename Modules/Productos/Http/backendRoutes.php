@@ -12,6 +12,11 @@ $router->group(['prefix' =>'/productos'], function (Router $router) {
         'uses' => 'ProductoController@index',
         'middleware' => 'can:productos.productos.index'
     ]);
+    $router->get('productos/index-ajax', [
+        'as' => 'admin.productos.producto.index_ajax',
+        'uses' => 'ProductoController@index_ajax',
+        'middleware' => 'can:productos.productos.index'
+    ]);
     $router->get('productos/create', [
         'as' => 'admin.productos.producto.create',
         'uses' => 'ProductoController@create',

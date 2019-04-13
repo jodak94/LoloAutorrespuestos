@@ -41,7 +41,7 @@
         { data: 'created_at', name: 'created_at' },
         { data: 'nro_presupuesto', name: 'nro_presupuesto' },
         { data: 'nombre_cliente', name: 'nombre_cliente' },
-        { data: 'precio_total', name: 'precio_total' },
+        { data: 'precio_total_format', name: 'precio_total_format' },
         { data: 'acciones', name: 'acciones' },
       ],
       columnDefs: [
@@ -89,7 +89,7 @@
             }
         });
      });
-    
+
     //filtros
     $("#nombre_cliente").keyup(function(){
         table.ajax.reload();
