@@ -17,6 +17,15 @@
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="tab-content">
                     <?php $i = 0; ?>
                     @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
@@ -52,6 +61,8 @@
     <script type="text/javascript">
         $( document ).ready(function() {
             $(".precio").number( true , 0, ',', '.' );
+            console.log($('.costo'))
+            $(".costo").number( true , 0, ',', '.' );
             $(document).keypressAction({
                 actions: [
                     { key: 'b', route: "<?= route('admin.productos.producto.index') ?>" }

@@ -52,6 +52,7 @@
     <script type="text/javascript">
         $( document ).ready(function() {
             $(".precio").number( true , 0, ',', '.' );
+             $(".costo").number( true , 0, ',', '.' );
             $(document).keypressAction({
                 actions: [
                     { key: 'b', route: "<?= route('admin.productos.producto.index') ?>" }

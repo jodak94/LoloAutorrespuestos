@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use \Excel;
 use App\Imports\ProductosImport;
+use Validator;
 
 class ProductoController extends AdminBaseController
 {
@@ -21,6 +22,7 @@ class ProductoController extends AdminBaseController
      */
     private $producto;
     private $rules;
+    private $messages;
 
     public function __construct(ProductoRepository $producto)
     {
@@ -34,8 +36,16 @@ class ProductoController extends AdminBaseController
             'precio'     => 'required|numeric|min:0',
             'stock'     => 'required|numeric|min:0',
             'stock_critico' => 'required|numeric|min:0',
-            'costo' => 'required|numeric|min:0'
+            'costo' => 'required|numeric|min:0',
+            'descuento' => 'nullable|numeric|min:0'
         ];
+        $this->messages = [
+            'min'    => 'El campo :attribute debe ser mayor o igual a cero.',
+            'required'    => 'El campo :attribute no puede quedar vacio.',
+            'unique' => 'El campo :attribute debe ser único. Ya existe ese valor.',
+            'numeric' => 'El campo :attribute debe ser numérico.',
+        ];
+
     }
 
     /**
@@ -46,7 +56,6 @@ class ProductoController extends AdminBaseController
     public function index()
     {
         $productos = $this->producto->all();
-
         return view('productos::admin.productos.index', compact('productos'));
     }
 
@@ -68,13 +77,20 @@ class ProductoController extends AdminBaseController
      */
     public function store(CreateProductoRequest $request)
     {
+        $validator = Validator::make($request->all(),$this->rules,$this->messages);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.productos.producto.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
         $producto = $this->producto->create($request->all());
         if ($request->hasFile('image')) {
             $image      = $request->file('image');
             $fileName   = time() . '.' . $image->getClientOriginalExtension();
             $pathToFile = "assets/media/fotos_productos/$fileName" ;
             Storage::disk('local')->put('public'.'/'.$pathToFile, file_get_contents($image));
-
             $producto->foto = $pathToFile;
             $producto->save();
         }
@@ -102,10 +118,26 @@ class ProductoController extends AdminBaseController
      */
     public function update(Producto $producto, UpdateProductoRequest $request)
     {
+        $updateRules = $this->rules;
+        if($producto->codigo == $request->codigo) {
+            $updateRules['codigo'] = str_replace('|unique:productos__productos',"",$updateRules['codigo']);
+        }
+
+        $validator = Validator::make($request->all(),$updateRules,$this->messages);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.productos.producto.edit',['producto'=>$producto->id])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
       $producto = $this->producto->update($producto, $request->all());
       $producto->precio = $request->precio;
       $producto->save();
         if ($request->hasFile('image')) {
+            $oldImage = $producto->foto;
+            if(File::exists($oldImage)) {
+                File::delete($oldImage);
+            }
             $image      = $request->file('image');
             $fileName   = time() . '.' . $image->getClientOriginalExtension();
             $pathToFile = "assets/media/fotos_productos/$fileName" ;
@@ -236,7 +268,7 @@ class ProductoController extends AdminBaseController
     protected function cell_validation(array $data, array $rules)
     {
         // Perform Validation
-        $validator = \Validator::make($data, $rules);
+        $validator = \Validator::make($data, $rules,$this->messages);
         $errors = [];
         if ($validator->fails()) {
             $errorMessages = $validator->errors()->messages();
@@ -261,7 +293,7 @@ class ProductoController extends AdminBaseController
                 $producto->stock_critico = $req["stock_critico"];
                 $producto->precio = $req["precio"];
                 $producto->costo = $req["costo"];
-                $producto->descuento = $req["descuento"]?$req["descuento"]/100:0;
+                $producto->descuento = $req["descuento"]?(1-$req["descuento"]/100):0;
                 $producto->save();
                 $productos_cargados++;
             }
