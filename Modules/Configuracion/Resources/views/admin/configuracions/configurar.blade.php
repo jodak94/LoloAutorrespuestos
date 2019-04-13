@@ -50,11 +50,7 @@
 @push('js-stack')
     <script type="text/javascript">
         $( document ).ready(function() {
-            $(document).keypressAction({
-                actions: [
-                    { key: 'b', route: "<?= route('admin.configuracion.configuracion.index') ?>" }
-                ]
-            });
+            $('.select2').select2();
         });
     </script>
     <script>

@@ -66,7 +66,9 @@ class ProductoController extends AdminBaseController
      */
     public function create()
     {
-        return view('productos::admin.productos.create');
+        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+
+        return view('productos::admin.productos.create', compact('descuentos'));
     }
 
     /**
@@ -106,7 +108,8 @@ class ProductoController extends AdminBaseController
      */
     public function edit(Producto $producto)
     {
-        return view('productos::admin.productos.edit', compact('producto'));
+        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        return view('productos::admin.productos.edit', compact('producto', 'descuentos'));
     }
 
     /**
@@ -206,7 +209,7 @@ class ProductoController extends AdminBaseController
     }
 
     public function import_productos(Request $request) {
-        
+
         $extensions = array("xls","xlsx");
 
         $result = array($request->file('excel')->getClientOriginalExtension());
@@ -248,13 +251,13 @@ class ProductoController extends AdminBaseController
             ],400);
         }
 
-        
+
     }
 
     public function producto_validation(Request $request) {
         $error = $this->cell_validation($request->producto,$this->rules);
         if (!empty($error)) {
-            
+
             return response()->json([
                 'status' => false,
                 'error' => $error[0]

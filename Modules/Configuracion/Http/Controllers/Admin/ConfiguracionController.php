@@ -10,6 +10,7 @@ use Modules\Configuracion\Http\Requests\UpdateConfiguracionRequest;
 use Modules\Configuracion\Repositories\ConfiguracionRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Auth;
+use Log;
 class ConfiguracionController extends AdminBaseController
 {
     /**
@@ -27,15 +28,18 @@ class ConfiguracionController extends AdminBaseController
     public function configurar(){
       $query = Configuracion::orderBy('orden');
       $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden', 'asc')->get();
-      $configuracions = Configuracion::where('slug', '!=', 'factura')
+      $configuracions = Configuracion::
+          where('slug', '!=', 'factura')
+        ->where('slug', '!=', 'descuentos')
         ->where('admin', 0)
         ->orderBy('orden')
         ->get();
-      return view('configuracion::admin.configuracions.configurar', compact('configuracions', 'conf_factura'));
+      $descuentos = Configuracion::where('slug', 'descuentos')->first();
+      $descuentos->value = (array)json_decode($descuentos->value);
+      return view('configuracion::admin.configuracions.configurar', compact('configuracions', 'conf_factura', 'descuentos'));
     }
 
     public function updateConfigurar(Request $request){
-
       $pad = 3;
       foreach ($request->fac_id as $key => $conf) {
         if($key == 2)
@@ -44,7 +48,9 @@ class ConfiguracionController extends AdminBaseController
         $conf->value = str_pad($request->factura[$key], $pad, '0', STR_PAD_LEFT);
         $conf->save();
       }
-      $configuracions = Configuracion::where('slug', '!=', 'factura')
+      $configuracions =
+      Configuracion::where('slug', '!=', 'factura')
+        ->where('slug', '!=', 'descuentos')
         ->where('admin', 0)
         ->orderBy('orden')
         ->get();
@@ -54,6 +60,15 @@ class ConfiguracionController extends AdminBaseController
         $conf->save();
       }
 
+      $descuentos = ['1' => '--'];
+      if(isset($request->descuentos))
+        foreach ($request->descuentos as $descuento) {
+          $key = 1 - preg_replace( '/[^0-9]/', '', $descuento )/(float)100;
+          $descuentos[(string)$key] = preg_replace( '/[^0-9]/', '', $descuento ) . '%';
+        }
+      $conf_descuento = Configuracion::where('slug', 'descuentos')->first();
+      $conf_descuento->value = json_encode($descuentos);
+      $conf_descuento->save();
       return redirect()->route('dashboard.index')->withSuccess('Configuración guardada');
     }
 

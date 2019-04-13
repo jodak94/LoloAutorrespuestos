@@ -20,14 +20,14 @@
         {!! Form::normalInput('precio', 'Precio', $errors, $producto, ['class'=>'form-control precio']) !!}
       </div>
       <div class="col-md-2">
-        {!! Form::normalInput('descuento', 'Descuento', $errors, $producto, ['placeholder' => '%']) !!}
+        {!! Form:: normalSelect('descuento', 'Descuento', $errors, $descuentos, $producto) !!}
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
         {!! Form::label('image','Foto')!!}
         {!! Form::file('image',['class' => 'form-control','id' => 'img-input']) !!}
-        <img id="preview" src="{{url('/images/default-product.jpg')}}" width="150" height="150" style="display: flex; margin:auto; margin-top:20px;object-fit:cover"/>
+        <img id="preview" src="{{$producto->url_foto}}" width="150" height="150" style="display: flex; margin:auto; margin-top:20px;object-fit:cover"/>
       </div>
     </div>
   </div>

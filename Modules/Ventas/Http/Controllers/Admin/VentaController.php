@@ -128,7 +128,7 @@ class VentaController extends AdminBaseController
         $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
         $nro_factura = implode('-',$nro_factura);
         $tipos_factura = Venta::$tipos_factura;
-        $descuentos = Venta::$descuentos;
+        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
         return view('ventas::admin.ventas.create', compact('nro_factura', 'tipos_factura', 'descuentos'));
     }
 

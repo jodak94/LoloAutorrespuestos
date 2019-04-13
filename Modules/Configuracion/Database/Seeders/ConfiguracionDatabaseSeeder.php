@@ -42,7 +42,7 @@ class ConfiguracionDatabaseSeeder extends Seeder
         $conf->descripcion = 'Descuentos';
         $conf->admin = false;
         $conf->orden = 5;
-        $conf->value = '{"0.05":"5%", "0.1":"10%", "0.15":"15%", "0.2":"20%"}';
+        $conf->value = '{"1":"--", "0.95":"5%", "0.9":"10%", "0.85":"15%", "0.8":"20%"}';
         $conf->save();
     }
 }

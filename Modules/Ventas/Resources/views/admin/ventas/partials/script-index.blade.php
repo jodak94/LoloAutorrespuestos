@@ -46,9 +46,9 @@
         { data: 'created_at', name: 'created_at' },
         { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },
         { data: 'razon_social', name: 'razon_social', className: 'razon_social' },
-        { data: 'monto_total', name: 'monto_total', className: 'monto_total' },
+        { data: 'monto_total_format', name: 'monto_total_format', className: 'monto_total' },
         @if($credito)
-          { data: 'monto_pagado', name: 'monto_pagado', className: 'monto_pagado' },
+          { data: 'monto_pagado_format', name: 'monto_pagado_format', className: 'monto_pagado' },
         @endif
         { data: 'acciones', name: 'acciones' },
       ],

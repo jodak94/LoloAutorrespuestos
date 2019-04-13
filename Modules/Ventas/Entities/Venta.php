@@ -19,13 +19,6 @@ class Venta extends Model
     protected $appends = [
       'monto_total_format', 'monto_pagado_format', 'total_iva_format'
     ];
-    public static $descuentos = [
-      '1'    => '--',
-      '0.95' => '5%',
-      '0.90' => '10%',
-      '0.85' => '15%',
-      '0.80' => '20%',
-    ];
 
     public static $tipos_factura = [
       'contado' => 'Contado',
