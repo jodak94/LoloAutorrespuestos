@@ -50,7 +50,27 @@
 @push('js-stack')
     <script type="text/javascript">
         $( document ).ready(function() {
-            $('.select2').select2();
+          var selectize = $('.selectized').selectize({
+              plugins: ['remove_button'],
+              delimiter: ',',
+              persist: false,
+              create: function(input) {
+                  return {
+                      value: input,
+                      text: input
+                  }
+              },
+              render: {
+                option_create: function(data, escape) {
+                  return '<div class="create">Agregar <strong>' + escape(data.input) + '</strong>&hellip;</div>';
+                }
+              },
+
+          });
+          $(".remove").attr('title', 'Eliminar');
+          selectize.on('change', function(){
+            $(".remove").attr('title', 'Eliminar');
+          })
         });
     </script>
     <script>

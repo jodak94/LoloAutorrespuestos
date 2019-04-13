@@ -23,7 +23,7 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>{{$descuentos->descripcion}}</label>
-          <select class="input-tags selectized" multiple="multiple" name="descuentos[]">
+          <select class="selectized" multiple="multiple" name="descuentos[]">
             @foreach ($descuentos->value as $key => $value)
               @if($key != 1)
                 <option value="{{$value}}" selected>{{$value}}</option>
@@ -31,9 +31,6 @@
             @endforeach
           </select>
         </div>
-      </div>
-      <div style="display:none">
-        @tags()
       </div>
     </div>
     <div class="row">
