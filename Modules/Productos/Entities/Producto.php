@@ -10,7 +10,7 @@ class Producto extends Model
 
     protected $table = 'productos__productos';
     public $translatedAttributes = [];
-    protected $fillable = ['codigo','nombre','descripcion','stock','stock_critico','precio'];
+    protected $fillable = ['codigo','nombre','stock','stock_critico','precio', 'descuento'];
 
     protected $appends = [
       'url_foto',

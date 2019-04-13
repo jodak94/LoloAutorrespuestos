@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CodigoUniqueAndCosto extends Migration
+class DropDescripcionFromProductos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CodigoUniqueAndCosto extends Migration
      */
     public function up()
     {
-
       Schema::table('productos__productos', function (Blueprint $table) {
-        $table->double('descuento')->nullable();
-        $table->string('codigo')->unique()->change();
+        $table->dropColumn('descripcion');
       });
     }
 
@@ -27,10 +25,8 @@ class CodigoUniqueAndCosto extends Migration
      */
     public function down()
     {
-        Schema::table('productos__productos', function (Blueprint $table) {
-            $table->dropColumn('costo');
-            $table->dropColumn('descuento');
-            $table->dropUnique('productos__productos_codigo_unique');
-        });
+      Schema::table('productos__productos', function (Blueprint $table) {
+        $table->string('descripcion',2000)->nullable();
+      });
     }
 }
