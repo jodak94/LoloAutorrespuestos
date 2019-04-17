@@ -18,6 +18,10 @@ use Yajra\DataTables\Facades\DataTables;
 use DB;
 use Log;
 use Illuminate\Support\Facades\Input;
+use Barryvdh\DomPDF\Facade as PDF;
+use View;
+use Zip;
+
 class VentaController extends AdminBaseController
 {
     /**
@@ -58,6 +62,9 @@ class VentaController extends AdminBaseController
         $suma = $ventas->sum('monto_total');
         $suma = number_format($suma, 0, ',', '.');
         $object = Datatables::of($query)
+            ->addColumn('checkbox', function( $venta ) use ($re) {
+              return '<input type="checkbox" name=venta_id[] value="'.$venta->id.'"/>';
+            }, 0)
             ->addColumn('acciones', function( $venta ) use ($re){
               $html = '
                 <div class="btn-group">';
@@ -87,7 +94,7 @@ class VentaController extends AdminBaseController
             ->editColumn('created_at', function( $venta ){
               return $venta->created_at->format('d/m/y');
             })
-            ->rawColumns(['acciones'])
+            ->rawColumns(['checkbox','acciones'])
             ->make(true);
         $data = $object->getData(true);
         return response()->json( $data );
@@ -176,16 +183,13 @@ class VentaController extends AdminBaseController
         }
         DB::commit();
       }catch(\Exception $e){
-        return redirect()
-            ->back()
-            ->withError("Ocurrió un error al crear la venta");
+        return response()->json(['error'=> $e]);
       }
       $query = [];
       if($request->tipo_factura == 'credito')
         $query = ['credito'];
 
-      return redirect()->route('admin.ventas.venta.index', $query)
-          ->withSuccess('Venta creado exitosamente');
+        return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $request->generar_factura]);
     }
 
     private function getDatosFacturacion(Request $request){
@@ -259,4 +263,79 @@ class VentaController extends AdminBaseController
         return response()->json(['error' => true, 'message' => 'Ocurrió un error al intentar guardar el pago']);
       }
     }
+
+    public function export_to_pdf(Request $request) {
+      $facturaBoxes = json_decode(json_encode([
+        'fecha' => ['x' => 3.6, 'y' => 2.5, 'width' => 100],
+        'contado' => ['x' => 17.5, 'y' => 2.5, 'width' => 100],
+        'credito' => ['x' => 19.8, 'y' => 2.5, 'width' => 100],
+        'nombre' => ['x' => 4.2, 'y' => 2.9, 'width' => 100],
+        'ruc' => ['x' => 17, 'y' => 2.9, 'width' => 100],
+        'direccion' => ['x' => 2.8, 'y' => 3.3, 'width' => 100],
+        'telefono' => ['x' => 17.6, 'y' => 3.3, 'width' => 100],
+        'vencimiento' => ['x' => 15.3, 'y' => 3.7, 'width' => 100],
+        'cantidad' => ['x' => 2, 'y' => 4.7, 'width' => 100],
+        'producto' => ['x' => 3.5, 'y' => 4.7, 'width' => 100],
+        'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
+        'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
+        'subtotal' => ['x' => 18.8, 'y' => 10.2, 'width' => 100],
+        'total_letras' => ['x' => 3, 'y' => 10.55, 'width' => 100],
+        'total' => ['x' => 17.6, 'y' => 10.55, 'width' => 100],
+        'iva_10' => ['x' => 7.2, 'y' => 10.9, 'width' => 100],
+        'total_iva' => ['x' => 10.7, 'y' => 10.9, 'width' => 100],
+        'duplicado' => 11.75
+      ]));
+      $venta = Venta::find($request->venta_id);
+      $format = $request->format;
+      if($request->download ==   "true") {
+          $pdf = PDF::loadView('ventas::pdf.factura',compact('venta','facturaBoxes','format'));
+          $pdf->setPaper('Legal', 'portrait');
+          return $pdf->download('factura-'.$venta->nro_factura.'.pdf');
+      }else {
+          if($format == "pdf") {
+              $pdf = PDF::loadView('ventas::pdf.factura',compact('venta','facturaBoxes','format'));
+              //$pdf->setPaper('Legal', 'portrait');
+              return $pdf->stream('factura-'.$venta->nro_factura.'.pdf');
+          }else {
+              $view = View::make('ventas::pdf.factura',compact('venta','facturaBoxes','format'));
+              return $view->render();
+
+          }
+      }
+  }
+
+  public function download_facturas(Request $request) {
+    $facturaBoxes = json_decode(json_encode([
+      'fecha' => ['x' => 3.6, 'y' => 2.5, 'width' => 100],
+      'contado' => ['x' => 17.5, 'y' => 2.5, 'width' => 100],
+      'credito' => ['x' => 19.8, 'y' => 2.5, 'width' => 100],
+      'nombre' => ['x' => 4.2, 'y' => 2.9, 'width' => 100],
+      'ruc' => ['x' => 17, 'y' => 2.9, 'width' => 100],
+      'direccion' => ['x' => 2.8, 'y' => 3.3, 'width' => 100],
+      'telefono' => ['x' => 17.6, 'y' => 3.3, 'width' => 100],
+      'vencimiento' => ['x' => 15.3, 'y' => 3.7, 'width' => 100],
+      'cantidad' => ['x' => 2, 'y' => 4.7, 'width' => 100],
+      'producto' => ['x' => 3.5, 'y' => 4.7, 'width' => 100],
+      'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
+      'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
+      'subtotal' => ['x' => 18.8, 'y' => 10.2, 'width' => 100],
+      'total_letras' => ['x' => 3, 'y' => 10.55, 'width' => 100],
+      'total' => ['x' => 17.6, 'y' => 10.55, 'width' => 100],
+      'iva_10' => ['x' => 7.2, 'y' => 10.9, 'width' => 100],
+      'total_iva' => ['x' => 10.7, 'y' => 10.9, 'width' => 100],
+      'duplicado' => 11.75
+    ]));
+    $zip = Zip::create(public_path().'/facturas/facturas.zip');
+    foreach($request->ventas_ids as $venta_id) {
+      $venta = Venta::find($request->venta_id);
+      $format = 'pdf';
+      $pdf = PDF::loadView('ventas::pdf.factura',compact('venta','facturaBoxes','format'));
+      $file_path = public_path().'/facturas/factura_'.$venta->nro_factura.'.pdf';
+      $pdf->save($file_path);
+      $zip->add($file_path);
+    }
+    dd($zip->listFiles());
+    $zip->close();
+    return Response::download();
+  }
 }

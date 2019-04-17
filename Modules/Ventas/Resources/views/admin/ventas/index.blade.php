@@ -36,10 +36,12 @@
     </style>
 @endpush
 @section('content')
+    {!! Form::open(['route' => ['admin.ventas.venta.download_facturas'], 'method' => 'post']) !!} 
     <div class="row">
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
+                     <button type="submit" class="btn btn-primary btn-flat" id="download">Descargar Facturas</button>
                     <a href="{{ route('admin.ventas.venta.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
                         <i class="fa fa-pencil"></i> {{ trans('ventas::ventas.button.create venta') }}
                     </a>
@@ -79,6 +81,7 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                               <tr>
+                                  <th><input type="checkbox" value="1" id="select-all"></th>
                                   <th>Fecha</th>
                                   <th>N° Factura</th>
                                   <th>Cliente</th>
@@ -94,6 +97,7 @@
                               </tbody>
                               <tfoot>
                               <tr>
+                                  <th></th>
                                   <th>Fecha</th>
                                   <th>N° Factura</th>
                                   <th>Cliente</th>
@@ -113,6 +117,7 @@
         </div>
     </div>
     @include('core::partials.delete-modal')
+     {!! Form::close() !!}
 @stop
 
 @section('footer')

@@ -214,5 +214,20 @@
       });
     })
 
+    $("#venta-form").submit(function(e) {
+      e.preventDefault();
+       $.ajax({
+          type: 'post',
+          url: $("#venta-form").attr("action"),
+          data: $("#venta-form").serialize(), 
+          success: function(response) {
+              if(response.generar_factura == 1) {
+                window.open('{{route("admin.ventas.venta.exportar")}}?format=pdf&download=false&venta_id='+response.venta_id,"_blank");
+              }
+               location.href = '{{route('admin.ventas.venta.index')}}'
+           },
+});
+    });
+
   })
 </script>

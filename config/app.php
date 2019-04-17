@@ -192,6 +192,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        ZanySoft\Zip\ZipServiceProvider::class,
     ],
 
     /*
@@ -241,6 +242,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Configuracion' => Modules\Configuracion\Entities\Configuracion::class,
+        'Zip' => ZanySoft\Zip\ZipFacade::class,
     ],
 
 ];

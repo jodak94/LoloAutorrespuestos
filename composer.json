@@ -30,7 +30,8 @@
         "idavoll/flatly-theme": "~3.0",
         "idavoll/adminlte-theme": "~3.0",
         "barryvdh/laravel-dompdf": "^0.8.4",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -45,6 +45,7 @@
         $("#suma").html(response.suma);
       },
       columns:[
+        { data: 'checkbox'},
         { data: 'created_at', name: 'created_at' },
         { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },
         { data: 'razon_social', name: 'razon_social', className: 'razon_social' },
@@ -76,6 +77,20 @@
         }
       },
     });
+
+    $('#select-all').on('click', function(){
+        var rows = table.rows({ 'search': 'applied' }).nodes(); 
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    $('table tbody').on('change', 'input[type="checkbox"]', function(){
+      if(!this.checked){
+      var el = $('#select-all').get(0);
+      if(el && el.checked && ('indeterminate' in el)){
+         el.indeterminate = true;
+      }
+   }
+});
 
     //filtros
     $("#razon_social").keyup(function(){

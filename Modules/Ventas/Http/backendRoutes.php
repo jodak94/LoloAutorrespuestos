@@ -84,6 +84,14 @@ $router->group(['prefix' =>'/ventas'], function (Router $router) {
         'uses' => 'VentaDetalleController@destroy',
         'middleware' => 'can:ventas.ventadetalles.destroy'
     ]);
+    $router->get('ventas/exportar', [
+        'as' => 'admin.ventas.venta.exportar',
+        'uses' => 'VentaController@export_to_pdf',
+    ]);
+    $router->get('ventas/facturas/descargar', [
+        'as' => 'admin.ventas.venta.download_facturas',
+        'uses' => 'VentaController@download_facturas',
+    ]);
 // append
 
 
