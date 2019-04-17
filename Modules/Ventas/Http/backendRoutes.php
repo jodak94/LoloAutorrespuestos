@@ -88,7 +88,7 @@ $router->group(['prefix' =>'/ventas'], function (Router $router) {
         'as' => 'admin.ventas.venta.exportar',
         'uses' => 'VentaController@export_to_pdf',
     ]);
-    $router->get('ventas/facturas/descargar', [
+    $router->post('ventas/facturas/descargar', [
         'as' => 'admin.ventas.venta.download_facturas',
         'uses' => 'VentaController@download_facturas',
     ]);

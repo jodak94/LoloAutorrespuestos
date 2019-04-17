@@ -63,7 +63,10 @@ class VentaController extends AdminBaseController
         $suma = number_format($suma, 0, ',', '.');
         $object = Datatables::of($query)
             ->addColumn('checkbox', function( $venta ) use ($re) {
-              return '<input type="checkbox" name=venta_id[] value="'.$venta->id.'"/>';
+              if($venta->generar_factura)
+                return '<input type="checkbox" name=venta_id[] value="'.$venta->id.'"/>';
+              else
+                return '';
             }, 0)
             ->addColumn('acciones', function( $venta ) use ($re){
               $html = '
@@ -305,6 +308,8 @@ class VentaController extends AdminBaseController
   }
 
   public function download_facturas(Request $request) {
+    if(!count($request->venta_id))
+      return redirect()->back()->withWarning('No se seleccionaron facturas');
     $facturaBoxes = json_decode(json_encode([
       'fecha' => ['x' => 3.6, 'y' => 2.5, 'width' => 100],
       'contado' => ['x' => 17.5, 'y' => 2.5, 'width' => 100],
@@ -325,17 +330,22 @@ class VentaController extends AdminBaseController
       'total_iva' => ['x' => 10.7, 'y' => 10.9, 'width' => 100],
       'duplicado' => 11.75
     ]));
-    $zip = Zip::create(public_path().'/facturas/facturas.zip');
-    foreach($request->ventas_ids as $venta_id) {
-      $venta = Venta::find($request->venta_id);
+    $zip_path = public_path().'/facturas/facturas.zip';
+    $zip = Zip::create($zip_path);
+    $files = [];
+    foreach($request->venta_id as $venta_id) {
+      $venta = Venta::find($venta_id);
       $format = 'pdf';
       $pdf = PDF::loadView('ventas::pdf.factura',compact('venta','facturaBoxes','format'));
       $file_path = public_path().'/facturas/factura_'.$venta->nro_factura.'.pdf';
+      array_push($files, $file_path);
       $pdf->save($file_path);
       $zip->add($file_path);
     }
-    dd($zip->listFiles());
     $zip->close();
-    return Response::download();
+    foreach ($files as $file)
+      if(file_exists($file))
+        unlink($file);
+    return Response()->download($zip_path)->deleteFileAfterSend(true);
   }
 }

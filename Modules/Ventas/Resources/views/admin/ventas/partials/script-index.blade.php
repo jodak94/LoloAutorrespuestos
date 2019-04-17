@@ -1,5 +1,10 @@
 <script type="text/javascript">
   $( document ).ready(function(){
+    // $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+    //     checkboxClass: 'icheckbox_flat-blue',
+    //     radioClass: 'iradio_flat-blue'
+    // });
+
     $('.fecha').pickadate({
       monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
@@ -18,14 +23,12 @@
       processing: false,
       serverSide: true,
       "ordering": false,
-      "paginate": true,
+      "paginate": false,
       "lengthChange": true,
-      "iDisplayLength": 50,
       "filter": true,
       "sort": true,
       "info": true,
       "autoWidth": true,
-      "paginate": true,
       ajax:{
         url: '{!! route('admin.ventas.venta.index_ajax') !!}',
         type: "GET",
@@ -79,7 +82,7 @@
     });
 
     $('#select-all').on('click', function(){
-        var rows = table.rows({ 'search': 'applied' }).nodes(); 
+        var rows = table.rows({ 'search': 'applied' }).nodes();
       $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
 
