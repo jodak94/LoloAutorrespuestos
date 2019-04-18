@@ -41,9 +41,11 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                   <button type="submit" class="btn btn-primary btn-flat" id="download">Descargar Facturas</button>
+                   <button type="submit" class="btn btn-primary btn-flat" id="download" style="padding: 4px 10px; margin-right: 10px;">
+                     <i class="fa fa-download" aria-hidden="true"></i> Descargar Facturas
+                   </button>
                     <a href="{{ route('admin.ventas.venta.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('ventas::ventas.button.create venta') }}
+                        <i class="fa fa-pencil"></i> Nueva Venta
                     </a>
                 </div>
             </div>

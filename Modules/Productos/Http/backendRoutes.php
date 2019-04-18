@@ -75,6 +75,10 @@ $router->group(['prefix' =>'/productos'], function (Router $router) {
         'as' => 'admin.productos.producto.store_ajax',
         'uses' => 'ProductoController@store_ajax',
     ]);
+    $router->get('productos/generate-code', [
+        'as' => 'admin.productos.producto.generate_code',
+        'uses' => 'ProductoController@generate_code',
+    ]);
 // append
 
 });

@@ -19,7 +19,6 @@ use Validator;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
-
 class ProductoController extends AdminBaseController
 {
     /**
@@ -153,7 +152,7 @@ class ProductoController extends AdminBaseController
      */
     public function edit(Producto $producto)
     {
-        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        $descuentos = (array)json_decode(Configuracion::where('slug', 'descuentos')->first()->value);
         return view('productos::admin.productos.edit', compact('producto', 'descuentos'));
     }
 
@@ -283,7 +282,7 @@ class ProductoController extends AdminBaseController
                                 $descuento = strval(1-$producto["descuento"]/100);
                                 $confDescuento = Configuracion::where('slug', 'descuentos')->first();
                                 $descuentos = json_decode($confDescuento->value);
-                                
+
                                 if(!array_key_exists($descuento,$descuentos)){
                                     $descuentos->$descuento = $producto["descuento"]."%";
                                     $confDescuento->value = json_encode($descuentos);
@@ -293,7 +292,7 @@ class ProductoController extends AdminBaseController
                             }else{
                                 $nuevo_producto->descuento = 1;
                             }
-                            
+
                             $nuevo_producto->save();
                             $productos_cargados++;
                         }
@@ -359,7 +358,7 @@ class ProductoController extends AdminBaseController
                     $descuento = strval(1-$req["descuento"]/100);
                     $confDescuento = Configuracion::where('slug', 'descuentos')->first();
                     $descuentos = json_decode($confDescuento->value);
-                                
+
                     if(!array_key_exists($descuento,$descuentos)){
                         $descuentos->$descuento = $req["descuento"]."%";
                         $confDescuento->value = json_encode($descuentos);
@@ -369,7 +368,7 @@ class ProductoController extends AdminBaseController
                 }else{
                     $producto->descuento = 1;
                 }
-                
+
                 $producto->save();
                 $productos_cargados++;
             }
@@ -381,5 +380,26 @@ class ProductoController extends AdminBaseController
 
     public function export() {
         return Excel::download(new ProductosExport, 'Inventario '.Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function generate_code(Request $request){
+      if($request->has('nombre') && trim($request->nombre) == '')
+        return response(['error' => true]);
+      $nombre = $request->nombre;
+      $words = explode(' ', $nombre);
+      if(count($words) == 1){
+        if(strlen($nombre) == 1)
+          return response()->json(['error' => true, 'message' => 'El nombre del producto debe tener al menos 2 caracteres']);
+        $letters = substr($nombre, 0, 2);
+      }else{
+        $letters = $words[0][0];
+        $letters .= $words[1][0];
+      }
+      while (true) {
+        $code = strtoupper($letters) . rand(1000, 9999);
+        if(!count(Producto::where('codigo', $code)->get()))
+          break;
+      }
+      return response()->json(['error' => false, 'codigo' => $code]);
     }
 }
