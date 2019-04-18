@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Configuracion\Events\Handlers;
+namespace Modules\Informes\Events\Handlers;
 
 use Maatwebsite\Sidebar\Group;
 use Maatwebsite\Sidebar\Item;
@@ -8,7 +8,7 @@ use Maatwebsite\Sidebar\Menu;
 use Modules\Core\Events\BuildingSidebar;
 use Modules\User\Contracts\Authentication;
 
-class RegisterConfiguracionSidebar implements \Maatwebsite\Sidebar\SidebarExtender
+class RegisterInformesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
 {
     /**
      * @var Authentication
@@ -37,21 +37,14 @@ class RegisterConfiguracionSidebar implements \Maatwebsite\Sidebar\SidebarExtend
     public function extendWith(Menu $menu)
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
-            $group->item('Configuración Admin', function (Item $item) {
-                $item->icon('fa fa-cog');
-                $item->weight(14);
-                $item->route('admin.configuracion.configuracion.index');
+            $group->item(trans('Informes'), function (Item $item) {
+                $item->icon('fa fa-line-chart');
+                $item->weight(11);
+                $item->route('admin.informes.informe.index');
                 $item->authorize(
-                     $this->auth->hasAccess('configuracion.configuracions.index')
+                     /* append */
                 );
-            });
-            $group->item('Configuración', function (Item $item) {
-                $item->icon('fa fa-cog');
-                $item->weight(13);
-                $item->route('admin.configuracion.configuracion.configurar');
-                $item->authorize(
-                     //$this->auth->hasAccess('configuracion.configuracions.index')
-                );
+// append
             });
         });
 
