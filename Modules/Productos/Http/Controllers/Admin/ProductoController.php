@@ -5,6 +5,7 @@ namespace Modules\Productos\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Productos\Entities\Producto;
+use Modules\Configuracion\Entities\Configuracion;
 use Modules\Productos\Http\Requests\CreateProductoRequest;
 use Modules\Productos\Http\Requests\UpdateProductoRequest;
 use Modules\Productos\Repositories\ProductoRepository;
@@ -110,7 +111,7 @@ class ProductoController extends AdminBaseController
      */
     public function create()
     {
-        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        $descuentos = (array)json_decode(Configuracion::where('slug', 'descuentos')->first()->value);
 
         return view('productos::admin.productos.create', compact('descuentos'));
     }
@@ -278,7 +279,21 @@ class ProductoController extends AdminBaseController
                             $nuevo_producto->stock_critico = $producto["stock_critico"];
                             $nuevo_producto->precio = $producto["precio"];
                             $nuevo_producto->costo = $producto["costo"];
-                            $nuevo_producto->descuento = $producto["descuento"]?$producto["descuento"]/100:0;
+                            if($producto["descuento"]) {
+                                $descuento = strval(1-$producto["descuento"]/100);
+                                $confDescuento = Configuracion::where('slug', 'descuentos')->first();
+                                $descuentos = json_decode($confDescuento->value);
+                                
+                                if(!array_key_exists($descuento,$descuentos)){
+                                    $descuentos->$descuento = $producto["descuento"]."%";
+                                    $confDescuento->value = json_encode($descuentos);
+                                    $confDescuento->save();
+                                }
+                                $nuevo_producto->descuento = $descuento;
+                            }else{
+                                $nuevo_producto->descuento = 1;
+                            }
+                            
                             $nuevo_producto->save();
                             $productos_cargados++;
                         }
@@ -340,7 +355,21 @@ class ProductoController extends AdminBaseController
                 $producto->stock_critico = $req["stock_critico"];
                 $producto->precio = $req["precio"];
                 $producto->costo = $req["costo"];
-                $producto->descuento = $req["descuento"]?(1-$req["descuento"]/100):0;
+                if($req["descuento"]) {
+                    $descuento = strval(1-$req["descuento"]/100);
+                    $confDescuento = Configuracion::where('slug', 'descuentos')->first();
+                    $descuentos = json_decode($confDescuento->value);
+                                
+                    if(!array_key_exists($descuento,$descuentos)){
+                        $descuentos->$descuento = $req["descuento"]."%";
+                        $confDescuento->value = json_encode($descuentos);
+                        $confDescuento->save();
+                    }
+                    $producto->descuento = $descuento;
+                }else{
+                    $producto->descuento = 1;
+                }
+                
                 $producto->save();
                 $productos_cargados++;
             }
