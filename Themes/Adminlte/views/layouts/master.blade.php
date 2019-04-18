@@ -3,9 +3,10 @@
 <head>
     <base src="{{ URL::asset('/') }}" />
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{{url('/images/favicon.ico')}}">
     <title>
         @section('title')
-            @setting('core::site-name') | Admin
+            @setting('core::site-name')
         @show
     </title>
     <meta id="token" name="token" value="{{ csrf_token() }}" />
