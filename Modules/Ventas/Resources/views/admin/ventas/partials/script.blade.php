@@ -49,7 +49,7 @@
       }
     })
 
-    $(".table").on('keydown ', '.cantidad', function(event){
+    $(".table").on('keydown mouseup', '.cantidad', function(event){
       if(event.keyCode == 13){
         let cantidad = parseInt($(this).val())
         event.preventDefault()
@@ -69,7 +69,7 @@
       calculate_all()
     })
 
-    $(".table").on('keyup ', '.cantidad', function(event){
+    $(".table").on('keyup mouseup', '.cantidad', function(event){
       let cantidad = parseInt($(this).val())
       if (!isNaN(cantidad)) {
         let precio = $(this).closest('tr').find('.precio').val();
@@ -219,7 +219,7 @@
        $.ajax({
           type: 'post',
           url: $("#venta-form").attr("action"),
-          data: $("#venta-form").serialize(), 
+          data: $("#venta-form").serialize(),
           success: function(response) {
               if(response.generar_factura == 1) {
                 window.open('{{route("admin.ventas.venta.exportar")}}?format=pdf&download=false&venta_id='+response.venta_id,"_blank");

@@ -61,13 +61,39 @@
     <script type="text/javascript">
         $( document ).ready(function() {
             $(".precio").number( true , 0, ',', '.' );
-            console.log($('.costo'))
             $(".costo").number( true , 0, ',', '.' );
             $(document).keypressAction({
                 actions: [
                     { key: 'b', route: "<?= route('admin.productos.producto.index') ?>" }
                 ]
             });
+
+            $("#nombre").on('keyup', function(){
+              if($(this).val().length > 1)
+                $("#generar-codigo").removeAttr('disabled');
+              else
+                $("#generar-codigo").attr('disabled', true)
+            })
+
+            $("#generar-codigo").on('click', function(){
+              $.ajax({
+                type: 'GET',
+                url: '{{route('admin.productos.producto.generate_code')}}',
+                data: {nombre: $("#nombre").val()},
+                success: function(data){
+                  if(!data.error)
+                    $("#codigo").val(data.codigo);
+                  else
+                    $.toast({
+                      heading: 'Eror',
+                      text: data.message,
+                      showHideTransition: 'slide',
+                      icon:'error',
+                      position: 'top-right'
+                    })
+                }
+              })
+            })
         });
     </script>
     <script>

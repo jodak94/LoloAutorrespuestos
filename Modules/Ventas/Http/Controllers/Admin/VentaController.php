@@ -79,14 +79,11 @@ class VentaController extends AdminBaseController
                     <button class="btn btn-warning btn-flat pagar" venta="'.$venta->id.'">Pagar</button>
                   ';
                   $html .= '
-                  <button class="btn btn-default btn-flat btn-show" style="display:table; margin:auto">
+                  <button type="button" class="btn btn-default btn-flat btn-show" style="display:table; margin:auto">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
-                  <button class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                  <button type="button" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
                     <i class="fa fa-download" aria-hidden="true"></i>
-                  </button>
-                  <button class="btn btn-default btn-flat btn-print" style="display:table; margin:auto">
-                    <i class="fa fa-print" aria-hidden="true"></i>
                   </button>
                 </div>';
               return $html;

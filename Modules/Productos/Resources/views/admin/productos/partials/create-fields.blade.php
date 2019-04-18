@@ -4,8 +4,12 @@
       <div class="col-md-6">
         {!! Form::normalInput('nombre', 'Nombre', $errors) !!}
       </div>
-      <div class="col-md-6">
+      <div class="col-md-3">
         {!! Form::normalInput('codigo', 'Codigo', $errors) !!}
+      </div>
+      <div class="col-md-3">
+        <label> </label><br>
+        <button style="margin-top:5px" type="button" id="generar-codigo" disabled class="btn btn-default btn-flat">Generar</button>
       </div>
       <div class="col-md-6">
         {!! Form::normalInputOfType('number','stock', 'Stock', $errors) !!}
@@ -20,7 +24,7 @@
         {!! Form::normalInput('precio', 'Precio', $errors, null, ['class'=>'form-control precio']) !!}
       </div>
       <div class="col-md-2">
-        {!! Form:: normalSelect('descuento', 'Descuento', $errors, $descuentos) !!} 
+        {!! Form:: normalSelect('descuento', 'Descuento', $errors, $descuentos) !!}
       </div>
     </div>
     <div class="col-md-4">
