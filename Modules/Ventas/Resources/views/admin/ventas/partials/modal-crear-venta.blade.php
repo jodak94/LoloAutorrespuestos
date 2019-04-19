@@ -8,10 +8,18 @@
         <div class="modal-body">
            <div class="row" style="">
               <div class="col-sm-6">
-                 {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura:', $errors, $tipos_factura) !!}
-               </div>
+                 @if(isset($edit) && $edit)
+                   {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura:', $errors, $tipos_factura, $factura) !!}
+                 @else
+                   {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura:', $errors, $tipos_factura) !!}
+                 @endif
+              </div>
            </div>
-           {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['total_a_pagar_factura' => 0], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+           @if(isset($edit) && $edit)
+             {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['modal-monto-total' => $factura->monto_total], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+           @else
+             {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['modal-monto-total' => 0], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+           @endif
            {!! Form::normalInput('monto_pagado', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['required'=>'','autofocus', 'class' => 'form-control precio_format'] ) !!}
            <div id="vuelto_container">
              {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>'', 'class' => 'form-control precio_format'] ) !!}

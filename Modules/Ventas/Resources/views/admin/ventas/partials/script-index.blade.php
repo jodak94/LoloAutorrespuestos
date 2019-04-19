@@ -40,6 +40,7 @@
             d.credito = '{{$credito}}'
             d.tipo_factura = $("[name=tipo_factura]").val();
             d.con_factura = $("[name=con_factura]").val();
+            d.anulado = $("[name=anulado]").val();
         },
         headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
       },
@@ -109,6 +110,9 @@
         table.ajax.reload();
     });
     $("[name=con_factura]").change(function(){
+        table.ajax.reload();
+    })
+    $("[name=anulado]").change(function(){
         table.ajax.reload();
     })
     @if($credito)

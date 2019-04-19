@@ -14,10 +14,7 @@
           {!! Form::normalInputOfType('date','fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('Y-m-d')], ['readonly' => 'true']) !!}
         </div>
         <div class="col-md-4">
-          {!! Form::normalInput('timbrado', 'Timbrado', $errors, (object)['timbrado' => '123456789'], ['readonly' => 'true']) !!}
-        </div>
-        <div class="col-md-4">
-          {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura]) !!}
+          {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura],  ['readonly' => 'true']) !!}
         </div>
       </div>
       <div class="row" style="margin-bottom: 20px">

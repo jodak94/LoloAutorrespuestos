@@ -1,5 +1,17 @@
 <script>
   $(document).ready(function(){
+    @if(isset($edit) && $edit)
+      $('.fecha').pickadate({
+        monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        today: 'Hoy',
+        clear: 'Limpiar',
+        close: 'Cerrar',
+        selectMonths: true,
+        selectYears: 100,
+        format:'dd/mm/yyyy'
+      });
+    @endif
     $("#generar_factura").on('ifChecked', function(e){
       $("#buscar-datos").removeAttr('disabled')
       $("#add-cliente-button").removeAttr('disabled')
@@ -215,6 +227,7 @@
     })
 
     $("#venta-form").submit(function(e) {
+      console.log('submit')
       e.preventDefault();
        $.ajax({
           type: 'post',

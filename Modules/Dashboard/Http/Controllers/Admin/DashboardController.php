@@ -60,6 +60,7 @@ class DashboardController extends AdminBaseController
           from ventas__ventas
           where created_at > '".$from."'
           and created_at < '".$to."'
+          and anulado = 0
         ";
         $total_contado = DB::select($query . "and tipo_factura = 'contado'")[0]->suma;
         $total_credito = DB::select($query . "and tipo_factura = 'credito'")[0]->suma;

@@ -39,6 +39,7 @@ class InformeAnualExport implements FromCollection, WithHeadings, ShouldAutoSize
         $total = Venta::
             whereMonth('created_at', $key + 1)
           ->whereYear('created_at', Carbon::now()->year)
+          ->where('anulado', '0')
           ->get()
           ->sum('monto_total');
         $totales_mes->push(['mes' => $mes, 'total' => number_format($total, 0, ',', '.') . ' Gs.']);

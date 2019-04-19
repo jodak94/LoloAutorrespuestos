@@ -50,6 +50,7 @@ class InformeController extends AdminBaseController
           array_push($totales_mes, Venta::
               whereMonth('created_at', $key + 1)
             ->whereYear('created_at', Carbon::now()->year)
+            ->where('anulado', '0')
             ->get()
             ->sum('monto_total')
           );
@@ -81,6 +82,7 @@ class InformeController extends AdminBaseController
         FROM (SELECT *, DATE_FORMAT(created_at, '%d-%m-%Y') AS day FROM ventas__ventas) as T
         WHERE MONTH(created_at) = ".$mes."
         AND YEAR (created_at)  = ".$year."
+        AND anulado = 0
         GROUP BY day order by day
         ";
 

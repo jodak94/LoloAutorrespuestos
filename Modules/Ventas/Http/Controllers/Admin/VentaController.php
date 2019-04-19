@@ -59,16 +59,26 @@ class VentaController extends AdminBaseController
     {
         $query = $this->query_index_ajax($re);
         $ventas = $query->get();
-        $suma = $ventas->sum('monto_total');
+        $suma = $ventas->reduce(function ($carry, $venta){
+            if($venta->anulado)
+              return $carry;
+            return $carry + $venta->monto_total;
+        });
         $suma = number_format($suma, 0, ',', '.');
         $object = Datatables::of($query)
             ->addColumn('checkbox', function( $venta ) use ($re) {
               if($venta->generar_factura)
-                return '<input type="checkbox" name=venta_id[] value="'.$venta->id.'"/>';
+                if($venta->anulado)
+                  return '<i title="Anulado" style="color:#a80615;" class="fa fa-times" aria-hidden="true"></i>';
+                else
+                  return '<input type="checkbox" name=venta_id[] value="'.$venta->id.'"/>';
               else
                 return '';
             }, 0)
             ->addColumn('acciones', function( $venta ) use ($re){
+              $refacturar_route = route('admin.ventas.venta.edit', $venta->id);
+              if($venta->anulado)
+                return '';
               $html = '
                 <div class="btn-group">';
                 $pagado = str_replace(',', '.',str_replace('.', '', $venta->monto_pagado));
@@ -80,11 +90,14 @@ class VentaController extends AdminBaseController
                   ';
                   $html .= '
                   <button type="button" class="btn btn-default btn-flat btn-show" style="display:table; margin:auto">
-                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    <i title="Ver" class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                   <button type="button" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
-                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <i title="Descargar" class="fa fa-download" aria-hidden="true"></i>
                   </button>
+                  <a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  </a>
                 </div>';
               return $html;
             })
@@ -122,6 +135,9 @@ class VentaController extends AdminBaseController
 
         if($re->has('con_factura') && $re->con_factura != 'todos')
           $query->where('generar_factura', $re->con_factura);
+
+        if($re->has('anulado') && $re->anulado != 'todos')
+          $query->where('anulado', $re->anulado);
         return $query;
     }
 
@@ -176,20 +192,34 @@ class VentaController extends AdminBaseController
           $producto->stock -= $request->cantidad[$key];
           $producto->save();
         }
-        if($request->generar_factura){
-          $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
-          $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
-          $conf_factura->save();
+        if($request->has('edit') && $request->edit){
+          $factura = Venta::find($request->factura_a_anular);
+          $factura->anulado = true;
+          $factura->save();
+          if($request->generar_factura){
+            $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
+            $nro_factura = (int)explode('-',$request->nro_factura)[2];
+            if((int)$conf_factura->value == (int)$nro_factura){
+              $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
+              $conf_factura->save();
+            }elseif ((int)$conf_factura->value < (int)$nro_factura) {
+              $conf_factura->value = str_pad((int)$nro_factura + 1, 7, '0', STR_PAD_LEFT);
+              $conf_factura->save();
+            }
+          }
+        }else{
+          if($request->generar_factura){
+            $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
+            $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
+            $conf_factura->save();
+          }
         }
         DB::commit();
       }catch(\Exception $e){
         return response()->json(['error'=> $e]);
       }
-      $query = [];
-      if($request->tipo_factura == 'credito')
-        $query = ['credito'];
 
-        return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $request->generar_factura]);
+      return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $request->generar_factura]);
     }
 
     private function getDatosFacturacion(Request $request){
@@ -221,7 +251,19 @@ class VentaController extends AdminBaseController
      */
     public function edit(Venta $venta)
     {
-        return view('ventas::admin.ventas.edit', compact('venta'));
+        $factura = $venta;
+        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        $edit = 1;
+        $nro_factura = $factura->nro_factura;
+        $tipos_factura = Venta::$tipos_factura;
+        $datos_id = -1;
+        if($factura->generar_factura){
+          $datos = DatosFacturacion::where('ruc', $factura->ruc)->first();
+          if(isset($datos)){
+            $datos_id = $datos->id;
+          }
+        }
+        return view('ventas::admin.ventas.edit', compact('datos_id', 'tipos_factura','factura', 'descuentos', 'edit', 'nro_factura'));
     }
 
     /**
