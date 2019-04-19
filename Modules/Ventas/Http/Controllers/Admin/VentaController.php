@@ -196,6 +196,10 @@ class VentaController extends AdminBaseController
           $factura = Venta::find($request->factura_a_anular);
           $factura->anulado = true;
           $factura->save();
+
+          $venta->created_at = Carbon::createFromFormat('d/m/Y',$request->fecha);
+          $venta->updated_at = Carbon::createFromFormat('d/m/Y',$request->fecha);
+          $venta->save();
           if($request->generar_factura){
             $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
             $nro_factura = (int)explode('-',$request->nro_factura)[2];
