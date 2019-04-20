@@ -27,13 +27,4 @@ class VentaDetalle extends Model
     public function getPrecioSubtotalAttribute(){
       return number_format($this->attributes['precio_subtotal'], 0, ',', '.');
     }
-
-    public function setPrecioUnitarioAttribute($value){
-      $this->attributes['precio_unitario'] =  str_replace(',', '.',str_replace('.', '', $value));
-    }
-
-    public function setPrecioSubtotalAttribute($value){
-      $this->attributes['precio_subtotal'] =  str_replace(',', '.',str_replace('.', '', $value));
-    }
-
 }

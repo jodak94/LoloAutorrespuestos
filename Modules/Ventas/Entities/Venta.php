@@ -41,18 +41,6 @@ class Venta extends Model
       return number_format($this->attributes['total_iva'], 0, ',', '.');
     }
 
-    public function setMontoPagadoAttribute($value){
-      $this->attributes['monto_pagado'] =  str_replace(',', '.',str_replace('.', '', $value));
-    }
-
-    public function setMontoTotalAttribute($value){
-      $this->attributes['monto_total'] =  str_replace(',', '.',str_replace('.', '', $value));
-    }
-
-    public function setTotalIvaAttribute($value){
-      $this->attributes['total_iva'] =  str_replace(',', '.',str_replace('.', '', $value));
-    }
-
     public function getTipoFacturaFormatAttribute(){
       return self::$tipos_factura[$this->tipo_factura];
     }
