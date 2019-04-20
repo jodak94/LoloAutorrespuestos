@@ -83,7 +83,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="data-table table table-bordered table-hover">
+                        <table style="width:100%" class="data-table table table-bordered table-hover">
                             <thead>
                               <tr>
                                   <th><input class="flat-blue" type="checkbox" id="select-all"></th>

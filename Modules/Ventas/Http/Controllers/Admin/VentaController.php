@@ -88,11 +88,12 @@ class VentaController extends AdminBaseController
                   '
                     <button class="btn btn-warning btn-flat pagar" venta="'.$venta->id.'">Pagar</button>
                   ';
-                  $html .= '
-                  <button type="button" class="btn btn-default btn-flat btn-show" style="display:table; margin:auto">
-                    <i title="Ver" class="fa fa-eye" aria-hidden="true"></i>
-                  </button>
-                  <button type="button" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                  // $html .= '
+                  // <button type="button" class="btn btn-default btn-flat btn-show" style="display:table; margin:auto">
+                  //   <i title="Ver" class="fa fa-eye" aria-hidden="true"></i>
+                  // </button>
+                  // ';
+                  $html .= '<button type="button" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
                     <i title="Descargar" class="fa fa-download" aria-hidden="true"></i>
                   </button>
                   <a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
