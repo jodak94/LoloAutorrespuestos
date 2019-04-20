@@ -196,7 +196,13 @@ class VentaController extends AdminBaseController
         if($request->has('edit') && $request->edit){
           $factura = Venta::find($request->factura_a_anular);
           $factura->anulado = true;
+          foreach ($factura->detalles as $detalle) {
+            $producto = $detalle->producto;
+            $producto->stock += $detalle->cantidad;
+            $producto->save();
+          }
           $factura->save();
+
 
           $venta->created_at = Carbon::createFromFormat('d/m/Y',$request->fecha);
           $venta->updated_at = Carbon::createFromFormat('d/m/Y',$request->fecha);
@@ -221,7 +227,7 @@ class VentaController extends AdminBaseController
         }
         DB::commit();
       }catch(\Exception $e){
-        return response()->json(['error'=> $e]);
+       return response()->json(['error'=> $e]);
       }
 
       return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $request->generar_factura]);

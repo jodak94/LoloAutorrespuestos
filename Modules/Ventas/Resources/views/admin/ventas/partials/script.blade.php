@@ -50,6 +50,7 @@
         $(this).closest('tr').find('.descuento').val(ui.item.producto.descuento)
         $(this).closest('tr').find('.subtotal').val(0)
         $(this).closest('tr').find('.cantidad').removeAttr('readonly')
+        $(this).closest('tr').find('.cantidad').val(0)
         $(this).closest('tr').find('.producto_id').val(ui.item.producto.id)
       },
     });
