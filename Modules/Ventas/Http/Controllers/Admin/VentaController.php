@@ -87,7 +87,7 @@ class VentaController extends AdminBaseController
                   if($re->has('credito') && $re->credito && $pagado < $total)
                   $html .=
                   '
-                    <button class="btn btn-warning btn-flat pagar" venta="'.$venta->id.'">Pagar</button>
+                    <button type="button" class="btn btn-warning btn-flat pagar" venta="'.$venta->id.'">Pagar</button>
                   ';
                   // $html .= '
                   // <button type="button" class="btn btn-default btn-flat btn-show" style="display:table; margin:auto">
