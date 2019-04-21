@@ -22,7 +22,8 @@ $( document ).ready(function(){
                   callback: function(label, index, labels) {
                       let n = new Intl.NumberFormat().format(label)
                       return n;
-                  }
+                  },
+                  beginAtZero: true
               },
               scaleLabel: {
                   display: true,
@@ -50,7 +51,7 @@ $( document ).ready(function(){
     $("[name=mes2]").on('change', function(){
       let mes = $(this).val();
       if(mes == -1){
-        $('[name=mes] option').removeAttr('disabled') 
+        $('[name=mes] option').removeAttr('disabled')
         ventaDiaChart.data.datasets.pop();
         ventaDiaChart.update();
       }else{
