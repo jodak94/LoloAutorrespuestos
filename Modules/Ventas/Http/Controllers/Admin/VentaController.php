@@ -77,6 +77,7 @@ class VentaController extends AdminBaseController
             }, 0)
             ->addColumn('acciones', function( $venta ) use ($re){
               $refacturar_route = route('admin.ventas.venta.edit', $venta->id);
+              $reimpimir_route = route('admin.ventas.venta.exportar', ['venta_id' => $venta->id, 'download' => false, 'format' => 'pdf']);
               if($venta->anulado)
                 return '';
               $html = '
@@ -93,10 +94,13 @@ class VentaController extends AdminBaseController
                   //   <i title="Ver" class="fa fa-eye" aria-hidden="true"></i>
                   // </button>
                   // ';
-                  $html .= '<button type="button" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
-                    <i title="Descargar" class="fa fa-download" aria-hidden="true"></i>
-                  </button>
-                  <a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                  if($venta->generar_factura)
+                    $html .=
+                    '<a href="'.$reimpimir_route.'" target="blank_" title="imprimir" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                      <i title="Descargar" class="fa fa-print" aria-hidden="true"></i>
+                    </a>';
+
+                  $html .= '<a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                   </a>
                 </div>';
