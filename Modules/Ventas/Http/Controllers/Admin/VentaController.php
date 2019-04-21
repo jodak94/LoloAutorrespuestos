@@ -177,8 +177,8 @@ class VentaController extends AdminBaseController
     {
       try{
         DB::beginTransaction();
-        if($request->tipo_factura == 'credito' && $request->pago_cliente == null){
-          $request->monto_pagado = 0;
+        if($request->tipo_factura == 'credito' && $request->monto_pagado == null){
+          $request['monto_pagado'] = 0;
         }
         $request = $this->getDatosFacturacion($request);
         if($request->tipo_factura == 'contado')
@@ -231,7 +231,8 @@ class VentaController extends AdminBaseController
         }
         DB::commit();
       }catch(\Exception $e){
-       return response()->json(['error'=> $e]);
+        Log::info($e);
+        return response()->json(['error'=> $e]);
       }
 
       return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $request->generar_factura]);
