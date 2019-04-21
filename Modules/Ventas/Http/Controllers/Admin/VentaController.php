@@ -241,7 +241,7 @@ class VentaController extends AdminBaseController
         $request['telefono'] = $request->datos_telefono;
       }else{
         $datos = DatosFacturacion::where('ruc', 'xxxxxx')->first();
-        if(isset($datos)){
+        if(!isset($datos)){
           $datos = new DatosFacturacion();
           $datos->ruc = 'xxxxxx';
           $datos->razon_social = 'Cliente Mostrador';
