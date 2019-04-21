@@ -23,8 +23,13 @@
         <div class="col-md-4">
           <label for="paciente_id">Buscar cliente</label>
           <div class="input-group ">
-            <input placeholder="Ingresar Ruc o Razón social" type="text" id="buscar-datos" class="form-control">
-            <input type="hidden" name="datos_id" id="datos_id" value="{{$datos_id}}">
+            @if($venta->generar_factura)
+              <input placeholder="Ingresar Ruc o Razón social" type="text" id="buscar-datos" class="form-control">
+              <input type="hidden" name="datos_id" id="datos_id" value="{{$datos_id}}">
+            @else
+              <input disabled placeholder="Ingresar Ruc o Razón social" type="text" id="buscar-datos" class="form-control">
+              <input type="hidden" name="datos_id" id="datos_id">
+            @endif
             <span class="input-group-btn">
               <button title="Agregar nuevo cliente" type="button" class="btn btn-primary btn-flat" id="add-cliente-button" style="height:34px">
                 <i class="fa fa-user-plus" aria-hidden="true"></i>
