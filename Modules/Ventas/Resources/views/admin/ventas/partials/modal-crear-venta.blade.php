@@ -20,17 +20,29 @@
            @else
              {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['modal-monto-total' => 0], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
            @endif
-           {!! Form::normalInput('monto_pagado', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['required'=>'','autofocus', 'class' => 'form-control precio_format'] ) !!}
-           <div id="vuelto_container">
-             {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
-           </div>
+           @if(isset($factura)   && $factura->tipo_factura == 'credito')
+             {!! Form::normalInput('monto_pagado', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['autofocus', 'class' => 'form-control precio_format'] ) !!}
+             <div id="vuelto_container" style="display:none">
+               {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+             </div>
+           @else
+             {!! Form::normalInput('monto_pagado', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['required'=>'','autofocus', 'class' => 'form-control precio_format'] ) !!}
+             <div id="vuelto_container">
+               {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+             </div>
+           @endif
+
            <div id="plazo_credito-1" style="display:none">
               {{-- {!! Form:: normalSelect('plazo_credito', 'Plazo del Crédito:', $errors, [''=>'---','5'=>'5 días','10'=>'10 días','30'=>'30 días','60'=>'60 días','90'=>'90 días'],null,['id'=>'plazo_credito']) !!} --}}
            </div>
            <div class="modal-body">
               <div class="box-footer">
                   <div class="modal-footer">
-                      <button type="submit" disabled class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
+                      @if(isset($factura)  && $factura->tipo_factura == 'credito')
+                        <button type="submit" class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
+                      @else
+                        <button type="submit" disabled class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
+                      @endif
                       <button type="button" class="btn btn-danger pull-right btn-flat" data-dismiss="modal"><i class="fa fa-times"></i>Cancelar</button>
                   </div>
               </div>
