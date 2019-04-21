@@ -23,7 +23,7 @@
         <div class="col-md-4">
           <label for="paciente_id">Buscar cliente</label>
           <div class="input-group ">
-            @if($venta->generar_factura)
+            @if($factura->generar_factura)
               <input placeholder="Ingresar Ruc o Razón social" type="text" id="buscar-datos" class="form-control">
               <input type="hidden" name="datos_id" id="datos_id" value="{{$datos_id}}">
             @else
