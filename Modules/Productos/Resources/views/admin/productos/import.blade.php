@@ -40,7 +40,6 @@
                             <th>
                                 <td> Código</td>
                                 <td> Nombre</td>
-                                <td> Descripción</td>
                                 <td> Stock</td>
                                 <td> Stock Crítico</td>
                                 <td> Precio</td>
@@ -63,7 +62,7 @@
         </div>
     </div>
     {!! Form::close() !!}
-    
+
 @stop
 
 @section('footer')
@@ -96,7 +95,7 @@
                 processData: false,
                 contentType: false,
                 cache: false,
-                url: $("form").attr("action"), 
+                url: $("form").attr("action"),
                 success: function(response) {
                     $("#btn-subir").attr("disabled",true);
                     uploaded_files.push(document.querySelector('input[type=file]').files[0].name);
@@ -107,7 +106,6 @@
                         $("#sin-datos").hide();
                         let row = "<tr id='"+index+"'><td></td><td> <input type='text' data-key='codigo'  value='"+(producto.codigo!== null?producto.codigo:'')+"' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.codigo !== undefined?errores.codigo:'')+"' class='form-control "+(errores.codigo !== undefined?'has-error' : '')+"'></td>" +
                         "<td> <input type='text'  value='"+(producto.nombre !== null?producto.nombre:'')+"' data-key='nombre' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.nombre !== undefined?errores.nombre:'')+"' class='form-control "+(errores.nombre !== undefined?'has-error' : '')+"'></td>"+
-                        "<td> <input type='text'  value='"+(producto.descripcion!== null?producto.descripcion:'')+"' data-key='descripcion' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.descripcion !== undefined?errores.descripcion:'')+"' class='form-control "+(errores.descripcion !== undefined?'has-error' : '')+"'></td>"+
                         "<td> <input type='number'  value='"+(producto.stock!== null?producto.stock:'')+"' data-key='stock' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.stock !== undefined?errores.stock:'')+"' class='form-control "+(errores.stock !== undefined?'has-error' : '')+"'></td>"+
                         "<td> <input type='number'  value='"+(producto.stock_critico!== null?producto.stock_critico:'')+"' data-key='stock_critico' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.stock_critico !== undefined?errores.stock_critico:'')+"' class='form-control "+(errores.stock_critico !== undefined?'has-error' : '')+"'></td>"+
                         "<td> <input type='number'  value='"+(producto.precio!== null?producto.precio:'')+"' data-key='precio' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.precio !== undefined?errores.precio:'')+"' class='form-control "+(errores.precio !== undefined?'has-error' : '')+"'></td>"+
@@ -142,7 +140,7 @@
                         }
                         });
                     }
-                    
+
            },
            error: function(error) {
                 $.alert({
@@ -193,7 +191,7 @@
                                          $("#"+row_id).find('[data-key='+key+']').attr('data-content',errorObj[key]);
                                          $("#"+row_id).find('[data-key='+key+']').popover('enable');
                                     }
-                                    
+
                                 },
                                 complete: function() {
                                     if($('.has-error').length == 0) {
@@ -203,7 +201,7 @@
                                     }
                                 }
                             })
-                            
+
                         })
     })
 
@@ -235,13 +233,13 @@
                                 },
                                 error: function(error) {
                                     console.log("error al guardar productos");
-                                    
+
                                 },
                             })
         }else {
             $("#btn-guardar").attr("disabled",true);
-        }                            
-        
+        }
+
     })
 
             $("#file").change(function(e){
@@ -250,8 +248,8 @@
                         $("#btn-subir").attr("disabled",false);
                     }else {
                         $("#btn-subir").attr("disabled",true);
-                    } 
-                } 
+                    }
+                }
             });
             $(".precio").number( true , 0, ',', '.' );
             $(document).keypressAction({

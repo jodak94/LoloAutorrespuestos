@@ -273,7 +273,6 @@ class ProductoController extends AdminBaseController
                             $nuevo_producto = new Producto();
                             $nuevo_producto->codigo = $producto["codigo"];
                             $nuevo_producto->nombre = $producto["nombre"];
-                            $nuevo_producto->descripcion = $producto["descripcion"];
                             $nuevo_producto->stock = $producto["stock"];
                             $nuevo_producto->stock_critico = $producto["stock_critico"];
                             $nuevo_producto->precio = $producto["precio"];
@@ -349,7 +348,6 @@ class ProductoController extends AdminBaseController
                 $producto = new Producto();
                 $producto->codigo = $req["codigo"];
                 $producto->nombre = $req["nombre"];
-                $producto->descripcion = $req["descripcion"];
                 $producto->stock = $req["stock"];
                 $producto->stock_critico = $req["stock_critico"];
                 $producto->precio = $req["precio"];
