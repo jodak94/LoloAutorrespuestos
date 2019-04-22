@@ -79,9 +79,6 @@ class ProductoController extends AdminBaseController
                 <a href="'.$edit_route.'" class="btn btn-default btn-flat">
                   <i class="fa fa-pencil"></i>
                 </a>
-                <button data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="'.$delete_route.'" class="btn btn-danger btn-flat">
-                  <i class="fa fa-trash"></i>
-                  </button>
               </div>
             ';
             return $html;
