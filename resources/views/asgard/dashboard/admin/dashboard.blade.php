@@ -112,6 +112,7 @@
         </div>
       </div>
     </div>
+    @if(Auth::user()->hasRoleSlug('administrador') || Auth::user()->hasRoleSlug('admin'))
     <div class="resumen-container">
       <table class="table table-bordered table-bordered-2 table-2 table-hover">
         <tr><td colspan="2" style="text-align:center"><label>Resumen del día</label></td></tr>
@@ -126,6 +127,7 @@
         </tr>
       </table>
     </div>
+    @endif
     <img src="{{url('/images/logo1.png')}}" class="logo">
 
 @stop

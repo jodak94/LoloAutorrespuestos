@@ -42,7 +42,7 @@ class RegisterInformesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->weight(11);
                 $item->route('admin.informes.informe.index');
                 $item->authorize(
-                     /* append */
+                   $this->auth->hasAccess('admin.informes.informe.index')
                 );
 // append
             });

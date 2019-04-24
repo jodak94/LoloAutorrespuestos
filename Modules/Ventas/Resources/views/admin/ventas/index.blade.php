@@ -75,9 +75,11 @@
                     <div class="col-md-2">
                       {!! Form:: normalSelect('anulado', 'Anulados', $errors, ['0' => 'No', '1' => 'Si', 'todos' => 'Todos']) !!}
                     </div>
+                    @if(Auth::user()->hasRoleSlug('administrador') || Auth::user()->hasRoleSlug('admin'))
                     <div class="col-md-4">
                       <span class="pull-right suma">Total ventas: <span  id="suma"></span> Gs.</span>
                     </div>
+                    @endif
                   </div>
                 </div>
                 <!-- /.box-header -->

@@ -45,13 +45,12 @@
             </li>
             @endif
             <!-- User Account: style can be found in dropdown.less -->
-            @if(Auth::user()->hasRoleSlug('admin'))
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="glyphicon glyphicon-user"></i>
                     <span>
                         <?php if ($user->present()->fullname() != ' '): ?>
-                            {{ $user->present()->fullName() }}
+                            {{-- {{ $user->first_name }} --}}
                         <?php else: ?>
                             <em>{{trans('core::core.general.complete your profile')}}.</em>
                         <?php endif; ?>
@@ -64,7 +63,7 @@
                         <img src="{{ $user->present()->gravatar() }}" class="img-circle" alt="User Image" />
                         <p>
                             <?php if ($user->present()->fullname() != ' '): ?>
-                                {{ $user->present()->fullname() }}
+                                {{-- {{ $user->present()->fullname() }} --}}
                             <?php else: ?>
                                 <em>{{trans('core::core.general.complete your profile')}}.</em>
                             <?php endif; ?>
@@ -72,11 +71,11 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        <div class="pull-left">
+                        {{-- <div class="pull-left">
                             <a href="{{ route('admin.account.profile.edit') }}" class="btn btn-default btn-flat">
                                 {{ trans('core::core.general.profile') }}
                             </a>
-                        </div>
+                        </div> --}}
                         <div class="pull-right">
                             <a href="{{ route('logout') }}" class="btn btn-danger btn-flat">
                                 {{ trans('core::core.general.sign out') }}
@@ -85,7 +84,6 @@
                     </li>
                 </ul>
               </li>
-            @endif
         </ul>
     </div>
 </nav>
