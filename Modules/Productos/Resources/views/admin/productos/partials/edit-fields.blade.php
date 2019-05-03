@@ -7,6 +7,10 @@
       <div class="col-md-6">
         {!! Form::normalInput('codigo', 'Codigo', $errors, $producto) !!}
       </div>
+      <div class="col-md-12">.
+          <label for="codigo">Descripción</label>
+          <textarea id="descripcion" name="descripcion" placeholder="Descripción" style="resize:none;width:100%;" class="form-control" rows="5">{{ $producto->descripcion }}</textarea>
+      </div>
       <div class="col-md-6">
         {!! Form::normalInputOfType('number','stock', 'Stock', $errors, $producto) !!}
       </div>

@@ -20,6 +20,7 @@ class ProductosImport implements ToModel, WithHeadingRow
             'nombre'=> $row['nombre'],
             'stock'=> $row['stock'],
             'stock_critico'=> $row['stock_critico'],
+            'descripcion' => $row['descripcion'],
             'precio'=> $row['precio'],
             'costo'=> $row['costo'],
             'descuento'=> $row['descuento']

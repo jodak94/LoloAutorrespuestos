@@ -40,6 +40,7 @@
                             <th>
                                 <td> Código</td>
                                 <td> Nombre</td>
+                                <td> Descripción</td>
                                 <td> Stock</td>
                                 <td> Stock Crítico</td>
                                 <td> Precio</td>
@@ -106,6 +107,7 @@
                         $("#sin-datos").hide();
                         let row = "<tr id='"+index+"'><td></td><td> <input type='text' data-key='codigo'  value='"+(producto.codigo!== null?producto.codigo:'')+"' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.codigo !== undefined?errores.codigo:'')+"' class='form-control "+(errores.codigo !== undefined?'has-error' : '')+"'></td>" +
                         "<td> <input type='text'  value='"+(producto.nombre !== null?producto.nombre:'')+"' data-key='nombre' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.nombre !== undefined?errores.nombre:'')+"' class='form-control "+(errores.nombre !== undefined?'has-error' : '')+"'></td>"+
+                        "<td> <input type='text'  value='"+(producto.descripcion !== null?producto.descripcion:'')+"' data-key='descripcion' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.descripcion !== undefined?errores.descripcion:'')+"' class='form-control "+(errores.descripcion !== undefined?'has-error' : '')+"'></td>"+
                         "<td> <input type='number'  value='"+(producto.stock!== null?producto.stock:'')+"' data-key='stock' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.stock !== undefined?errores.stock:'')+"' class='form-control "+(errores.stock !== undefined?'has-error' : '')+"'></td>"+
                         "<td> <input type='number'  value='"+(producto.stock_critico!== null?producto.stock_critico:'')+"' data-key='stock_critico' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.stock_critico !== undefined?errores.stock_critico:'')+"' class='form-control "+(errores.stock_critico !== undefined?'has-error' : '')+"'></td>"+
                         "<td> <input type='number'  value='"+(producto.precio!== null?producto.precio:'')+"' data-key='precio' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='"+(errores.precio !== undefined?errores.precio:'')+"' class='form-control "+(errores.precio !== undefined?'has-error' : '')+"'></td>"+

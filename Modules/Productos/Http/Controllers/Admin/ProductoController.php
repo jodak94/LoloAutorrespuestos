@@ -274,6 +274,7 @@ class ProductoController extends AdminBaseController
                             $nuevo_producto->stock_critico = $producto["stock_critico"];
                             $nuevo_producto->precio = $producto["precio"];
                             $nuevo_producto->costo = $producto["costo"];
+                            $nuevo_producto->descripcion = $producto["descripcion"];
                             if($producto["descuento"]) {
                                 $descuento = strval(1-$producto["descuento"]/100);
                                 $confDescuento = Configuracion::where('slug', 'descuentos')->first();
@@ -349,6 +350,7 @@ class ProductoController extends AdminBaseController
                 $producto->stock_critico = $req["stock_critico"];
                 $producto->precio = $req["precio"];
                 $producto->costo = $req["costo"];
+                $producto->descripcion = $req["descripcion"];
                 if($req["descuento"]) {
                     $descuento = strval(1-$req["descuento"]/100);
                     $confDescuento = Configuracion::where('slug', 'descuentos')->first();
