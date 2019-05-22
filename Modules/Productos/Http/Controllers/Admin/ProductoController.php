@@ -36,11 +36,11 @@ class ProductoController extends AdminBaseController
         $this->rules = [
             'codigo' => 'required|unique:productos__productos',
             'nombre'  => 'required',
-            'descripcion' => '',
+            'descripcion' => 'nullable',
             'precio'     => 'required|numeric|min:0',
             'stock'     => 'required|numeric|min:0',
-            'stock_critico' => 'required|numeric|min:0',
-            'costo' => 'required|numeric|min:0',
+            'stock_critico' => 'nullable|numeric|min:0',
+            'costo' => 'nullable|numeric|min:0',
             'descuento' => 'nullable|numeric|min:0'
         ];
         $this->messages = [
@@ -127,8 +127,9 @@ class ProductoController extends AdminBaseController
                         ->withErrors($validator)
                         ->withInput();
         }
-
+        
         $producto = $this->producto->create($request->all());
+        
         if ($request->hasFile('image')) {
             $image      = $request->file('image');
             $fileName   = time() . '.' . $image->getClientOriginalExtension();

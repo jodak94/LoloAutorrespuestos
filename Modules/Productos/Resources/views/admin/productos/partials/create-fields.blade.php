@@ -22,7 +22,7 @@
         {!! Form::normalInputOfType('number','stock_critico', 'Stock Critico', $errors) !!}
       </div>
       <div class="col-md-6">
-        {!! Form::normalInput('costo', 'Costo', $errors, null, ['class'=>'form-control precio']) !!}
+        {!! Form::normalInput('costo', 'Costo', $errors, null, ['class'=>'form-control costo']) !!}
       </div>
       <div class="col-md-4">
         {!! Form::normalInput('precio', 'Precio', $errors, null, ['class'=>'form-control precio']) !!}

@@ -26,7 +26,7 @@ class Producto extends Model
     }
 
     public function setCostoAttribute($value){
-      $this->attributes['costo'] =  str_replace(',', '.',str_replace('.', '', $value));
+      $this->attributes['costo'] =  $value?str_replace(',', '.',str_replace('.', '', $value)):null;
     }
 
     public function setPrecioAttribute($value){
@@ -38,6 +38,6 @@ class Producto extends Model
     }
 
     public function getCostoFormatAttribute(){
-      return number_format($this->attributes['costo'], 0, ',', '.');
+      return $this->attributes['costo']?number_format($this->attributes['costo'], 0, ',', '.'):"";
     }
 }
