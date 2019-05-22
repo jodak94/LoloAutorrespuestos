@@ -64,7 +64,7 @@
 
     $(".table").on('keydown mouseup', '.cantidad', function(event){
       if(event.keyCode == 13){
-        let cantidad = parseInt($(this).val())
+        let cantidad = parseFloat($(this).val())
         event.preventDefault()
         if(!isNaN(cantidad)){
           if($(this).closest("tr").is(":last-child"))
@@ -83,11 +83,11 @@
     })
 
     $(".table").on('keyup mouseup', '.cantidad', function(event){
-      let cantidad = parseInt($(this).val())
+      let cantidad = parseFloat($(this).val())
       if (!isNaN(cantidad)) {
         let precio = $(this).closest('tr').find('.precio').val();
         let descuento = $(this).closest('tr').find('.descuento').val()
-        let subtotal = $(this).val() * precio * descuento
+        let subtotal = Math.round($(this).val() * precio * descuento)
         $(this).closest('tr').find('.subtotal').val(subtotal)
         calculate_all()
         if(cantidad > $(this).closest('tr').find('.stock').val())
@@ -107,7 +107,7 @@
     function set_disabled_to_btn_crear(){
       let ready = true;
       $('.cantidad').each(function(i){
-        let cantidad = parseInt($(this).val())
+        let cantidad = parseFloat($(this).val())
         if (isNaN(cantidad)){
           ready = false;
           return;
