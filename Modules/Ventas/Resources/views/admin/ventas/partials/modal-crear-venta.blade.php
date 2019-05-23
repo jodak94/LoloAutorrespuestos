@@ -28,7 +28,7 @@
                 $actualizar = false;
               }
              @endphp
-             {!! Form::normalInput('modal-monto-total', $actualizar?'Total a Pagar (Parcial):':'Total a Pagar:', $errors ,(object)['modal-monto-total' => $actualizar?0:$factura->monto_total], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+             {!! Form::normalInput('modal-monto-total', $actualizar?'Total a Pagar (Deuda):':'Total a Pagar:', $errors ,(object)['modal-monto-total' => $actualizar?0:$factura->monto_total], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
            @else
              {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['modal-monto-total' => 0], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
            @endif
@@ -38,7 +38,12 @@
                {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
              </div>
            @else
-             {!! Form::normalInput('monto_pagado', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['required'=>'','autofocus', 'class' => 'form-control precio_format'] ) !!}
+             @php
+               $required = true;
+               if((isset($actualizar) && $actualizar) || (isset($parcial) && $parcial))
+                $required = false;
+             @endphp
+             {!! Form::normalInput('monto_pagado', 'Pago del Cliente:', $errors ,(object)['pago_cliente' => ''], ['required'=>$required,'autofocus', 'class' => 'form-control precio_format'] ) !!}
              <div id="vuelto_container">
                {!! Form::normalInput('vuelto_cliente', 'Vuelto:', $errors ,null, ['id'=>'vuelto','readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
              </div>
@@ -50,10 +55,10 @@
            <div class="modal-body">
               <div class="box-footer">
                   <div class="modal-footer">
-                      @if(isset($factura)  && $factura->tipo_factura == 'credito')
+                      @if((isset($factura)  && $factura->tipo_factura == 'credito') || (isset($parcial) && $parcial) || (isset($actualizar) && $actualizar))
                         <button type="submit" class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
                       @else
-                        <button type="submit" class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
+                        <button disabled type="submit" class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
                       @endif
                       <button type="button" class="btn btn-danger pull-right btn-flat" data-dismiss="modal"><i class="fa fa-times"></i>Cancelar</button>
                   </div>

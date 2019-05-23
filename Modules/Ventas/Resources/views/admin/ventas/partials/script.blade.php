@@ -169,6 +169,9 @@
     function checkVuelto(){
       let val = $('#monto_pagado').val() - $("#modal-monto-total").val();
       $("#vuelto").val(val)
+      @if((isset($parcial) && $parcial) || (isset($actualizar) && $actualizar))
+        return
+      @endif
       if($("select[name=tipo_factura]").val() == 'credito'){
         $("#generar_venta").removeAttr('disabled')
         return
@@ -185,17 +188,17 @@
       @endif
       $("#modal-factura-container").show()
       $("#generar_venta").html('Guardar y Generar Factura')
-      showVentaModal()
+      showVentaModal(false)
     })
 
     $("#guardar_parcial").on('click', function(){
       $("#modal-factura-container").hide()
       $("#generar_venta").html('Guardar Venta Parcial')
       // $("#venta-form").submit()
-      showVentaModal()
+      showVentaModal(true)
     })
 
-    function showVentaModal(){
+    function showVentaModal(parcial){
       if($("#monto_pagado").val())
         checkVuelto()
       $("#facturaModal").modal('show');

@@ -116,7 +116,7 @@
                                     @endif
                                   <th>Cliente</th>
                                   <th>Monto @if($parcial) Parcial @else Total @endif</th>
-                                  @if($credito)
+                                  @if($credito || $parcial)
                                     <th>Monto Pagado</th>
                                   @endif
                                   @if(!$parcial)
@@ -138,7 +138,7 @@
                                   @endif
                                   <th>Cliente</th>
                                     <th>Monto @if($parcial) Parcial @else Total @endif</th>
-                                  @if($credito)
+                                  @if($credito || $parcial)
                                     <th>Monto Pagado</th>
                                   @endif
                                   @if(!$parcial)

@@ -220,10 +220,18 @@ class VentaController extends AdminBaseController
           $request['monto_pagado'] = 0;
         }
         $request = $this->getDatosFacturacion($request);
-        if($request->tipo_factura == 'contado')
-          $request['monto_pagado'] = $request->monto_total;
         if($request->has('parcial') && $request->parcial){
           $request['tipo_factura'] = null;
+          if(isset($request['monto_pagado']) && $request['monto_pagado'] != ''){
+            if($request['monto_pagado'] > $request['modal-monto-total'])
+              $request['monto_pagado'] = $request['modal-monto-total'];
+          }else{
+            $request['monto_pagado'] = 0;
+          }
+          $request['monto_pagado'] = isset($request['modal-monto-total']) ? $request['monto_pagado'] : 0;
+        }else{
+          if($request->tipo_factura == 'contado')
+            $request['monto_pagado'] = $request->monto_total;
         }
         $venta = $this->venta->create($request->all());
         foreach ($request->producto_id as $key => $producto_id) {

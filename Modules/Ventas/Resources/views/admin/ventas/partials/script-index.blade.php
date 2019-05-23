@@ -63,7 +63,7 @@
         @endif
         { data: 'razon_social', name: 'razon_social', className: 'razon_social' },
         { data: 'monto_total_format', name: 'monto_total_format', className: 'monto_total' },
-        @if($credito)
+        @if($credito || $parcial)
           { data: 'monto_pagado_format', name: 'monto_pagado_format', className: 'monto_pagado' },
         @endif
         @if(!$parcial)
