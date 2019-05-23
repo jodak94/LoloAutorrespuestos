@@ -11,7 +11,7 @@
         <label> </label><br>
         <button style="margin-top:5px" type="button" id="generar-codigo" disabled class="btn btn-default btn-flat">Generar</button>
       </div>
-      <div class="col-md-12">.
+      <div class="col-md-12">
           <label for="codigo">Descripción</label>
           <textarea id="descripcion" name="descripcion" placeholder="Descripción" style="resize:none;width:100%;" class="form-control" rows="5"></textarea>
       </div>

@@ -4,6 +4,8 @@
     <h1>
         @if($credito)
           Ventas a Crédito
+        @elseif(isset($parcial) && ($parcial))
+          Ventas Parciales
         @else
           {{ trans('ventas::ventas.title.ventas') }}
         @endif
@@ -41,31 +43,40 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
+                  @if(!$parcial)
                    <button type="submit" class="btn btn-primary btn-flat" id="download" style="padding: 4px 10px; margin-right: 10px;">
                      <i class="fa fa-download" aria-hidden="true"></i> Descargar Facturas
                    </button>
-                    <a href="{{ route('admin.ventas.venta.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
+                    <a href="{{ route('admin.ventas.venta.create')  }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
                         <i class="fa fa-pencil"></i> Nueva Venta
                     </a>
+                  @else
+                    <a href="{{ route('admin.ventas.venta.create_parcial')  }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
+                        <i class="fa fa-pencil"></i> Nueva Venta @if($parcial)Parcial @endif
+                    </a>
+                  @endif
                 </div>
             </div>
             <div class="box box-primary">
                 <div class="box-header">
                     <div class="row">
                       <div class="col-md-3">
-                        {!! Form::normalInput('fecha_desde', 'Fecha desde', $errors,(object)['fecha_desde'=>$today],['class'=>'form-control fecha','id'=>'fecha_desde']) !!}
+                        {!! Form::normalInput('fecha_desde', $parcial?'Fecha Creación desde':'Fecha desde', $errors,(object)['fecha_desde'=>$today],['class'=>'form-control fecha','id'=>'fecha_desde']) !!}
                       </div>
                       <div class="col-md-3">
-                        {!! Form::normalInput('fecha_hasta', 'Fecha hasta', $errors,(object)['fecha_hasta'=>$today],['class'=>'form-control fecha','id'=>'fecha_hasta']) !!}
+                        {!! Form::normalInput('fecha_hasta', $parcial?'Fecha Creación hasta':'Fecha hasta', $errors,(object)['fecha_hasta'=>$today],['class'=>'form-control fecha','id'=>'fecha_hasta']) !!}
                       </div>
+                      @if(!$parcial)
                       <div class="col-md-3">
                         {!! Form::normalInput('nro_factura', 'N° Factura', $errors,null,['class'=>'form-control']) !!}
                       </div>
+                      @endif
                       <div class="col-md-3">
                         {!! Form::normalInput('razon_social', 'Razón Social', $errors,null,['placeholder' => 'Ingresar Ruc o Razón social', 'type'=>'text']) !!}
                       </div>
                   </div>
                   <div class="row">
+                    @if(!$parcial)
                     <div class="col-md-3">
                       {!! Form:: normalSelect('con_factura', 'Con Factura', $errors, $con_factura, (object)['con_factura' => 'todos']) !!}
                     </div>
@@ -80,6 +91,14 @@
                       <span class="pull-right suma">Total ventas: <span  id="suma"></span> Gs.</span>
                     </div>
                     @endif
+                    @else
+                      <div class="col-md-3">
+                        {!! Form::normalInput('fecha_update_desde', 'Fecha Actualización desde', $errors,(object)['fecha_desde'=>$today],['class'=>'form-control fecha']) !!}
+                      </div>
+                      <div class="col-md-3">
+                        {!! Form::normalInput('fecha_update_hasta', 'Fecha Actualización hasta', $errors,(object)['fecha_hasta'=>$today],['class'=>'form-control fecha']) !!}
+                      </div>
+                    @endif
                   </div>
                 </div>
                 <!-- /.box-header -->
@@ -88,15 +107,21 @@
                         <table style="width:100%" class="data-table table table-bordered table-hover">
                             <thead>
                               <tr>
-                                  <th><input class="flat-blue" type="checkbox" id="select-all"></th>
-                                  <th>Fecha</th>
-                                  <th>N° Factura</th>
+                                  <th>@if(!$parcial)<input class="flat-blue" type="checkbox" id="select-all">@endif</th>
+                                    <th>Fecha @if($parcial) Creación @endif</th>
+                                    @if(!$parcial)
+                                        <th>N° Factura</th>
+                                    @else
+                                      <th>Fecha ultima Actualización</th>
+                                    @endif
                                   <th>Cliente</th>
-                                  <th>Monto Total</th>
+                                  <th>Monto @if($parcial) Parcial @else Total @endif</th>
                                   @if($credito)
                                     <th>Monto Pagado</th>
                                   @endif
-                                  <th>Tipo de Factura</th>
+                                  @if(!$parcial)
+                                    <th>Tipo de Factura</th>
+                                  @endif
                                   <th data-sortable="false">Acciones</th>
                                 </tr>
                               </thead>
@@ -105,14 +130,20 @@
                               <tfoot>
                               <tr>
                                   <th></th>
-                                  <th>Fecha</th>
-                                  <th>N° Factura</th>
+                                  <th>Fecha @if($parcial) Creación @endif</th>
+                                  @if(!$parcial)
+                                      <th>N° Factura</th>
+                                  @else
+                                    <th>Fecha ultima Actualización</th>
+                                  @endif
                                   <th>Cliente</th>
-                                  <th>Monto Total</th>
+                                    <th>Monto @if($parcial) Parcial @else Total @endif</th>
                                   @if($credito)
                                     <th>Monto Pagado</th>
                                   @endif
-                                  <th>Tipo de Factura</th>
+                                  @if(!$parcial)
+                                    <th>Tipo de Factura</th>
+                                  @endif
                                   <th>Acciones</th>
                               </tr>
                         </table>

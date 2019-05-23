@@ -44,14 +44,19 @@ class VentaController extends AdminBaseController
     public function index(Request $request)
     {
         $credito = false;
+        $parcial = false;
         if($request->has('credito')){
             $credito = true;
         }
+        elseif($request->has('parcial')){
+            $parcial = true;
+        }
         $today = Carbon::now()->format('d/m/Y');
+        $today = null;
         $tipos_factura = ['todos' => '--'];
         $tipos_factura = array_merge($tipos_factura, Venta::$tipos_factura);
         $con_factura = ['todos' => '--', '1' => 'Sí', '0' => 'No'];
-        return view('ventas::admin.ventas.index', compact('today', 'credito', 'tipos_factura', 'con_factura'));
+        return view('ventas::admin.ventas.index', compact('parcial', 'today', 'credito', 'tipos_factura', 'con_factura'));
     }
 
 
@@ -67,6 +72,8 @@ class VentaController extends AdminBaseController
         $suma = number_format($suma, 0, ',', '.');
         $object = Datatables::of($query)
             ->addColumn('checkbox', function( $venta ) use ($re) {
+              if($re->parcial)
+                return '';
               if($venta->generar_factura)
                 if($venta->anulado)
                   return '<i title="Anulado" style="color:#a80615;" class="fa fa-times" aria-hidden="true"></i>';
@@ -77,6 +84,7 @@ class VentaController extends AdminBaseController
             }, 0)
             ->addColumn('acciones', function( $venta ) use ($re){
               $refacturar_route = route('admin.ventas.venta.edit', $venta->id);
+              $actualizar_route = route('admin.ventas.venta.actualizar', $venta->id);
               $reimpimir_route = route('admin.ventas.venta.exportar', ['venta_id' => $venta->id, 'download' => false, 'format' => 'pdf']);
               if($venta->anulado)
                 return '';
@@ -94,23 +102,32 @@ class VentaController extends AdminBaseController
                   //   <i title="Ver" class="fa fa-eye" aria-hidden="true"></i>
                   // </button>
                   // ';
-                  if($venta->generar_factura)
+                  if($venta->generar_factura  && !$re->parcial)
                     $html .=
                     '<a href="'.$reimpimir_route.'" target="blank_" title="imprimir" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
                       <i title="Descargar" class="fa fa-print" aria-hidden="true"></i>
                     </a>';
 
-                  $html .= '<a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
-                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  </a>
+                  if(!$re->parcial)
+                    $html .= '<a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    </a>
                 </div>';
+                  else
+                  $html .= '<a title="Actualizar" href="'.$actualizar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                  </div>';
               return $html;
             })
             ->with([
               'suma' => $suma
             ])
             ->editColumn('created_at', function( $venta ){
-              return $venta->created_at->format('d/m/y');
+              return $venta->created_at->format('d/m/y H:i');
+            })
+            ->editColumn('updated_at', function( $venta ){
+              return $venta->updated_at->format('d/m/y H:i');
             })
             ->rawColumns(['checkbox','acciones'])
             ->make(true);
@@ -132,8 +149,17 @@ class VentaController extends AdminBaseController
         if (isset($re->fecha_hasta) && trim($re->fecha_hasta) != '')
           $query->whereDate('created_at', '<=', $this->fechaFormat($re->fecha_hasta) );
 
+        if (isset($re->fecha_update_desde) && trim($re->fecha_update_desde) != '')
+          $query->whereDate('updated_at', '>=', $this->fechaFormat($re->fecha_update_desde) );
+
+        if (isset($re->fecha_update_hasta) && trim($re->fecha_update_hasta) != '')
+          $query->whereDate('updated_at', '<=', $this->fechaFormat($re->fecha_update_hasta) );
+
         if($re->has('credito') && $re->credito)
           $query->where('tipo_factura', 'credito');
+
+        if($re->has('parcial') && $re->parcial)
+          $query->where('parcial', true);
 
         if($re->has('tipo_factura') && $re->tipo_factura != 'todos')
           $query->where('tipo_factura', $re->tipo_factura);
@@ -143,6 +169,8 @@ class VentaController extends AdminBaseController
 
         if($re->has('anulado') && $re->anulado != 'todos')
           $query->where('anulado', $re->anulado);
+
+//        $query->orderBy('created_at');
         return $query;
     }
 
@@ -160,11 +188,22 @@ class VentaController extends AdminBaseController
      */
     public function create()
     {
+        $parcial = false;
         $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
         $nro_factura = implode('-',$nro_factura);
         $tipos_factura = Venta::$tipos_factura;
         $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
-        return view('ventas::admin.ventas.create', compact('nro_factura', 'tipos_factura', 'descuentos'));
+        return view('ventas::admin.ventas.create', compact('parcial','nro_factura', 'tipos_factura', 'descuentos'));
+    }
+
+    public function create_parcial()
+    {
+        $parcial = true;
+        $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
+        $nro_factura = implode('-',$nro_factura);
+        $tipos_factura = Venta::$tipos_factura;
+        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        return view('ventas::admin.ventas.create', compact('parcial', 'nro_factura', 'tipos_factura', 'descuentos'));
     }
 
     /**
@@ -183,6 +222,9 @@ class VentaController extends AdminBaseController
         $request = $this->getDatosFacturacion($request);
         if($request->tipo_factura == 'contado')
           $request['monto_pagado'] = $request->monto_total;
+        if($request->has('parcial') && $request->parcial){
+          $request['tipo_factura'] = null;
+        }
         $venta = $this->venta->create($request->all());
         foreach ($request->producto_id as $key => $producto_id) {
           $detalle = new VentaDetalle();
@@ -206,8 +248,6 @@ class VentaController extends AdminBaseController
             $producto->save();
           }
           $factura->save();
-
-
           $venta->created_at = Carbon::createFromFormat('d/m/Y',$request->fecha);
           $venta->updated_at = Carbon::createFromFormat('d/m/Y',$request->fecha);
           $venta->save();
@@ -223,19 +263,23 @@ class VentaController extends AdminBaseController
             }
           }
         }else{
-          if($request->generar_factura){
-            $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
-            $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
-            $conf_factura->save();
+          if(!$request->parcial){
+            if($request->generar_factura){
+              $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
+              $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
+              $conf_factura->save();
+            }
           }
         }
         DB::commit();
       }catch(\Exception $e){
-        Log::info($e);
         return response()->json(['error'=> $e]);
       }
+      $generar_factura = $request->generar_factura;
+      if($request->parcial)
+        $generar_factura = false;
 
-      return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $request->generar_factura]);
+      return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $generar_factura, 'parcial' => $request->parcial]);
     }
 
     private function getDatosFacturacion(Request $request){
@@ -282,6 +326,21 @@ class VentaController extends AdminBaseController
         return view('ventas::admin.ventas.edit', compact('datos_id', 'tipos_factura','factura', 'descuentos', 'edit', 'nro_factura'));
     }
 
+    public function actualizar(Venta $venta){
+      $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+      $actualizar = 1;
+      $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
+      $nro_factura = implode('-',$nro_factura);
+      $tipos_factura = Venta::$tipos_factura;
+      $datos_id = -1;
+      if($venta->generar_factura){
+        $datos = DatosFacturacion::where('ruc', $venta->ruc)->first();
+        if(isset($datos)){
+          $datos_id = $datos->id;
+        }
+      }
+      return view('ventas::admin.ventas.actualizar', compact('datos_id', 'tipos_factura','venta', 'descuentos', 'actualizar', 'nro_factura'));
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -291,10 +350,53 @@ class VentaController extends AdminBaseController
      */
     public function update(Venta $venta, UpdateVentaRequest $request)
     {
-        $this->venta->update($venta, $request->all());
+        try{
+          DB::beginTransaction();
+          $request = $this->getDatosFacturacion($request);
+          if($request->parcial){
+            if($request['monto_pagado'] > $request['modal-monto-total'])
+              $request['monto_pagado'] = $request->monto_total;
+            $request['monto_pagado'] += $venta->monto_pagado;
+            $request['tipo_factura'] = null;
+            $request['nro_factura'] = 'xxx-xxx-xxxxxx';
+          }else{
+            if($request->tipo_factura == 'contado')
+              $request['monto_pagado'] = $request->monto_total;
+          }
+          $venta = $this->venta->update($venta, $request->all());
+          foreach ($venta->detalles as $detalle) {
+            $producto = Producto::find($detalle->producto_id);
+            $producto->stock += $detalle->cantidad;
+            $producto->save();
+            $detalle->delete();
+          }
+          foreach ($request->producto_id as $key => $producto_id) {
+            $detalle = new VentaDetalle();
+            $detalle->venta_id = $venta->id;
+            $detalle->producto_id = $producto_id;
+            $detalle->cantidad = $request->cantidad[$key];
+            $detalle->precio_unitario = $request->precio_unitario[$key];
+            $detalle->descuento = $request->descuento[$key];
+            $detalle->precio_subtotal = $request->subtotal[$key];
+            $detalle->save();
+            $producto = Producto::find($producto_id);
+            $producto->stock -= $request->cantidad[$key];
+            $producto->save();
+          }
+          if($request->generar_factura){
+            $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
+            $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
+            $conf_factura->save();
+          }
+          DB::commit();
+        }catch(\Exception $e){
+          return response()->json(['error'=> $e]);
+        }
+        $generar_factura = $request->generar_factura;
+        if($request->parcial)
+          $generar_factura = false;
 
-        return redirect()->route('admin.ventas.venta.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('ventas::ventas.title.ventas')]));
+        return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $generar_factura, 'parcial' => $request->parcial]);
     }
 
     /**

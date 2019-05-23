@@ -37,7 +37,12 @@
             d.nro_factura = $("#nro_factura").val();
             d.fecha_desde = $("#fecha_desde").val();
             d.fecha_hasta = $("#fecha_hasta").val();
-            d.credito = '{{$credito}}'
+            @if($parcial)
+              d.fecha_update_desde = $("#fecha_update_desde").val();
+              d.fecha_update_hasta = $("#fecha_update_hasta").val();
+            @endif
+            d.credito = '{{$credito}}';
+            d.parcial = '{{$parcial}}';
             d.tipo_factura = $("[name=tipo_factura]").val();
             d.con_factura = $("[name=con_factura]").val();
             d.anulado = $("[name=anulado]").val();
@@ -51,13 +56,19 @@
       columns:[
         { data: 'checkbox'},
         { data: 'created_at', name: 'created_at' },
-        { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },
+        @if(!$parcial)
+          { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },
+        @else
+          { data: 'updated_at', name: 'updated_at' },
+        @endif
         { data: 'razon_social', name: 'razon_social', className: 'razon_social' },
         { data: 'monto_total_format', name: 'monto_total_format', className: 'monto_total' },
         @if($credito)
           { data: 'monto_pagado_format', name: 'monto_pagado_format', className: 'monto_pagado' },
         @endif
-        { data: 'tipo_factura_format', name: 'tipo_factura_format' },
+        @if(!$parcial)
+          { data: 'tipo_factura_format', name: 'tipo_factura_format' },
+        @endif
         { data: 'acciones', name: 'acciones' },
       ],
       columnDefs: [

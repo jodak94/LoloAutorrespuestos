@@ -63,8 +63,8 @@ class RegisterVentasSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->item(trans('Ventas Parciales'), function (Item $item) {
                     $item->icon('fa fa-shopping-cart');
                     $item->weight(0);
-                    $item->append('admin.ventas.venta.create');
-                    $item->route('admin.ventas.venta.index');
+                    $item->append('admin.ventas.venta.create_parcial');
+                    $item->route('admin.ventas.venta.index', ['parcial']);
                     $item->authorize(
                         $this->auth->hasAccess('ventas.ventas.index')
                     );

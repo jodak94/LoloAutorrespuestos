@@ -26,6 +26,11 @@ $router->group(['prefix' =>'/ventas'], function (Router $router) {
         'uses' => 'VentaController@create',
         'middleware' => 'can:ventas.ventas.create'
     ]);
+    $router->get('ventas/create_parcial', [
+        'as' => 'admin.ventas.venta.create_parcial',
+        'uses' => 'VentaController@create_parcial',
+        'middleware' => 'can:ventas.ventas.create'
+    ]);
     $router->post('ventas', [
         'as' => 'admin.ventas.venta.store',
         'uses' => 'VentaController@store',
@@ -44,6 +49,11 @@ $router->group(['prefix' =>'/ventas'], function (Router $router) {
     $router->put('ventas/{venta}', [
         'as' => 'admin.ventas.venta.update',
         'uses' => 'VentaController@update',
+        'middleware' => 'can:ventas.ventas.edit'
+    ]);
+    $router->get('ventas/{venta}/actualizar', [
+        'as' => 'admin.ventas.venta.actualizar',
+        'uses' => 'VentaController@actualizar',
         'middleware' => 'can:ventas.ventas.edit'
     ]);
     $router->delete('ventas/{venta}', [

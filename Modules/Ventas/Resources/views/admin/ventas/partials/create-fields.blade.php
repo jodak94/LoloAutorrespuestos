@@ -13,15 +13,19 @@
         <div class="col-md-4">
           {!! Form::normalInputOfType('date','fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('Y-m-d')], ['readonly' => 'true']) !!}
         </div>
-        <div class="col-md-4">
-          {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura],  ['readonly' => 'true']) !!}
-        </div>
+        @if(!$parcial)
+          <div class="col-md-4">
+            {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura],  ['readonly' => 'true']) !!}
+          </div>
+        @else
+          <input type="hidden" name="nro_factura" value="xxx-xxx-xxxxxx"> 
+        @endif
       </div>
       <div class="row" style="margin-bottom: 20px">
         <div class="col-md-4">
           <label for="paciente_id">Buscar cliente</label>
           <div class="input-group ">
-            <input placeholder="Ingresar Ruc o Razón social" type="text" id="buscar-datos" class="form-control">
+            <input placeholder="Ingresar Ruc o Razón social" type="text" id="buscar-datos" class="form-control" @if($parcial)disabled @endif>
             <input type="hidden" name="datos_id" id="datos_id">
             <span class="input-group-btn">
               <button title="Agregar nuevo cliente" type="button" class="btn btn-primary btn-flat" id="add-cliente-button" style="height:34px">
@@ -32,7 +36,7 @@
         </div>
         <div class="col-md-4">
           <label>Generar Factura</label>
-          {!! Form:: normalCheckbox('generar_factura', '', $errors, (object)['generar_factura' => 1]) !!}
+          {!! Form:: normalCheckbox('generar_factura', '', $errors, (object)['generar_factura' => $parcial?0:1]) !!}
         </div>
       </div>
       <div id="datosfacturacion" style="display:none">

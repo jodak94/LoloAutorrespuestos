@@ -178,6 +178,14 @@
     +'          <span id="producto-stock-consulta"></span>'
     +'        </td>'
     +'      </tr>'
+    +'      <tr>'
+    +'        <td width="30%">'
+    +'          <label>Descripción</label>'
+    +'        </td>'
+    +'        <td width="70%">'
+    +'          <span id="producto-descripcion-consulta"></span>'
+    +'        </td>'
+    +'      </tr>'
     +'    </table>'
     +'  </div>'
     +'  <div class="col-md-6">'
@@ -203,6 +211,7 @@
               $("#producto-precio-consulta").html(ui.item.producto.precio_format + ' Gs.')
               $("#producto-stock-consulta").html(ui.item.producto.stock)
               $("#producto-img-consulta").attr('src', ui.item.producto.url_foto)
+              $("#producto-descripcion-consulta").html(ui.item.producto.descripcion)
             },
           });
         },

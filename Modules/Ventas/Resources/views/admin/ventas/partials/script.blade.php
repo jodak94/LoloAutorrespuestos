@@ -17,6 +17,7 @@
       $("#add-cliente-button").removeAttr('disabled')
       $("#nro_factura").val('{{$nro_factura}}')
       $("#btnCrear").attr('disabled', true)
+      $("#guardar_parcial").attr('disabled', true)
     })
     $("#generar_factura").on('ifUnchecked', function(e){
       $("#buscar-datos").attr('disabled', 'disabled')
@@ -108,17 +109,21 @@
       let ready = true;
       $('.cantidad').each(function(i){
         let cantidad = parseFloat($(this).val())
-        if (isNaN(cantidad)){
+        if (isNaN(cantidad) || cantidad == 0){
           ready = false;
           return;
         }
       })
       if($("#generar_factura").prop('checked') && !$("#datos_id").val())
         ready = false;
-      if(ready)
+      if(ready){
         $("#btnCrear").removeAttr('disabled')
-      else
+        $("#guardar_parcial").removeAttr('disabled')
+      }
+      else{
         $("#btnCrear").attr('disabled', true)
+        $("#guardar_parcial").attr('disabled', true)
+      }
     }
 
     function calculate_all(){
@@ -132,7 +137,11 @@
       })
       $("#monto-total").val(total);
       $("#monto-total-letras").val(numeroALetras(total, { plural: 'GUARANIES.', singular: 'GUARANI.'}));
-      $("#modal-monto-total").val(total);
+      @if(isset($actualizar) && $actualizar)
+        $("#modal-monto-total").val(total - {{$venta->monto_total}});
+      @else
+        $("#modal-monto-total").val(total);
+      @endif
       $("#total-iva-10").val(parseFloat(total / 11).toFixed(2))
     }
 
@@ -171,10 +180,26 @@
     }
 
     $("#btnCrear").on('click', function(){
+      @if(isset($actualizar) && $actualizar)
+        $("#parcial").val(0);
+      @endif
+      $("#modal-factura-container").show()
+      $("#generar_venta").html('Guardar y Generar Factura')
+      showVentaModal()
+    })
+
+    $("#guardar_parcial").on('click', function(){
+      $("#modal-factura-container").hide()
+      $("#generar_venta").html('Guardar Venta Parcial')
+      // $("#venta-form").submit()
+      showVentaModal()
+    })
+
+    function showVentaModal(){
       if($("#monto_pagado").val())
         checkVuelto()
       $("#facturaModal").modal('show');
-    })
+    }
 
     var row =
          '<tr>'
@@ -211,6 +236,7 @@
 
     $("#add-detalle").on('click', function(){
       $("#btnCrear").attr('disabled', true);
+      $("#guardar_parcial").attr('disabled', true);
       $("#detallesBody").append(row)
       $(".buscar-producto").autocomplete({
         source: '{{route('admin.productos.producto.search_ajax')}}',
@@ -238,9 +264,12 @@
               if(response.generar_factura == 1) {
                 window.open('{{route("admin.ventas.venta.exportar")}}?format=pdf&download=false&venta_id='+response.venta_id,"_blank");
               }
-               location.href = '{{route('admin.ventas.venta.index')}}'
+              if(response.parcial)
+                location.href = '{{route('admin.ventas.venta.index', ['parcial'])}}'
+              else
+                location.href = '{{route('admin.ventas.venta.index')}}'
            },
-});
+         });
     });
 
   })

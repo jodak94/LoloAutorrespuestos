@@ -6,7 +6,7 @@
           <center><h4 class="modal-title"><strong>Crear Venta</strong></h4></center>
         </div><br>
         <div class="modal-body">
-           <div class="row" style="">
+           <div class="row" id="modal-factura-container">
               <div class="col-sm-6">
                  @if(isset($edit) && $edit)
                    {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura:', $errors, $tipos_factura, $factura) !!}
@@ -14,9 +14,21 @@
                    {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura:', $errors, $tipos_factura) !!}
                  @endif
               </div>
+              @if(isset($actualizar) && $actualizar)
+                <div class="col-sm-6">
+                  {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura]) !!}
+                </div>
+              @endif
            </div>
-           @if(isset($edit) && $edit)
-             {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['modal-monto-total' => $factura->monto_total], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+           @if((isset($edit) && $edit) || (isset($actualizar) && $actualizar))
+             @php
+               if(isset($actualizar) && $actualizar)
+                $factura = $venta;
+              else {
+                $actualizar = false;
+              }
+             @endphp
+             {!! Form::normalInput('modal-monto-total', $actualizar?'Total a Pagar (Parcial):':'Total a Pagar:', $errors ,(object)['modal-monto-total' => $actualizar?0:$factura->monto_total], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
            @else
              {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['modal-monto-total' => 0], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
            @endif
@@ -41,7 +53,7 @@
                       @if(isset($factura)  && $factura->tipo_factura == 'credito')
                         <button type="submit" class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
                       @else
-                        <button type="submit" disabled class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
+                        <button type="submit" class="btn btn-primary btn-flat" id="generar_venta">Guardar y Generar Factura</button>
                       @endif
                       <button type="button" class="btn btn-danger pull-right btn-flat" data-dismiss="modal"><i class="fa fa-times"></i>Cancelar</button>
                   </div>
