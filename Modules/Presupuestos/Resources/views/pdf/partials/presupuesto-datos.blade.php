@@ -1,14 +1,14 @@
 <table  cellspacing="0" width="80%" style="margin:auto;border-collapse: collapse" >
        <tr style="border-left: 0;border-right: 0 ;border-bottom: 1px;border-top: 0; border-style: solid">
-            <td colspan="3" >
+            <td colspan="3" style="text-align: center">
                 @if ($format == "html")
-                    <img src="{{ url('images/logo.png') }}" width="150px">
+                    <img src="{{ url('images/logo.png') }}" width="250px">
                 @else
                     <img src="{{ public_path('images/logo.png') }}" width="150px">
                 @endif
 
                 <div style="padding-left:5%;display:inline-block;font-size:12px">
-                    <p style="margin-top:2%">Lolo AutoRepuestos S.R.L</p>
+                    <p style="margin-top:2%">Lolo Autorepuestos SRL</p>
                     <p>Avda. Defensores Chaco c/ Cerro Corá</p>
                     <p>(021) 505 985</p>
                 </div>
