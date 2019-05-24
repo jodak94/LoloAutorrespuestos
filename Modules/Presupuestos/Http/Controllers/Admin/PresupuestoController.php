@@ -150,7 +150,7 @@ class PresupuestoController extends AdminBaseController
             $datosPresupuesto["email_cliente"] = $presupuesto->email_cliente;
             $datosPresupuesto["subtotal"] = number_format($presupuesto->precio_total,0,"",".");
             $datosPresupuesto["total"] = number_format($presupuesto->precio_total,0,"",".");
-            $datosPresupuesto["fecha"] = Carbon::now()->format('d-m-Y');
+            $datosPresupuesto["fecha"] = Carbon::now()->format('d/m/Y');
             foreach ($presupuesto->detalles as $detalle) {
               $producto = Producto::find($detalle->producto_id);
               $pdfDetalle["producto"] = $producto->nombre;
