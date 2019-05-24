@@ -52,7 +52,6 @@ class VentaController extends AdminBaseController
             $parcial = true;
         }
         $today = Carbon::now()->format('d/m/Y');
-        $today = null;
         $tipos_factura = ['todos' => '--'];
         $tipos_factura = array_merge($tipos_factura, Venta::$tipos_factura);
         $con_factura = ['todos' => '--', '1' => 'Sí', '0' => 'No'];
@@ -284,10 +283,9 @@ class VentaController extends AdminBaseController
       }catch(\Exception $e){
         return response()->json(['error'=> $e]);
       }
-      $generar_factura = $request->generar_factura;
+      $generar_factura = $request->generar_factura?true:false;
       if($request->parcial)
         $generar_factura = false;
-
       return response()->json(['venta_id'=> $venta->id, 'generar_factura' => $generar_factura, 'parcial' => $request->parcial]);
     }
 
@@ -364,13 +362,15 @@ class VentaController extends AdminBaseController
           $request = $this->getDatosFacturacion($request);
           if($request->parcial){
             if($request['monto_pagado'] > $request['modal-monto-total'])
-              $request['monto_pagado'] = $request->monto_total;
+              $request['monto_pagado'] = $request['modal-monto-total'];
             $request['monto_pagado'] += $venta->monto_pagado;
             $request['tipo_factura'] = null;
             $request['nro_factura'] = 'xxx-xxx-xxxxxx';
           }else{
             if($request->tipo_factura == 'contado')
               $request['monto_pagado'] = $request->monto_total;
+            if(!$request->generar_factura)
+              $request['nro_factura'] = 'xxx-xxx-xxxxxx';
           }
           $venta = $this->venta->update($venta, $request->all());
           foreach ($venta->detalles as $detalle) {
@@ -401,7 +401,7 @@ class VentaController extends AdminBaseController
         }catch(\Exception $e){
           return response()->json(['error'=> $e]);
         }
-        $generar_factura = $request->generar_factura;
+        $generar_factura = $request->generar_factura?true:false;
         if($request->parcial)
           $generar_factura = false;
 

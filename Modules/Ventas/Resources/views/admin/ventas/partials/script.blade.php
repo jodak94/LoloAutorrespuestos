@@ -139,7 +139,7 @@
       $("#monto-total").val(total);
       $("#monto-total-letras").val(numeroALetras(total, { plural: 'GUARANIES.', singular: 'GUARANI.'}));
       @if(isset($actualizar) && $actualizar)
-        $("#modal-monto-total").val(total - {{$venta->monto_total}});
+        $("#modal-monto-total").val(total - {{$venta->monto_pagado}});
       @else
         $("#modal-monto-total").val(total);
       @endif
@@ -194,18 +194,19 @@
     })
 
     $("#guardar_parcial").on('click', function(){
+      $("#generar_venta").removeAttr('disabled')
       btn_crear = false
       $("#modal-factura-container").hide()
       $("#generar_venta").html('Guardar Venta Parcial')
       showVentaModal(false)
     })
 
-    $("#guardar_parcial").on('click', function(){
-      $("#modal-factura-container").hide()
-      $("#generar_venta").html('Guardar Venta Parcial')
-      // $("#venta-form").submit()
-      showVentaModal(true)
-    })
+    // $("#guardar_parcial").on('click', function(){
+    //   $("#modal-factura-container").hide()
+    //   $("#generar_venta").html('Guardar Venta Parcial')
+    //   // $("#venta-form").submit()
+    //   showVentaModal(true)
+    // })
 
     function showVentaModal(parcial){
       if($("#monto_pagado").val())
