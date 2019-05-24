@@ -1,5 +1,6 @@
 <script>
   $(document).ready(function(){
+    var btn_crear = false
     @if(isset($edit) && $edit)
       $('.fecha').pickadate({
         monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -169,9 +170,8 @@
     function checkVuelto(){
       let val = $('#monto_pagado').val() - $("#modal-monto-total").val();
       $("#vuelto").val(val)
-      @if((isset($parcial) && $parcial) || (isset($actualizar) && $actualizar))
+      if(!btn_crear)
         return
-      @endif
       if($("select[name=tipo_factura]").val() == 'credito'){
         $("#generar_venta").removeAttr('disabled')
         return
@@ -186,8 +186,17 @@
       @if(isset($actualizar) && $actualizar)
         $("#parcial").val(0);
       @endif
+       btn_crear = true
+      $("#generar_venta").attr('disabled', true)
       $("#modal-factura-container").show()
       $("#generar_venta").html('Guardar y Generar Factura')
+      showVentaModal(false)
+    })
+
+    $("#guardar_parcial").on('click', function(){
+      btn_crear = false
+      $("#modal-factura-container").hide()
+      $("#generar_venta").html('Guardar Venta Parcial')
       showVentaModal(false)
     })
 
@@ -257,14 +266,14 @@
     })
 
     $("#venta-form").submit(function(e) {
-      console.log('submit')
+      console.log( $("#venta-form").serialize())
       e.preventDefault();
        $.ajax({
           type: 'post',
           url: $("#venta-form").attr("action"),
           data: $("#venta-form").serialize(),
           success: function(response) {
-              if(response.generar_factura == 1) {
+              if(response.generar_factura) {
                 window.open('{{route("admin.ventas.venta.exportar")}}?format=pdf&download=false&venta_id='+response.venta_id,"_blank");
               }
               if(response.parcial)

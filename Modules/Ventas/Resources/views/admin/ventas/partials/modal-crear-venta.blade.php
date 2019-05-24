@@ -28,7 +28,7 @@
                 $actualizar = false;
               }
              @endphp
-             {!! Form::normalInput('modal-monto-total', $actualizar?'Total a Pagar (Deuda):':'Total a Pagar:', $errors ,(object)['modal-monto-total' => $actualizar?0:$factura->monto_total], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
+             {!! Form::normalInput('modal-monto-total', $actualizar?'Total a Pagar (Deuda):':'Total a Pagar:', $errors ,(object)['modal-monto-total' => $actualizar?($factura->monto_total-$factura->monto_pagado):$factura->monto_total], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
            @else
              {!! Form::normalInput('modal-monto-total', 'Total a Pagar:', $errors ,(object)['modal-monto-total' => 0], ['readonly'=>'', 'class' => 'form-control precio_format'] ) !!}
            @endif

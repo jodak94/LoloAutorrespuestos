@@ -192,7 +192,7 @@ class VentaController extends AdminBaseController
         $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
         $nro_factura = implode('-',$nro_factura);
         $tipos_factura = Venta::$tipos_factura;
-        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        $descuentos = (array)json_decode(Configuracion::where('slug', 'descuentos')->first()->value);
         return view('ventas::admin.ventas.create', compact('parcial','nro_factura', 'tipos_factura', 'descuentos'));
     }
 
@@ -202,7 +202,7 @@ class VentaController extends AdminBaseController
         $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
         $nro_factura = implode('-',$nro_factura);
         $tipos_factura = Venta::$tipos_factura;
-        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        $descuentos = (array)json_decode(Configuracion::where('slug', 'descuentos')->first()->value);
         return view('ventas::admin.ventas.create', compact('parcial', 'nro_factura', 'tipos_factura', 'descuentos'));
     }
 
@@ -230,6 +230,7 @@ class VentaController extends AdminBaseController
           }
           $request['monto_pagado'] = isset($request['modal-monto-total']) ? $request['monto_pagado'] : 0;
         }else{
+          $request['parcial'] = false;
           if($request->tipo_factura == 'contado')
             $request['monto_pagado'] = $request->monto_total;
         }
@@ -320,7 +321,7 @@ class VentaController extends AdminBaseController
     public function edit(Venta $venta)
     {
         $factura = $venta;
-        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        $descuentos = (array)json_decode(Configuracion::where('slug', 'descuentos')->first()->value);
         $edit = 1;
         $nro_factura = $factura->nro_factura;
         $tipos_factura = Venta::$tipos_factura;
@@ -335,7 +336,7 @@ class VentaController extends AdminBaseController
     }
 
     public function actualizar(Venta $venta){
-      $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+      $descuentos = (array)json_decode(Configuracion::where('slug', 'descuentos')->first()->value);
       $actualizar = 1;
       $nro_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->pluck('value')->toArray();
       $nro_factura = implode('-',$nro_factura);
