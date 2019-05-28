@@ -7,11 +7,11 @@
                <img src="{{ public_path('images/logo.png') }}" width="150px; vertical-align: top">
            @endif
         </td>
-        <td width="40%" style="text-align: center">
-           <div style="display:inline-block;font-size:12px;">
-               <p style="margin-bottom: 0;text-align: center; font-weight: 600; font-size: 17px">Lolo Autorepuestos SRL</p>
-               <p style="margin-bottom: 0;">Avda. Defensores Chaco c/ Cerro Corá</p>
-               <p>(021) 505 985</p>
+        <td width="40%" style="">
+           <div style="display:block;font-size:14px;margin:auto;margin-top:5px">
+               <p style="margin: 0;">Lolo Autorepuestos SRL</p>
+               <p style="margin: 0;">Avda. Defensores Chaco c/ Cerro Corá</p>
+               <p style="margin: 0;">(021) 505 985</p>
            </div>
        </td>
        <td width="30%" style="text-align: right">
