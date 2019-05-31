@@ -11,7 +11,7 @@
     <div class="box-body">
       <div class="row">
         <div class="col-md-4">
-          {!! Form::normalInput('fecha', 'Fecha', $errors, (object)['fecha' => $factura->created_at->format('d/m/Y')], ['class' => 'form-control fecha']) !!}
+          {!! Form::normalInput('fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('d/m/Y')], ['class' => 'form-control fecha', 'readonly' => true]) !!}
         </div>
         <div class="col-md-4">
           {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, $factura) !!}

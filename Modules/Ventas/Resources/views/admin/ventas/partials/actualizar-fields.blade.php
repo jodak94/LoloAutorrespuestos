@@ -11,7 +11,7 @@
     <div class="box-body">
       <div class="row">
         <div class="col-md-4">
-          {!! Form::normalInput('fecha', 'Fecha', $errors, (object)['fecha' => $venta->created_at->format('d/m/Y')], ['class' => 'form-control fecha']) !!}
+          {!! Form::normalInput('fecha', 'Fecha', $errors, (object)['fecha' => Carbon\Carbon::now()->format('d/m/Y')], ['class' => 'form-control fecha', 'readonly' => true]) !!}
         </div>
         <input type="hidden" name="edit" value="1">
         <input type="hidden" name="factura_a_anular" value="{{$venta->id}}">
