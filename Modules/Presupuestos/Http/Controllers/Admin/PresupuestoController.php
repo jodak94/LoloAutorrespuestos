@@ -5,6 +5,7 @@ namespace Modules\Presupuestos\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Ventas\Entities\Venta;
+use Modules\Configuracion\Entities\Configuracion;
 use Modules\Presupuestos\Entities\Presupuesto;
 use Modules\Presupuestos\Entities\PresupuestoDetalle;
 use Modules\Productos\Entities\Producto;
@@ -60,7 +61,7 @@ class PresupuestoController extends AdminBaseController
         else {
           $nro_presupuesto = str_pad(1, 9, '0', STR_PAD_LEFT);
         }
-        $descuentos = (array)json_decode(\Configuracion::where('slug', 'descuentos')->first()->value);
+        $descuentos = (array)json_decode(Configuracion::where('slug', 'descuentos')->first()->value);
         return view('presupuestos::admin.presupuestos.create',compact('nro_presupuesto','descuentos'));
     }
 

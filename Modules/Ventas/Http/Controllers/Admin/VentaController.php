@@ -435,24 +435,24 @@ class VentaController extends AdminBaseController
 
     public function export_to_pdf(Request $request) {
       $facturaBoxes = json_decode(json_encode([
-        'fecha' => ['x' => 3.6, 'y' => 2.5, 'width' => 100],
-        'contado' => ['x' => 17.5, 'y' => 2.5, 'width' => 100],
-        'credito' => ['x' => 19.8, 'y' => 2.5, 'width' => 100],
-        'nombre' => ['x' => 4.2, 'y' => 2.9, 'width' => 100],
-        'ruc' => ['x' => 17, 'y' => 2.9, 'width' => 100],
-        'direccion' => ['x' => 2.8, 'y' => 3.3, 'width' => 100],
-        'telefono' => ['x' => 17.6, 'y' => 3.3, 'width' => 100],
-        'vencimiento' => ['x' => 15.3, 'y' => 3.7, 'width' => 100],
+        'fecha' => ['x' => 3.1, 'y' => 2.5, 'width' => 100],
+        'contado' => ['x' => 17, 'y' => 2.5, 'width' => 100],
+        'credito' => ['x' => 19.3, 'y' => 2.5, 'width' => 100],
+        'nombre' => ['x' => 3.7, 'y' => 2.9, 'width' => 100],
+        'ruc' => ['x' => 16.5, 'y' => 2.9, 'width' => 100],
+        'direccion' => ['x' => 2.3, 'y' => 3.3, 'width' => 100],
+        'telefono' => ['x' => 17.1, 'y' => 3.3, 'width' => 100],
+        'vencimiento' => ['x' => 14.8, 'y' => 3.7, 'width' => 100],
         'cantidad' => ['x' => 2, 'y' => 4.7, 'width' => 100],
         'producto' => ['x' => 3.5, 'y' => 4.7, 'width' => 100],
         'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
         'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
         'subtotal' => ['x' => 18.8, 'y' => 10.2, 'width' => 100],
-        'total_letras' => ['x' => 3, 'y' => 10.55, 'width' => 100],
+        'total_letras' => ['x' => 2.5, 'y' => 10.55, 'width' => 100],
         'total' => ['x' => 17.6, 'y' => 10.55, 'width' => 100],
-        'iva_10' => ['x' => 7.2, 'y' => 10.9, 'width' => 100],
-        'total_iva' => ['x' => 10.7, 'y' => 10.9, 'width' => 100],
-        'duplicado' => 11.75
+        'iva_10' => ['x' => 6.7, 'y' => 10.9, 'width' => 100],
+        'total_iva' => ['x' => 10.2, 'y' => 10.9, 'width' => 100],
+        'duplicado' => 11.6
       ]));
       $venta = Venta::find($request->venta_id);
       $format = $request->format;
@@ -476,26 +476,26 @@ class VentaController extends AdminBaseController
   public function download_facturas(Request $request) {
     if(!count($request->venta_id))
       return redirect()->back()->withWarning('No se seleccionaron facturas');
-    $facturaBoxes = json_decode(json_encode([
-      'fecha' => ['x' => 3.6, 'y' => 2.5, 'width' => 100],
-      'contado' => ['x' => 17.5, 'y' => 2.5, 'width' => 100],
-      'credito' => ['x' => 19.8, 'y' => 2.5, 'width' => 100],
-      'nombre' => ['x' => 4.2, 'y' => 2.9, 'width' => 100],
-      'ruc' => ['x' => 17, 'y' => 2.9, 'width' => 100],
-      'direccion' => ['x' => 2.8, 'y' => 3.3, 'width' => 100],
-      'telefono' => ['x' => 17.6, 'y' => 3.3, 'width' => 100],
-      'vencimiento' => ['x' => 15.3, 'y' => 3.7, 'width' => 100],
-      'cantidad' => ['x' => 2, 'y' => 4.7, 'width' => 100],
-      'producto' => ['x' => 3.5, 'y' => 4.7, 'width' => 100],
-      'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
-      'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
-      'subtotal' => ['x' => 18.8, 'y' => 10.2, 'width' => 100],
-      'total_letras' => ['x' => 3, 'y' => 10.55, 'width' => 100],
-      'total' => ['x' => 17.6, 'y' => 10.55, 'width' => 100],
-      'iva_10' => ['x' => 7.2, 'y' => 10.9, 'width' => 100],
-      'total_iva' => ['x' => 10.7, 'y' => 10.9, 'width' => 100],
-      'duplicado' => 11.75
-    ]));
+      $facturaBoxes = json_decode(json_encode([
+        'fecha' => ['x' => 3.1, 'y' => 2.5, 'width' => 100],
+        'contado' => ['x' => 17, 'y' => 2.5, 'width' => 100],
+        'credito' => ['x' => 19.3, 'y' => 2.5, 'width' => 100],
+        'nombre' => ['x' => 3.7, 'y' => 2.9, 'width' => 100],
+        'ruc' => ['x' => 16.5, 'y' => 2.9, 'width' => 100],
+        'direccion' => ['x' => 2.3, 'y' => 3.3, 'width' => 100],
+        'telefono' => ['x' => 17.1, 'y' => 3.3, 'width' => 100],
+        'vencimiento' => ['x' => 14.8, 'y' => 3.7, 'width' => 100],
+        'cantidad' => ['x' => 2, 'y' => 4.7, 'width' => 100],
+        'producto' => ['x' => 3.5, 'y' => 4.7, 'width' => 100],
+        'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
+        'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
+        'subtotal' => ['x' => 18.8, 'y' => 10.2, 'width' => 100],
+        'total_letras' => ['x' => 2.5, 'y' => 10.55, 'width' => 100],
+        'total' => ['x' => 17.6, 'y' => 10.55, 'width' => 100],
+        'iva_10' => ['x' => 6.7, 'y' => 10.9, 'width' => 100],
+        'total_iva' => ['x' => 10.2, 'y' => 10.9, 'width' => 100],
+        'duplicado' => 11.6
+      ]));
     $zip_path = public_path().'/facturas/facturas.zip';
     $zip = Zip::create($zip_path);
     $files = [];

@@ -1,6 +1,7 @@
 <script>
   $(document).ready(function(){
     var btn_crear = false
+    var limite_detalle = 11
     @if(isset($edit) && $edit)
       $('.fecha').pickadate({
         monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -248,10 +249,11 @@
         +'</tr>'
 
     $("#add-detalle").on('click', function(){
-      $("#btnCrear").attr('disabled', true);
-      $("#guardar_parcial").attr('disabled', true);
-      $("#detallesBody").append(row)
-      $(".buscar-producto").autocomplete({
+      if($(".cantidad").size() < limite_detalle) {
+        $("#btnCrear").attr('disabled', true);
+        $("#guardar_parcial").attr('disabled', true);
+        $("#detallesBody").append(row)
+        $(".buscar-producto").autocomplete({
         source: '{{route('admin.productos.producto.search_ajax')}}',
         select: function( event, ui){
           $(this).closest('tr').find('.precio').val(ui.item.producto.precio)
@@ -262,8 +264,18 @@
           $(this).closest('tr').find('.cantidad').removeAttr('readonly')
           $(this).closest('tr').find('.producto_id').val(ui.item.producto.id)
           $(".precio_format").number( true , 0, ',', '.' );
-        },
-      });
+          },
+        });
+      }else{
+        $.toast({
+        heading: 'Atención  ',
+        text: 'Ha alcanzado el límite de productos para una factura.',
+        showHideTransition: 'slide',
+        icon:'warning',
+        position: 'top-right'
+      })
+      }
+      
     })
 
     $("#venta-form").submit(function(e) {
