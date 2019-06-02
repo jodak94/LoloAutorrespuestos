@@ -19,6 +19,7 @@ use Validator;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
+use Log;
 class ProductoController extends AdminBaseController
 {
     /**
@@ -34,7 +35,6 @@ class ProductoController extends AdminBaseController
 
         $this->producto = $producto;
         $this->rules = [
-            'codigo' => 'required|unique:productos__productos',
             'nombre'  => 'required',
             'descripcion' => 'nullable',
             'precio'     => 'required|numeric|min:0',
@@ -127,9 +127,9 @@ class ProductoController extends AdminBaseController
                         ->withErrors($validator)
                         ->withInput();
         }
-        
+
         $producto = $this->producto->create($request->all());
-        
+
         if ($request->hasFile('image')) {
             $image      = $request->file('image');
             $fileName   = time() . '.' . $image->getClientOriginalExtension();
@@ -255,7 +255,6 @@ class ProductoController extends AdminBaseController
         $extensions = array("xls","xlsx");
 
         $result = array($request->file('excel')->getClientOriginalExtension());
-
         if(in_array($result[0],$extensions)){
             $rows = Excel::toArray(new ProductosImport, request()->file('excel'));
             $errors = [];
@@ -269,7 +268,10 @@ class ProductoController extends AdminBaseController
                             $productos_error[] = $producto;
                         }else {
                             $nuevo_producto = new Producto();
-                            $nuevo_producto->codigo = $producto["codigo"];
+                            if($producto["codigo"])
+                              $nuevo_producto->codigo = $producto["codigo"];
+                            else
+                              $nuevo_producto->codigo = $this->obtener_codigo($producto["nombre"]);
                             $nuevo_producto->nombre = $producto["nombre"];
                             $nuevo_producto->stock = $producto["stock"];
                             $nuevo_producto->stock_critico = $producto["stock_critico"];
@@ -345,7 +347,10 @@ class ProductoController extends AdminBaseController
         foreach($request->productos as $req) {
             if($req != null){
                 $producto = new Producto();
-                $producto->codigo = $req["codigo"];
+                if($req["codigo"])
+                  $producto->codigo = $req["codigo"];
+                else
+                  $producto->codigo = $this->obtener_codigo($req["nombre"]);
                 $producto->nombre = $req["nombre"];
                 $producto->stock = $req["stock"];
                 $producto->stock_critico = $req["stock_critico"];
@@ -380,24 +385,33 @@ class ProductoController extends AdminBaseController
         return Excel::download(new ProductosExport, 'Inventario '.Carbon::now()->format('d-m-Y').'.xlsx');
     }
 
-    public function generate_code(Request $request){
-      if($request->has('nombre') && trim($request->nombre) == '')
-        return response(['error' => true]);
-      $nombre = $request->nombre;
+    private function obtener_codigo($nombre){
       $words = explode(' ', $nombre);
+      $letters = '';
       if(count($words) == 1){
         if(strlen($nombre) == 1)
           return response()->json(['error' => true, 'message' => 'El nombre del producto debe tener al menos 2 caracteres']);
         $letters = substr($nombre, 0, 2);
       }else{
-        $letters = $words[0][0];
-        $letters .= $words[1][0];
+        foreach ($words as $key => $word) {
+          $letters .= $word[0];
+          if($key == 2)
+            break;
+        }
       }
       while (true) {
         $code = strtoupper($letters) . rand(1000, 9999);
         if(!count(Producto::where('codigo', $code)->get()))
           break;
       }
+      return $code;
+    }
+
+    public function generate_code(Request $request){
+      if($request->has('nombre') && trim($request->nombre) == '')
+        return response(['error' => true]);
+      $nombre = $request->nombre;
+      $code = $this->obtener_codigo($nombre);
       return response()->json(['error' => false, 'codigo' => $code]);
     }
 }
