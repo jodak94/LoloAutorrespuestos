@@ -36,6 +36,7 @@ class ProductoController extends AdminBaseController
         $this->producto = $producto;
         $this->rules = [
             'nombre'  => 'required',
+            'codigo' => 'required',
             'descripcion' => 'nullable',
             'precio'     => 'required|numeric|min:0',
             'stock'     => 'required|numeric|min:0',
