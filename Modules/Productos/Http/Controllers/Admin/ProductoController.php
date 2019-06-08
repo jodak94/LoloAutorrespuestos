@@ -36,7 +36,7 @@ class ProductoController extends AdminBaseController
         $this->producto = $producto;
         $this->rules = [
             'nombre'  => 'required',
-            'codigo' => 'required',
+            'codigo' => 'unique:productos__productos',
             'descripcion' => 'nullable',
             'precio'     => 'required|numeric|min:0',
             'stock'     => 'required|numeric|min:0',
@@ -257,6 +257,8 @@ class ProductoController extends AdminBaseController
 
         $result = array($request->file('excel')->getClientOriginalExtension());
         if(in_array($result[0],$extensions)){
+          DB::beginTransaction();
+          try{
             $rows = Excel::toArray(new ProductosImport, request()->file('excel'));
             $errors = [];
             $productos_error = [];
@@ -299,11 +301,18 @@ class ProductoController extends AdminBaseController
                         }
                 }
             }
+            DB::commit();
             return response()->json([
                 "cargados" => $productos_cargados,
                 "productos" => $productos_error,
                 "errores" => $errors
             ]);
+          } catch (\Exception $e) {
+              Log::info($e);
+              return response()->json([
+                "error" => "error en tipo de archivo",
+              ],400);
+          }
         }else{
             return response()->json([
                 "error" => "error en tipo de archivo",
