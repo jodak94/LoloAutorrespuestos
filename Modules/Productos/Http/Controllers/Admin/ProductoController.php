@@ -404,9 +404,11 @@ class ProductoController extends AdminBaseController
         $letters = substr($nombre, 0, 2);
       }else{
         foreach ($words as $key => $word) {
-          $letters .= $word[0];
-          if($key == 2)
-            break;
+          if($word != "") {
+            $letters .= $word[0];
+            if($key == 2)
+              break;
+          }
         }
       }
       while (true) {
