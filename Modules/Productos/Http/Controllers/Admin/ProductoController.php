@@ -263,10 +263,13 @@ class ProductoController extends AdminBaseController
             $errors = [];
             $productos_error = [];
             $productos_cargados = 0;
+            $c = 0;
             foreach($rows as $row) {
                 foreach($row as $producto) {
+                    $c++;
                     $error = $this->cell_validation($producto, $this->rules);
                         if (!empty($error)) {
+                            Log::info($c . ' - nombre:' . $producto["nombre"]);
                             $errors[] = $error;
                             $productos_error[] = $producto;
                         }else {
