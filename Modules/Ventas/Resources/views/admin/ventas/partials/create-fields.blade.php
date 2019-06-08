@@ -88,7 +88,7 @@
           <img class="foto" src="'.url('images/default-product.jpg').'"  width="40px" height="auto" style="display:flex; margin:auto">
         </td>
         <td>
-          <input readonly type="number" step="any" class="form-control cantidad" name="cantidad[]" required>
+          <input readonly step="any" class="form-control cantidad" name="cantidad[]" required>
         </td>
         <td>
           <input class="form-control precio precio_format" name="precio_unitario[]" readonly>
