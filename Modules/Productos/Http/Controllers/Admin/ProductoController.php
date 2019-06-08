@@ -217,7 +217,7 @@ class ProductoController extends AdminBaseController
       $re['term_explode'] = explode(' ',$re->term);
       $query = Producto::Where('nombre','like',  '%' . $re->term . '%');
       $query->orWhere('codigo','like', '%'. $re->term .'%');
-      $productos = $query->take(5)->get();
+      $productos = $query->take(10)->get();
       $results = [];
       foreach ($productos as $producto){
         $results[] =
@@ -269,7 +269,6 @@ class ProductoController extends AdminBaseController
                     $c++;
                     $error = $this->cell_validation($producto, $this->rules);
                         if (!empty($error)) {
-                            Log::info($c . ' - nombre:' . $producto["nombre"]);
                             $errors[] = $error;
                             $productos_error[] = $producto;
                         }else {
