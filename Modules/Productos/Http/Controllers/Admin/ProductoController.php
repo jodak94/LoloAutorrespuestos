@@ -165,12 +165,8 @@ class ProductoController extends AdminBaseController
     public function update(Producto $producto, UpdateProductoRequest $request)
     {
         $updateRules = $this->rules;
-        if($producto->codigo == $request->codigo) {
-            $updateRules['codigo'] = str_replace('|unique:productos__productos',"",$updateRules['codigo']);
-        }
-
+        $updateRules['codigo'] = '|unique:productos__productos,codigo, '.$producto->id;
         $validator = Validator::make($request->all(),$updateRules,$this->messages);
-
         if ($validator->fails()) {
             return redirect()->route('admin.productos.producto.edit',['producto'=>$producto->id])
                         ->withErrors($validator)
