@@ -1,7 +1,7 @@
 <script>
   $(document).ready(function(){
     var btn_crear = false
-    var limite_detalle = 11
+    var limite_detalle = 14
     @if(isset($edit) && $edit)
       $('.fecha').pickadate({
         monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
