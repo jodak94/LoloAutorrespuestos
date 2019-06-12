@@ -392,7 +392,7 @@ class VentaController extends AdminBaseController
             $producto->stock -= $request->cantidad[$key];
             $producto->save();
           }
-          if($request->generar_factura){
+          if($request->generar_factura && !$request->parcial){
             $conf_factura = Configuracion::where('slug', 'factura')->orderBy('orden')->get()->last();
             $conf_factura->value = str_pad($conf_factura->value + 1, 7, '0', STR_PAD_LEFT);
             $conf_factura->save();
