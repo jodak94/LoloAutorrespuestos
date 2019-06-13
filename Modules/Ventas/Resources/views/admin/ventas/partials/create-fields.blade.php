@@ -115,13 +115,13 @@
       <table id="detalles-table" class="data-table table table-bordered table-hover">
         <thead>
           <tr>
-            <th>Producto</th>
+            <th style="width:40%">Producto</th>
             <th>Foto</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
+            <th style="width:5%">Cantidad</th>
+            <th style="width:10%">Precio</th>
             <th>Descuento</th>
-            <th>Stock</th>
-            <th>SubTotal</th>
+            <th style="width:8%">Stock</th>
+            <th style="width:10%">SubTotal</th>
             <th>Eliminar</th>
           </tr>
         </thead>
