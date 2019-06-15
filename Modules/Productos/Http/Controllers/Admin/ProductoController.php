@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
 use Log;
+use Auth;
 class ProductoController extends AdminBaseController
 {
     /**
@@ -79,9 +80,14 @@ class ProductoController extends AdminBaseController
               <div class="btn-group">
                 <a href="'.$edit_route.'" class="btn btn-default btn-flat">
                   <i class="fa fa-pencil"></i>
-                </a>
-              </div>
-            ';
+                </a>';
+            if(Auth::user()->hasRoleSlug('administrador') || Auth::user()->hasRoleSlug('admin'))
+              $html .= '
+              <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="'.$delete_route.'">
+                <i class="fa fa-trash">
+              </i></button>';
+
+            $html .=  '</div>';
             return $html;
           })
           ->rawColumns(['acciones', 'url_foto'])
@@ -203,10 +209,15 @@ class ProductoController extends AdminBaseController
      */
     public function destroy(Producto $producto)
     {
-        $this->producto->destroy($producto);
+        try{
+          $this->producto->destroy($producto);
+        }catch(\Exception $e){
+          return redirect()->route('admin.productos.producto.index')
+              ->withError('Error al eliminar el producto, existen ventas asociadas al producto.');
+        }
 
         return redirect()->route('admin.productos.producto.index')
-            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('productos::productos.title.productos')]));
+            ->withSuccess('Producto eliminado exitosamente');
     }
 
     public function search_ajax(Request $re){
