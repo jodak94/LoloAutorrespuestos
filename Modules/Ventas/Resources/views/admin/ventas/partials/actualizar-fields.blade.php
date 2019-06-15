@@ -130,9 +130,9 @@
                 <input value="{{$detalle->precio_subtotal}}" class="form-control subtotal precio_format" name="subtotal[]" readonly>
               </td>
               <td style="text-align:center;">
-                @if($detalle_key)
+                {{-- @if($detalle_key) --}}
                   <i class="glyphicon glyphicon-trash btn btn-danger remove-field">'
-                @endif
+                {{-- @endif --}}
               </td>
             </tr>
           @endforeach

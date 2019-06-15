@@ -169,7 +169,7 @@ class VentaController extends AdminBaseController
         if($re->has('anulado') && $re->anulado != 'todos')
           $query->where('anulado', $re->anulado);
 
-//        $query->orderBy('created_at');
+        $query->orderBy('created_at', 'desc');
         return $query;
     }
 

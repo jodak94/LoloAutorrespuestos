@@ -18,7 +18,7 @@
             {!! Form::normalInput('nro_factura', 'Nro. de Factura', $errors, (object)['nro_factura' => $nro_factura],  ['readonly' => 'true']) !!}
           </div>
         @else
-          <input type="hidden" name="nro_factura" value="xxx-xxx-xxxxxx"> 
+          <input type="hidden" name="nro_factura" value="xxx-xxx-xxxxxx">
         @endif
       </div>
       <div class="row" style="margin-bottom: 20px">
@@ -107,7 +107,8 @@
         <td>
           <input class="form-control subtotal precio_format" name="subtotal[]" readonly>
         </td>
-        <td>
+        <td style="text-align:center;">
+          <i class="glyphicon glyphicon-trash btn btn-danger remove-field">
         </td>
       </tr>';
     @endphp
