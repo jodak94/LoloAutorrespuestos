@@ -38,10 +38,10 @@ class ProductoController extends AdminBaseController
             'nombre'  => 'required',
             'codigo' => 'unique:productos__productos',
             'descripcion' => 'nullable',
-            'precio'     => 'required|numeric|min:0',
+            'precio'     => 'required|min:0',
             'stock'     => 'required|numeric|min:0',
             'stock_critico' => 'nullable|numeric|min:0',
-            'costo' => 'nullable|numeric|min:0',
+            'costo' => 'nullable|min:0',
             'descuento' => 'nullable|numeric|min:0'
         ];
         $this->messages = [
