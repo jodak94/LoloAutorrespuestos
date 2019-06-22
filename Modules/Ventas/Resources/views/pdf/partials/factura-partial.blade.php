@@ -29,8 +29,8 @@ foreach($venta->detalles as $detalle) {
 <div id="subtotal" style="position: absolute;left: {{ $facturaBoxes->subtotal->x }}cm;top: {{ $facturaBoxes->subtotal->y }}cm">{{number_format($venta->monto_total,0,',','.')}}</div>
 <div id="total-letras" style="position: absolute;left: {{ $facturaBoxes->total_letras->x }}cm;top: {{ $facturaBoxes->total_letras->y }}cm">{{$venta->precio_total_letras}}</div>
 <div id="total" style="position: absolute;left: {{ $facturaBoxes->total->x }}cm;top: {{ $facturaBoxes->total->y }}cm">{{number_format($venta->monto_total,0,',','.')}}</div>
-<div id="iva10" style="position: absolute;left: {{ $facturaBoxes->iva_10->x }}cm;top: {{ $facturaBoxes->iva_10->y }}cm">{{number_format($venta->total_iva,2,',','.')}}</div>
-<div id="total-iva10" style="position: absolute;left: {{ $facturaBoxes->total_iva->x }}cm;top: {{ $facturaBoxes->total_iva->y }}cm">{{number_format($venta->total_iva,2,',','.')}}</div>
+<div id="iva10" style="position: absolute;left: {{ $facturaBoxes->iva_10->x }}cm;top: {{ $facturaBoxes->iva_10->y }}cm">{{number_format($venta->total_iva,0,',','.')}}</div>
+<div id="total-iva10" style="position: absolute;left: {{ $facturaBoxes->total_iva->x }}cm;top: {{ $facturaBoxes->total_iva->y }}cm">{{number_format($venta->total_iva,0,',','.')}}</div>
 
 <!-- duplicado  -->
 
@@ -64,5 +64,5 @@ foreach($venta->detalles as $detalle) {
 <div id="subtotal" style="position: absolute;left: {{ $facturaBoxes->subtotal->x }}cm;top: {{ $facturaBoxes->subtotal->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->monto_total,0,',','.')}}</div>
 <div id="total-letras" style="position: absolute;left: {{ $facturaBoxes->total_letras->x }}cm;top: {{ $facturaBoxes->total_letras->y + $facturaBoxes->duplicado }}cm">{{$venta->precio_total_letras}}</div>
 <div id="total" style="position: absolute;left: {{ $facturaBoxes->total->x }}cm;top: {{ $facturaBoxes->total->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->monto_total,0,',','.')}}</div>
-<div id="iva10" style="position: absolute;left: {{ $facturaBoxes->iva_10->x }}cm;top: {{ $facturaBoxes->iva_10->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->total_iva,2,',','.')}}</div>
-<div id="total-iva10" style="position: absolute;left: {{ $facturaBoxes->total_iva->x }}cm;top: {{ $facturaBoxes->total_iva->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->total_iva,2,',','.')}}</div>
+<div id="iva10" style="position: absolute;left: {{ $facturaBoxes->iva_10->x }}cm;top: {{ $facturaBoxes->iva_10->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->total_iva,0,',','.')}}</div>
+<div id="total-iva10" style="position: absolute;left: {{ $facturaBoxes->total_iva->x }}cm;top: {{ $facturaBoxes->total_iva->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->total_iva,0,',','.')}}</div>

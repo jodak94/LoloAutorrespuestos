@@ -158,7 +158,7 @@
         </div>
         <div class="col-md-2">
           <strong>Total Iva 10%: </strong>
-          <input value="{{$venta->total_iva}}"readonly name="total_iva" class="precio_float_format form-control" id="total-iva-10">
+          <input value="{{$venta->total_iva}}"readonly name="total_iva" class="precio_format form-control" id="total-iva-10">
         </div>
       </div>
     </div>

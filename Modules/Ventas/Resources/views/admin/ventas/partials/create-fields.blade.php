@@ -152,7 +152,7 @@
         </div>
         <div class="col-md-2">
           <strong>Total Iva 10%: </strong>
-          <input readonly name="total_iva" class="precio_float_format form-control" id="total-iva-10">
+          <input readonly name="total_iva" class="precio_format form-control" id="total-iva-10">
         </div>
       </div>
     </div>

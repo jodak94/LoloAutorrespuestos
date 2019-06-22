@@ -144,7 +144,7 @@
       @else
         $("#modal-monto-total").val(total);
       @endif
-      $("#total-iva-10").val(parseFloat(total / 11).toFixed(2))
+      $("#total-iva-10").val(Math.round(total / 11))
     }
 
     $("select[name=tipo_factura]").change(function(){
