@@ -43,7 +43,7 @@
     }
 
     $(".precio_format").number( true , 0, ',', '.' );
-    $(".precio_float_format").number( true , 3, ',', '.' );
+    $(".precio_float_format").number( true , 2, ',', '.' );
     $(".buscar-producto").autocomplete({
       source: '{{route('admin.productos.producto.search_ajax')}}',
       select: function( event, ui){
