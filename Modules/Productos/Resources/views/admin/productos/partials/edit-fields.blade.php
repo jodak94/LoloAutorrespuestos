@@ -12,10 +12,10 @@
           <textarea id="descripcion" name="descripcion" placeholder="Descripción" style="resize:none;width:100%;" class="form-control" rows="5">{{ $producto->descripcion }}</textarea>
       </div>
       <div class="col-md-6">
-        {!! Form::normalInputOfType('number','stock', 'Stock', $errors, $producto) !!}
+        {!! Form::normalInput('stock', 'Stock', $errors, $producto) !!}
       </div>
       <div class="col-md-6">
-        {!! Form::normalInputOfType('number','stock_critico', 'Stock Critico', $errors, $producto) !!}
+        {!! Form::normalInput('stock_critico', 'Stock Critico', $errors, $producto) !!}
       </div>
       <div class="col-md-6">
         {!! Form::normalInput('costo', 'Costo', $errors, $producto, ['class'=>'form-control precio']) !!}
