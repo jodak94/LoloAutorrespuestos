@@ -435,10 +435,10 @@ class VentaController extends AdminBaseController
 
     public function export_to_pdf(Request $request) {
       $facturaBoxes = json_decode(json_encode([
-        'fecha' => ['x' => 3.7, 'y' => 2.2, 'width' => 100],
+        'fecha' => ['x' => 3.7, 'y' => 2.4, 'width' => 100],
         'contado' => ['x' => 17.2, 'y' => 2.5, 'width' => 100],
         'credito' => ['x' => 19.5, 'y' => 2.5, 'width' => 100],
-        'nombre' => ['x' => 4.4, 'y' => 2.6, 'width' => 100],
+        'nombre' => ['x' => 4.4, 'y' => 2.2, 'width' => 100],
         'ruc' => ['x' => 16.7, 'y' => 2.9, 'width' => 100],
         'direccion' => ['x' => 3, 'y' => 3, 'width' => 100],
         'telefono' => ['x' => 17.4, 'y' => 3.3, 'width' => 100],
@@ -448,10 +448,10 @@ class VentaController extends AdminBaseController
         'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
         'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
         'subtotal' => ['x' => 18.8, 'y' => 10.2, 'width' => 100],
-        'total_letras' => ['x' => 3, 'y' => 10.15, 'width' => 100],
+        'total_letras' => ['x' => 3, 'y' => 10.35, 'width' => 100],
         'total' => ['x' => 17.6, 'y' => 10.55, 'width' => 100],
-        'iva_10' => ['x' => 7.1, 'y' => 10.7, 'width' => 100],
-        'total_iva' => ['x' => 10.6, 'y' => 10.7, 'width' => 100],
+        'iva_10' => ['x' => 7.1, 'y' => 10.8, 'width' => 100],
+        'total_iva' => ['x' => 10.6, 'y' => 10.8, 'width' => 100],
         'duplicado' => 11.7
       ]));
       $venta = Venta::find($request->venta_id);
@@ -477,10 +477,10 @@ class VentaController extends AdminBaseController
     if(!count($request->venta_id))
       return redirect()->back()->withWarning('No se seleccionaron facturas');
       $facturaBoxes = json_decode(json_encode([
-        'fecha' => ['x' => 3.7, 'y' => 2.2, 'width' => 100],
+        'fecha' => ['x' => 3.7, 'y' => 2.4, 'width' => 100],
         'contado' => ['x' => 17.2, 'y' => 2.5, 'width' => 100],
         'credito' => ['x' => 19.5, 'y' => 2.5, 'width' => 100],
-        'nombre' => ['x' => 4.4, 'y' => 2.6, 'width' => 100],
+        'nombre' => ['x' => 4.4, 'y' => 2.2, 'width' => 100],
         'ruc' => ['x' => 16.7, 'y' => 2.9, 'width' => 100],
         'direccion' => ['x' => 3, 'y' => 3, 'width' => 100],
         'telefono' => ['x' => 17.4, 'y' => 3.3, 'width' => 100],
@@ -490,10 +490,10 @@ class VentaController extends AdminBaseController
         'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
         'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
         'subtotal' => ['x' => 18.8, 'y' => 10.2, 'width' => 100],
-        'total_letras' => ['x' => 3, 'y' => 10.15, 'width' => 100],
+        'total_letras' => ['x' => 3, 'y' => 10.35, 'width' => 100],
         'total' => ['x' => 17.6, 'y' => 10.55, 'width' => 100],
-        'iva_10' => ['x' => 7.1, 'y' => 10.7, 'width' => 100],
-        'total_iva' => ['x' => 10.6, 'y' => 10.7, 'width' => 100],
+        'iva_10' => ['x' => 7.1, 'y' => 10.8, 'width' => 100],
+        'total_iva' => ['x' => 10.6, 'y' => 10.8, 'width' => 100],
         'duplicado' => 11.7
       ]));
     $zip_path = public_path().'/facturas/facturas.zip';
