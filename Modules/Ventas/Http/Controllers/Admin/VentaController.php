@@ -45,17 +45,20 @@ class VentaController extends AdminBaseController
     {
         $credito = false;
         $parcial = false;
+        $parcial_pagado = false;
         if($request->has('credito')){
             $credito = true;
         }
         elseif($request->has('parcial')){
             $parcial = true;
+            if($request->has('parcial_pagado'))
+              $parcial_pagado = true;
         }
         $today = Carbon::now()->format('d/m/Y');
         $tipos_factura = ['todos' => '--'];
         $tipos_factura = array_merge($tipos_factura, Venta::$tipos_factura);
         $con_factura = ['todos' => '--', '1' => 'Sí', '0' => 'No'];
-        return view('ventas::admin.ventas.index', compact('parcial', 'today', 'credito', 'tipos_factura', 'con_factura'));
+        return view('ventas::admin.ventas.index', compact('parcial', 'parcial_pagado', 'today', 'credito', 'tipos_factura', 'con_factura'));
     }
 
 
@@ -168,6 +171,9 @@ class VentaController extends AdminBaseController
 
         if($re->has('anulado') && $re->anulado != 'todos')
           $query->where('anulado', $re->anulado);
+
+        if($re->has('parcial_pagado') && $re->parcial_pagado)
+          $query->where('monto_pagado', '>=', DB::raw('monto_total'));
 
         $query->orderBy('created_at', 'desc');
         return $query;

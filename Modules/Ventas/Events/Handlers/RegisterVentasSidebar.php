@@ -69,6 +69,15 @@ class RegisterVentasSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('ventas.ventas.index')
                     );
                 });
+                $item->item(trans('Ventas Parciales (Pagados)'), function (Item $item) {
+                    $item->icon('fa fa-shopping-cart');
+                    $item->weight(0);
+                    $item->append('admin.ventas.venta.create_parcial');
+                    $item->route('admin.ventas.venta.index', ['parcial', 'parcial_pagado']);
+                    $item->authorize(
+                        $this->auth->hasAccess('ventas.ventas.index')
+                    );
+                });
             });
         });
 

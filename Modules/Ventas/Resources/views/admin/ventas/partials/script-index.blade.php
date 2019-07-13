@@ -41,6 +41,7 @@
               d.fecha_update_desde = $("#fecha_update_desde").val();
               d.fecha_update_hasta = $("#fecha_update_hasta").val();
             @endif
+            d.parcial_pagado = '{{$parcial_pagado}}';
             d.credito = '{{$credito}}';
             d.parcial = '{{$parcial}}';
             d.tipo_factura = $("[name=tipo_factura]").val();
