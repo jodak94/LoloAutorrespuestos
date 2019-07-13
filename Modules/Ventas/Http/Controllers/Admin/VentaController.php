@@ -370,6 +370,8 @@ class VentaController extends AdminBaseController
             if($request['monto_pagado'] > $request['modal-monto-total'])
               $request['monto_pagado'] = $request['modal-monto-total'];
             $request['monto_pagado'] += $venta->monto_pagado;
+            if($request['monto_pagado'] > $request['monto_total'])
+              $request['monto_pagado'] = $request['monto_total'];
             $request['tipo_factura'] = null;
             $request['nro_factura'] = 'xxx-xxx-xxxxxx';
           }else{
