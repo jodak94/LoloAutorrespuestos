@@ -5,7 +5,7 @@
         @if($credito)
           Ventas a Crédito
         @elseif(isset($parcial) && ($parcial))
-          Ventas Parciales
+          Ventas Parciales @if(isset($parcial_pagado) && $parcial_pagado) (Pagados) @endif
         @else
           {{ trans('ventas::ventas.title.ventas') }}
         @endif
