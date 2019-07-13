@@ -56,7 +56,11 @@
       },
       columns:[
         { data: 'checkbox'},
-        { data: 'created_at', name: 'created_at' },
+        @if(!$parcial)
+          { data: 'updated_at', name: 'updated_at' },
+        @else
+          { data: 'created_at', name: 'created_at' },
+        @endif
         @if(!$parcial)
           { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },
         @else
