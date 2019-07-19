@@ -33,7 +33,7 @@ foreach($venta->detalles as $detalle) {
 <div id="total-iva10" style="position: absolute;left: {{ $facturaBoxes->total_iva->x }}cm;top: {{ $facturaBoxes->total_iva->y }}cm">{{number_format($venta->total_iva,0,',','.')}}</div>
 
 <!-- duplicado  -->
-
+@if(!isset($background))
 <div id="fecha" style="position: absolute;left: {{ $facturaBoxes->fecha->x }}cm;top: {{ $facturaBoxes->fecha->y + $facturaBoxes->duplicado }}cm">{{date("d-m-Y",strtotime(Carbon\Carbon::now()))}}</div>
 
 @php
@@ -66,3 +66,4 @@ foreach($venta->detalles as $detalle) {
 <div id="total" style="position: absolute;left: {{ $facturaBoxes->total->x }}cm;top: {{ $facturaBoxes->total->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->monto_total,0,',','.')}}</div>
 <div id="iva10" style="position: absolute;left: {{ $facturaBoxes->iva_10->x }}cm;top: {{ $facturaBoxes->iva_10->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->total_iva,0,',','.')}}</div>
 <div id="total-iva10" style="position: absolute;left: {{ $facturaBoxes->total_iva->x }}cm;top: {{ $facturaBoxes->total_iva->y + $facturaBoxes->duplicado }}cm">{{number_format($venta->total_iva,0,',','.')}}</div>
+@endif
