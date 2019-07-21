@@ -497,6 +497,7 @@ class VentaController extends AdminBaseController
     if(!count($request->venta_id))
       return redirect()->back()->withWarning('No se seleccionaron facturas');
       $facturaBoxes = json_decode(json_encode([
+          'nro_factura' => ['x' => 17.2, 'y' => 1.9, 'width' => 100],
         'fecha' => ['x' => 3.5, 'y' => 2.6, 'width' => 100],
         'contado' => ['x' => 17, 'y' => 2.6, 'width' => 100],
         'credito' => ['x' => 19.3, 'y' => 2.6, 'width' => 100],
@@ -509,7 +510,7 @@ class VentaController extends AdminBaseController
         'producto' => ['x' => 3.5, 'y' => 4.7, 'width' => 100],
         'precio_unitario' => ['x' => 13, 'y' => 4.7, 'width' => 100],
         'iva' => ['x' => 18.8, 'y' => 4.7, 'width' => 100],
-        'subtotal' => ['x' => 18.8, 'y' => 10.5, 'width' => 100],
+        'subtotal' => ['x' => 18.8, 'y' => 10.4, 'width' => 100],
         'total_letras' => ['x' => 2.8, 'y' => 10.8, 'width' => 100],
         'total' => ['x' => 17.6, 'y' => 10.8, 'width' => 100],
         'iva_10' => ['x' => 7.1, 'y' => 11.1, 'width' => 100],

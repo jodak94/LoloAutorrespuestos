@@ -1,3 +1,5 @@
+<div id="nro_factura" style="position: absolute;left: {{ $facturaBoxes->nro_factura->x }}cm;top: {{ $facturaBoxes->nro_factura->y }}cm;font-size: 25px">{{explode('-',$venta->nro_factura)[2]}}</div>
+
 <div id="fecha" style="position: absolute;left: {{ $facturaBoxes->fecha->x }}cm;top: {{ $facturaBoxes->fecha->y }}cm">{{date("d-m-Y",strtotime(Carbon\Carbon::now()))}}</div>
 
 @php
