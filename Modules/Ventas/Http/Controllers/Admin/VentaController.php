@@ -107,7 +107,7 @@ class VentaController extends AdminBaseController
                   if($venta->generar_factura  && !$re->parcial)
                     $html .=
                     '<a href="'.$reimpimir_route.'" target="blank_" title="imprimir" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
-                      <i title="Descargar" class="fa fa-print" aria-hidden="true"></i>
+                      <i title="Reimprimir" class="fa fa-print" aria-hidden="true"></i>
                     </a>';
 
                   if(!$re->parcial)
