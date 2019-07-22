@@ -494,10 +494,10 @@ class VentaController extends AdminBaseController
   }
 
   public function download_facturas(Request $request) {
-    if(!count($request->venta_id))
+    if(!isset($request->venta_id))
       return redirect()->back()->withWarning('No se seleccionaron facturas');
-      $facturaBoxes = json_decode(json_encode([
-          'nro_factura' => ['x' => 17.2, 'y' => 1.9, 'width' => 100],
+    $facturaBoxes = json_decode(json_encode([
+        'nro_factura' => ['x' => 17.2, 'y' => 1.9, 'width' => 100],
         'fecha' => ['x' => 3.5, 'y' => 2.6, 'width' => 100],
         'contado' => ['x' => 17, 'y' => 2.6, 'width' => 100],
         'credito' => ['x' => 19.3, 'y' => 2.6, 'width' => 100],
