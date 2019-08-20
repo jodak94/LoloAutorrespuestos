@@ -163,10 +163,9 @@ class VentaController extends AdminBaseController
           $query->where('tipo_factura', 'credito');
 
         if($re->has('parcial') && $re->parcial){
+          $query->where('parcial', true);
           if($re->has('parcial_pagado') && $re->parcial_pagado)
             $query->where('monto_pagado', '>=', DB::raw('monto_total'));
-          else
-            $query->where('parcial', true);
         }
 
         if($re->has('parcial') && !$re->parcial)
