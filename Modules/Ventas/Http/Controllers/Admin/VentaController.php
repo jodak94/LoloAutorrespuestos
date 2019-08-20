@@ -145,10 +145,7 @@ class VentaController extends AdminBaseController
         if(isset($re->razon_social) && trim($re->razon_social) != '')
           $query->where('razon_social', 'LIKE', '%'.$re->razon_social.'%');
 
-        if($re->has('parcial') && !$re->parcial)
-          $date_column = 'updated_at';
-        else
-          $date_column = 'created_at';
+        $date_column = 'created_at';
 
         if (isset($re->fecha_desde) && trim($re->fecha_desde) != '')
           $query->whereDate($date_column, '>=', $this->fechaFormat($re->fecha_desde) );
@@ -166,9 +163,10 @@ class VentaController extends AdminBaseController
           $query->where('tipo_factura', 'credito');
 
         if($re->has('parcial') && $re->parcial){
-          $query->where('parcial', true);
-          if($re->has('parcial_pagado') && !$re->parcial_pagado)
-            $query->where('monto_pagado', '<', DB::raw('monto_total'));
+          if($re->has('parcial_pagado') && $re->parcial_pagado)
+            $query->where('monto_pagado', '>=', DB::raw('monto_total'));
+          else
+            $query->where('parcial', true);
         }
 
         if($re->has('parcial') && !$re->parcial)

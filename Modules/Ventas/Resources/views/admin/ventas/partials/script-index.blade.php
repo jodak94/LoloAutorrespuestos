@@ -56,15 +56,12 @@
       },
       columns:[
         { data: 'checkbox'},
-        @if(!$parcial)
+        @if($parcial)
+          { data: 'created_at', name: 'created_at' },
           { data: 'updated_at', name: 'updated_at' },
         @else
           { data: 'created_at', name: 'created_at' },
-        @endif
-        @if(!$parcial)
           { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },
-        @else
-          { data: 'updated_at', name: 'updated_at' },
         @endif
         { data: 'razon_social', name: 'razon_social', className: 'razon_social' },
         { data: 'monto_total_format', name: 'monto_total_format', className: 'monto_total' },
