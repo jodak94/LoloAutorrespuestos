@@ -60,7 +60,7 @@
           { data: 'created_at', name: 'created_at' },
           { data: 'updated_at', name: 'updated_at' },
         @else
-          { data: 'created_at', name: 'created_at' },
+          { data: 'fecha', name: 'fecha' },
           { data: 'nro_factura', name: 'nro_factura', className: 'nro_factura' },
         @endif
         { data: 'razon_social', name: 'razon_social', className: 'razon_social' },

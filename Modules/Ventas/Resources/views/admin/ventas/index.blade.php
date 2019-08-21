@@ -80,9 +80,11 @@
                     <div class="col-md-3">
                       {!! Form:: normalSelect('con_factura', 'Con Factura', $errors, $con_factura, (object)['con_factura' => 'todos']) !!}
                     </div>
-                    <div class="col-md-3">
-                      {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura', $errors, $tipos_factura) !!}
-                    </div>
+                    @if(isset($credito) && !$credito)
+                      <div class="col-md-3">
+                        {!! Form:: normalSelect('tipo_factura', 'Tipo de Factura', $errors, $tipos_factura) !!}
+                      </div>
+                    @endif
                     <div class="col-md-2">
                       {!! Form:: normalSelect('anulado', 'Anulados', $errors, ['0' => 'No', '1' => 'Si', 'todos' => 'Todos']) !!}
                     </div>

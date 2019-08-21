@@ -55,8 +55,12 @@ class VentaController extends AdminBaseController
               $parcial_pagado = true;
         }
         $today = Carbon::now()->format('d/m/Y');
-        $tipos_factura = ['todos' => '--'];
-        $tipos_factura = array_merge($tipos_factura, Venta::$tipos_factura);
+        if($credito || $parcial){
+          $tipos_factura = ['todos' => '--'];
+          $tipos_factura = array_merge($tipos_factura, Venta::$tipos_factura);
+        }else {
+          $tipos_factura = Venta::$tipos_factura;
+        }
         $con_factura = ['todos' => '--', '1' => 'Sí', '0' => 'No'];
         return view('ventas::admin.ventas.index', compact('parcial', 'parcial_pagado', 'today', 'credito', 'tipos_factura', 'con_factura'));
     }
@@ -122,6 +126,14 @@ class VentaController extends AdminBaseController
                   </div>';
               return $html;
             })
+            ->addColumn('fecha', function( $venta ){
+              if($venta->tipo_factura == 'credito')
+                return $venta->created_at;
+              elseif ($venta->tipo_factura == 'contado')
+                return $venta->updated_at;
+              else
+                return '--';
+            })
             ->with([
               'suma' => $suma
             ])
@@ -145,7 +157,17 @@ class VentaController extends AdminBaseController
         if(isset($re->razon_social) && trim($re->razon_social) != '')
           $query->where('razon_social', 'LIKE', '%'.$re->razon_social.'%');
 
-        $date_column = 'created_at';
+
+        if($re->has('tipo_factura') && $re->tipo_factura != 'todos'){
+          Log::info("has tipo_factura");
+          $query->where('tipo_factura', $re->tipo_factura);
+          if($re->tipo_factura == 'credito')
+            $date_column = 'created_at';
+          else
+            $date_column = 'updated_at';
+        }else{
+          $date_column = 'created_at';
+        }
 
         if (isset($re->fecha_desde) && trim($re->fecha_desde) != '')
           $query->whereDate($date_column, '>=', $this->fechaFormat($re->fecha_desde) );
@@ -173,8 +195,6 @@ class VentaController extends AdminBaseController
         if($re->has('parcial') && !$re->parcial)
           $query->where('parcial', false);
 
-        if($re->has('tipo_factura') && $re->tipo_factura != 'todos')
-          $query->where('tipo_factura', $re->tipo_factura);
 
         if($re->has('con_factura') && $re->con_factura != 'todos')
           $query->where('generar_factura', $re->con_factura);
@@ -472,7 +492,7 @@ class VentaController extends AdminBaseController
             'total_iva' => ['x' => 10.6, 'y' => 10.9, 'width' => 100],
             'duplicado' => 11.7
         ]));
-      
+
       $venta = Venta::find($request->venta_id);
       $format = $request->format;
       if($request->download ==   "true") {
