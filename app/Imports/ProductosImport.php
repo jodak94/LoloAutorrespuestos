@@ -5,9 +5,11 @@ namespace App\Imports;
 use Modules\Productos\Entities\Producto;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ProductosImport implements ToModel, WithHeadingRow
+class ProductosImport implements ToModel, WithHeadingRow, WithMultipleSheets
 {
+
     /**
     * @param array $row
     *
@@ -27,5 +29,12 @@ class ProductosImport implements ToModel, WithHeadingRow
 
         ]);
     }
+
+   public function sheets(): array
+   {
+       return [
+           0 => new static
+       ];
+   }
 
 }
