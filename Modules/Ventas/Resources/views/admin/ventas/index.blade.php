@@ -1,5 +1,7 @@
 @extends('layouts.master')
-
+@php
+  $message = "¿Estás seguro que quieres anular esta factura?"
+@endphp
 @section('content-header')
     <h1>
         @if($credito)

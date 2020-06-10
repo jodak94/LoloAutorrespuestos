@@ -92,6 +92,7 @@ class VentaController extends AdminBaseController
               $refacturar_route = route('admin.ventas.venta.edit', $venta->id);
               $actualizar_route = route('admin.ventas.venta.actualizar', $venta->id);
               $reimpimir_route = route('admin.ventas.venta.exportar', ['venta_id' => $venta->id, 'download' => false, 'format' => 'pdf']);
+              $anular_route = route('admin.ventas.venta.anular', $venta->id);
               if($venta->anulado)
                 return '';
               $html = '
@@ -108,6 +109,7 @@ class VentaController extends AdminBaseController
                   //   <i title="Ver" class="fa fa-eye" aria-hidden="true"></i>
                   // </button>
                   // ';
+
                   if($venta->generar_factura  && !$re->parcial)
                     $html .=
                     '<a href="'.$reimpimir_route.'" target="blank_" title="imprimir" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
@@ -115,15 +117,21 @@ class VentaController extends AdminBaseController
                     </a>';
 
                   if(!$re->parcial)
-                    $html .= '<a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
-                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                    </a>
-                </div>';
+                    $html .= '
+                      <a title="Refacturar" href="'.$refacturar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      </a>
+                      <button title="Anular" type="button" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="'.$anular_route.'">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>';
                   else
                   $html .= '<a title="Actualizar" href="'.$actualizar_route.'" class="btn btn-default btn-flat btn-download" style="display:table; margin:auto">
                       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     </a>
                   </div>';
+
+
               return $html;
             })
             ->addColumn('fecha', function( $venta ){
@@ -555,5 +563,16 @@ class VentaController extends AdminBaseController
       if(file_exists($file))
         unlink($file);
     return Response()->download($zip_path)->deleteFileAfterSend(true);
+  }
+
+  public function anular_factura(Venta $factura){
+    $factura->anulado = true;
+    foreach ($factura->detalles as $detalle) {
+      $producto = $detalle->producto;
+      $producto->stock += $detalle->cantidad;
+      $producto->save();
+    }
+    $factura->save();
+    return redirect()->route('admin.ventas.venta.index')->withSuccess('Factura anulada exitosamente');
   }
 }

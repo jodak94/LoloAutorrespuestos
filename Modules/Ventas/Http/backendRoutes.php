@@ -102,6 +102,10 @@ $router->group(['prefix' =>'/ventas'], function (Router $router) {
         'as' => 'admin.ventas.venta.download_facturas',
         'uses' => 'VentaController@download_facturas',
     ]);
+    $router->delete('ventas/facturas/anular/{venta}', [
+        'as' => 'admin.ventas.venta.anular',
+        'uses' => 'VentaController@anular_factura',
+    ]);
 // append
 
 
