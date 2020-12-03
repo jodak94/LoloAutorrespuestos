@@ -37,16 +37,16 @@
             </td>
         </tr>
         <tr style="text-align: center;font-weight: bold">
-            <td width="40%" style="border: 1px solid black">Concepto</td>
-            <td width="15%" style="border: 1px solid black">Cantidad</td>
-            <td width="15%" style="border: 1px solid black">Precio Unitario</td>
-            <td width="15%" style="border: 1px solid black">Descuento</td>
+            <td width="50%" style="border: 1px solid black">Concepto</td>
+            <td width="10%" style="border: 1px solid black">Cant.</td>
+            <td width="15%" style="border: 1px solid black">Precio Uni.</td>
+            <td width="10%" style="border: 1px solid black">Desc.</td>
             <td width="15%" style="border: 1px solid black">Precio Total</td>
         </tr>
         <tr style="border: 1px solid black">
-            <td style="border: 1px solid black">
+            <td width="50%" style="border: 1px solid black;display:block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
             @foreach ($presupuestoDetalles as  $detalle)
-                <p style="margin:0 0 0 1%">{{ $detalle["producto"] }}</p>
+                <p style="margin:0 0 0 1%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ $detalle["producto"] }}</p>
             @endforeach
             </td>
             <td style="border: 1px solid black">
