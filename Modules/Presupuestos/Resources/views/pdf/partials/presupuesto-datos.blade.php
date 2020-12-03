@@ -44,7 +44,7 @@
             <td width="15%" style="border: 1px solid black">Precio Total</td>
         </tr>
         <tr style="border: 1px solid black">
-            <td width="50%" style="border: 1px solid black;display:block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+            <td style="border: 1px solid black;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
             @foreach ($presupuestoDetalles as  $detalle)
                 <p style="margin:0 0 0 1%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ $detalle["producto"] }}</p>
             @endforeach
